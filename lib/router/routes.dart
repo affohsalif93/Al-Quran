@@ -1,10 +1,7 @@
 enum Routes {
   home,
-  onboarding,
+  azkar,
   download,
   settings,
   index_,
-  tafsir,
-  chooseRiwayah,
-  manageTafsir,
 }

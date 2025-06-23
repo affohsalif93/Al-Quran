@@ -1,72 +1,70 @@
-// import 'dart:io';
-// import 'package:flutter/services.dart';
-// import 'package:equatable/equatable.dart';
-// import 'package:sqflite/sqflite.dart';
-//
-// import 'package:quran/debug/logger.dart';
-// import 'package:quran/utils/io.dart';
-//
-// class DatabaseModel extends Equatable {
-//   final String fileName;
-//   final Database database;
-//
-//   const DatabaseModel(this.fileName, this.database);
-//
-//   String get fullPath => getFullPath(fileName);
-//
-//   static String getFullPath(String fileName) {
-//     return IO.joinFromSupportFolder(
-//       'dbs',
-//       '$fileName.db',
-//     );
-//   }
-//
-//   static Future<DatabaseModel> fromAsset(String fileName, String assetPath) async {
-//     final fullPath = getFullPath(fileName);
-//     final file = File(fullPath);
-//     if (!file.existsSync()) {
-//       final data = await rootBundle.load(assetPath);
-//       final bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
-//       await file.create(recursive: true);
-//       await file.writeAsBytes(bytes, flush: true);
-//     }
-//
-//     final db = await openDatabase(fullPath, readOnly: true);
-//     return DatabaseModel(fileName, db);
-//   }
-//
-//   @override
-//   List<Object?> get props => [fileName];
-// }
-//
-// enum DB {
-//   quranAyahByAyah,
-//   quranWordByWord,
-//   quranDigital15Lines,
-// }
-//
-// Map<DB, String> databaseFilenamesMap = {
-//   DB.quranAyahByAyah: 'QPC_V1_aba',
-//   DB.quranWordByWord: 'QPC_V1_wbw',
-//   DB.quranDigital15Lines: 'digital-khatt-15-lines',
-// };
-//
-// class QuranDBService {
-//   static final Map<DB, String> _assetPaths = {
-//     DB.quranAyahByAyah: 'assets/quran/db/QPC_V1_aba.db',
-//     DB.quranWordByWord: 'assets/quran/db/QPC_V1_wbw.db',
-//     DB.quranDigital15Lines: 'assets/quran/db/digital-khatt-15-lines.db',
-//   };
-//
-//   static final Map<DB, DatabaseModel> _databases = {};
-//
-//   static Future<void> init() async {
-//     for (var entry in _assetPaths.entries) {
-//       final model = await DatabaseModel.fromAsset(databaseFilenamesMap[entry.key]!, entry.value);
-//       _databases[entry.key] = model;
-//       logger.fine('Loaded database: ${entry.key}');
-//     }
-//   }
-//
-//   static Database getDB(DB key) => _databases[key]!.database;
-// }
+import "package:quran/core/utils/io.dart";
+import "package:quran/core/utils/logger.dart";
+import "package:sqflite/sqflite.dart";
+import "dart:io";
+
+// dbs enums
+enum QuranDB {
+  ayah,
+  wordText,
+  wordGlyph,
+  pageLines,
+}
+
+const Map<QuranDB, String> quranDbFileNames = {
+  QuranDB.ayah: "qpc-hafs.db",
+  QuranDB.wordText: "qpc-hafs-word-by-word.db",
+  QuranDB.wordGlyph: "qpc-v1-glyph-codes-wbw.db",
+  QuranDB.pageLines: "qpc-15-lines.db",
+};
+
+class QuranDBService {
+  static final Map<String, Database> _databases = {};
+
+  static String _getDbPath(String fileName) =>
+      IO.joinFromSupportFolder("data", "dbs", fileName);
+
+  static Future<Database> _openDbFromFile(String fileName) async {
+    if (_databases.containsKey(fileName)) {
+      return _databases[fileName]!;
+    }
+    final dbPath = _getDbPath(fileName);
+    final file = File(dbPath);
+
+    try {
+      if (!await file.exists()) {
+        logger.error("missing db $fileName at $dbPath");
+      }
+      final db = await openDatabase(dbPath, readOnly: true);
+      _databases[fileName] = db;
+    } catch (e) {
+      logger.error("Failed to open database $dbPath");
+      rethrow;
+    }
+
+    // return db;
+    return _databases[fileName]!;
+  }
+
+  static Future<Database> getAyahDb() =>
+      _openDbFromFile(quranDbFileNames[QuranDB.ayah]!);
+
+  static Future<Database> getWordTextDb() =>
+      _openDbFromFile(quranDbFileNames[QuranDB.wordText]!);
+
+  static Future<Database> getWordGlyphDb() =>
+      _openDbFromFile(quranDbFileNames[QuranDB.wordGlyph]!);
+
+  static Future<Database> getPageLinesDb() =>
+      _openDbFromFile(quranDbFileNames[QuranDB.pageLines]!);
+
+  static Future<Database> getTasfirDb() =>
+      _openDbFromFile(quranDbFileNames[QuranDB.wordText]!);
+
+  static Future<void> closeAllDatabases() async {
+    for (final db in _databases.values) {
+      await db.close();
+    }
+    _databases.clear();
+  }
+}

@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
-import 'package:quran/extensions/context_extensions.dart';
+import 'package:quran/core/extensions/context_extensions.dart';
 
 class MultiLanguageModel extends Equatable {
   final String arabic;

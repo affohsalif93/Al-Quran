@@ -10,10 +10,11 @@ import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:quran/app.dart';
+import 'package:quran/core/utils/io.dart';
 import 'package:quran/i18n/strings.g.dart';
-import 'package:quran/providers/quran/quran_repository.dart';
 import 'package:quran/providers/shared_preferences_provider.dart';
-import 'package:quran/utils/io.dart';
+import 'package:quran/repositories/quran/quran_repository.dart';
+import 'package:quran/services/quran_db_service.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 // ignore:depend_on_referenced_packages
@@ -48,8 +49,7 @@ Future<void> main() async {
   await container.read(quranRepositoryProvider.future);
 
   runApp(
-    UncontrolledProviderScope(
-      container: container,
+    ProviderScope(
       child: TranslationProvider(
         child: ScreenUtilInit(
           designSize: const Size(360, 800),

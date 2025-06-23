@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-
-import 'package:quran/debug/logger.dart';
+import 'package:quran/core/utils/logger.dart';
 import 'package:quran/i18n/strings.g.dart';
-import 'package:quran/providers/quran/quran_repository.dart';
 import 'package:quran/router/app_router.dart';
 import 'package:quran/theme/theme.dart';
 import 'package:quran/theme/theme_controller.dart';

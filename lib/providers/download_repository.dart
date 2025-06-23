@@ -4,12 +4,11 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:keep_screen_on/keep_screen_on.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
-
-import 'package:quran/debug/logger.dart';
-import 'package:quran/enums/riwaya_enum.dart';
+import 'package:quran/core/enums/riwaya_enum.dart';
+import 'package:quran/core/utils/api.dart';
+import 'package:quran/core/utils/io.dart';
+import 'package:quran/core/utils/logger.dart';
 import 'package:quran/providers/download_remote_data_source.dart';
-import 'package:quran/utils/api.dart';
-import 'package:quran/utils/io.dart';
 
 final downloadRepositoryProvider = Provider<DownloadRepository>((ref) {
   return DownloadRepository(ref.watch(downloadRemoteDataSourceProvider));

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:quran/enums/revelation_enum.dart';
-import 'package:quran/extensions/context_extensions.dart';
+import 'package:quran/core/enums/revelation_enum.dart';
+import 'package:quran/core/extensions/context_extensions.dart';
 import 'package:quran/i18n/strings.g.dart';
 
 class ChapterModel {

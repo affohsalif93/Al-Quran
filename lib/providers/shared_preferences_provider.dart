@@ -3,13 +3,13 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:quran/providers/quran/quran_data.dart';
+import 'package:quran/core/utils/helper_functions.dart';
+import 'package:quran/core/utils/logger.dart';
+import 'package:quran/repositories/quran/quran_data.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:quran/debug/logger.dart';
 import 'package:quran/i18n/strings.g.dart';
 import 'package:quran/models/tafsir_model.dart';
-import 'package:quran/utils/helper_functions.dart';
 import '../models/mushaf.dart';
 
 enum PrefsEnum {

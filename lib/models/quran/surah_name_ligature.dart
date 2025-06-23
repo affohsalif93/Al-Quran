@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:quran/utils/io.dart';
+
+import 'package:quran/core/utils/io.dart';
 
 Future<SurahLigatures> loadSurahLigatures() async {
   final String ligatureFilePath = IO.joinFromSupportFolder("surah_name_ligatures.json");

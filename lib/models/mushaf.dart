@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:quran/extensions/context_extensions.dart';
-import 'package:quran/models/quran/line.dart';
-import 'package:quran/providers/quran/quran_repository.dart';
+import 'package:quran/core/extensions/context_extensions.dart';
 
 enum MushafScript {
   hafsMadinahV1,
@@ -43,7 +41,4 @@ class Mushaf {
     String description = "$version $yearGregorian";
     return description.trim();
   }
-
-
-
 }

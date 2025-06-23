@@ -1,4 +1,4 @@
-import 'package:quran/extensions/double_extensions.dart';
+import 'package:quran/core/extensions/double_extensions.dart';
 
 class PageModel {
   final int surah;
