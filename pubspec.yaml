@@ -1,0 +1,2018 @@
+name: quran
+description: "A windows first quran app"
+# The following line prevents the package from being accidentally published to
+# pub.dev using `flutter pub publish`. This is preferred for private packages.
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+# The following defines the version and build number for your application.
+# A version number is three numbers separated by dots, like 1.2.43
+# followed by an optional build number separated by a +.
+# Both the version and the builder number may be overridden in flutter
+# build by specifying --build-name and --build-number, respectively.
+# In Android, build-name is used as versionName while build-number used as versionCode.
+# Read more about Android versioning at https://developer.android.com/studio/publish/versioning
+# In iOS, build-name is used as CFBundleShortVersionString while build-number is used as CFBundleVersion.
+# Read more about iOS versioning at
+# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
+# In Windows, build-name is used as the major, minor, and patch parts
+# of the product and file versions while build-number is used as the build suffix.
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.7.2
+
+# Dependencies specify other packages that your package needs in order to work.
+# To automatically upgrade your package dependencies to the latest versions
+# consider running `flutter pub upgrade --major-versions`. Alternatively,
+# dependencies can be manually updated by changing the version numbers below to
+# the latest version available on pub.dev. To see which dependencies have newer
+# versions available, run `flutter pub outdated`.
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # l10n & date format
+  flutter_localizations:
+    sdk: flutter
+  intl: 0.19.0
+  slang: ^4.6.0
+  slang_flutter: ^4.6.0
+
+  dio: ^5.4.3+1
+  dio_smart_retry: ^7.0.1
+  pretty_dio_logger: ^1.4.0
+
+  # download assets
+  download_assets: ^3.2.0
+
+  # riverpod & hooks (state management)
+  flutter_hooks: ^0.21.2
+  flutter_riverpod: ^2.3.6
+  hooks_riverpod: ^2.3.6
+
+  # routing
+  go_router: ^14.8.1
+
+  # metadata persistence
+  shared_preferences: ^2.2.0
+  cached_network_image: ^3.2.3
+  get_secure_storage: ^1.0.4
+
+  # models & serialization
+  equatable: ^2.0.5
+
+  # responsive
+  flutter_screenutil: ^5.8.4
+
+  # animation
+  animations: ^2.0.11
+  flutter_animate: ^4.2.0
+
+  # splash screen
+  flutter_native_splash: ^2.3.1
+
+  # logging
+  quick_log: ^5.3.1
+
+  # onboarding
+  flutter_svg: ^2.0.7
+  json_annotation: ^4.9.0
+  collection: ^1.18.0
+  internet_connection_checker_plus: ^2.5.0
+  path: ^1.9.0
+  path_provider: ^2.1.4
+  carousel_slider_plus: ^7.0.1
+  material_symbols_icons: ^4.2785.1
+  expandable: ^5.0.1
+  modal_bottom_sheet: ^3.0.0
+  bottom_sheet: ^4.0.4
+  wolt_modal_sheet: ^0.11.0
+  smooth_sheets: ^0.10.0
+  easy_sticky_header: ^1.1.1
+  sqflite: ^2.3.3+2
+  riverpod: ^2.5.1
+  skeletonizer: ^1.4.2
+  flutter_archive: ^6.0.3
+  keep_screen_on: ^4.0.0
+  dotted_border: ^2.1.0
+  background_downloader: ^9.2.0
+  archive: ^3.6.1
+  custom_sliding_segmented_control: ^1.8.5
+  cupertino_icons: ^1.0.8
+  import_sorter: ^4.6.0
+  # custom_sliding_segmented_control: ^1.8.3
+  # timeago: ^3.6.1
+  # timeago_flutter: ^3.6.0
+  # skeletonizer: ^1.3.0
+  # audioplayers: ^6.0.0
+  # keep_screen_on: ^3.0.0
+  # visibility_detector: ^0.4.0+2
+  # expandable_page_view: ^1.0.17
+  # fluttertoast: ^8.2.4
+  # auto_size_text_plus: ^3.0.1
+
+  # utilities
+  # timeago: ^3.6.0
+  # flutter_local_notifications: ^17.0.0
+  # internet_connection_checker: ^1.0.0+1
+
+  vector_graphics: any
+  flutter_web_plugins:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+  riverpod_lint: ^2.3.0
+  flutter_launcher_icons: ^0.14.3
+  flutter_gen_runner: ^5.3.2
+  build_runner: ^2.4.6
+  json_serializable: ^6.8.0
+  slang_build_runner: ^4.6.0
+  sqflite_common_ffi: ^2.3.6
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/logo.png"
+  remove_alpha_ios: true
+  adaptive_icon_background: "#FFFFFF"
+  adaptive_icon_foreground: "assets/images/logo.png"
+
+flutter_native_splash:
+  image: "assets/images/logo.png"
+  color: "#FFFFFF"
+  android: true
+  ios: true
+
+  android_12:
+    image: "assets/images/logo.png"
+    color: "#FFFFFF"
+
+
+flutter_gen:
+  output: lib/assets/
+  integrations:
+    flutter_svg: true
+
+flutter:
+
+  fonts:
+    - family: DigitalKhatt
+      fonts:
+        - asset: assets/fonts/DigitalKhattV2/DigitalKhattV2.otf
+    - family: QCF_SurahHeader_COLOR-Regular
+      fonts:
+        - asset: assets/fonts/QCF_SurahHeader_COLOR-Regular/QCF_SurahHeader_COLOR-Regular.ttf
+    - family: UthmanTN
+      fonts:
+        - asset: assets/fonts/UthmanTN/UthmanTN-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/UthmanTN/UthmanTN-Bold.ttf
+          weight: 700
+    - family: UthmanicHafs
+      fonts:
+        - asset: assets/fonts/UthmanicHafs/UthmanicHafs.ttf
+    - family: Rubik
+      fonts:
+        - asset: assets/fonts/Rubik/Rubik-Light.ttf
+          weight: 300
+        - asset: assets/fonts/Rubik/Rubik-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Rubik/Rubik-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Rubik/Rubik-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Rubik/Rubik-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Rubik/Rubik-ExtraBold.ttf
+          weight: 800
+        - asset: assets/fonts/Rubik/Rubik-Black.ttf
+          weight: 900
+    - family: QPCV1Font1
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p1.ttf
+    - family: QPCV1Font2
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p2.ttf
+    - family: QPCV1Font3
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p3.ttf
+    - family: QPCV1Font4
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p4.ttf
+    - family: QPCV1Font5
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p5.ttf
+    - family: QPCV1Font6
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p6.ttf
+    - family: QPCV1Font7
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p7.ttf
+    - family: QPCV1Font8
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p8.ttf
+    - family: QPCV1Font9
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p9.ttf
+    - family: QPCV1Font10
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p10.ttf
+    - family: QPCV1Font11
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p11.ttf
+    - family: QPCV1Font12
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p12.ttf
+    - family: QPCV1Font13
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p13.ttf
+    - family: QPCV1Font14
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p14.ttf
+    - family: QPCV1Font15
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p15.ttf
+    - family: QPCV1Font16
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p16.ttf
+    - family: QPCV1Font17
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p17.ttf
+    - family: QPCV1Font18
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p18.ttf
+    - family: QPCV1Font19
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p19.ttf
+    - family: QPCV1Font20
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p20.ttf
+    - family: QPCV1Font21
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p21.ttf
+    - family: QPCV1Font22
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p22.ttf
+    - family: QPCV1Font23
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p23.ttf
+    - family: QPCV1Font24
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p24.ttf
+    - family: QPCV1Font25
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p25.ttf
+    - family: QPCV1Font26
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p26.ttf
+    - family: QPCV1Font27
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p27.ttf
+    - family: QPCV1Font28
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p28.ttf
+    - family: QPCV1Font29
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p29.ttf
+    - family: QPCV1Font30
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p30.ttf
+    - family: QPCV1Font31
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p31.ttf
+    - family: QPCV1Font32
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p32.ttf
+    - family: QPCV1Font33
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p33.ttf
+    - family: QPCV1Font34
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p34.ttf
+    - family: QPCV1Font35
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p35.ttf
+    - family: QPCV1Font36
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p36.ttf
+    - family: QPCV1Font37
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p37.ttf
+    - family: QPCV1Font38
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p38.ttf
+    - family: QPCV1Font39
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p39.ttf
+    - family: QPCV1Font40
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p40.ttf
+    - family: QPCV1Font41
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p41.ttf
+    - family: QPCV1Font42
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p42.ttf
+    - family: QPCV1Font43
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p43.ttf
+    - family: QPCV1Font44
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p44.ttf
+    - family: QPCV1Font45
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p45.ttf
+    - family: QPCV1Font46
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p46.ttf
+    - family: QPCV1Font47
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p47.ttf
+    - family: QPCV1Font48
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p48.ttf
+    - family: QPCV1Font49
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p49.ttf
+    - family: QPCV1Font50
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p50.ttf
+    - family: QPCV1Font51
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p51.ttf
+    - family: QPCV1Font52
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p52.ttf
+    - family: QPCV1Font53
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p53.ttf
+    - family: QPCV1Font54
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p54.ttf
+    - family: QPCV1Font55
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p55.ttf
+    - family: QPCV1Font56
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p56.ttf
+    - family: QPCV1Font57
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p57.ttf
+    - family: QPCV1Font58
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p58.ttf
+    - family: QPCV1Font59
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p59.ttf
+    - family: QPCV1Font60
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p60.ttf
+    - family: QPCV1Font61
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p61.ttf
+    - family: QPCV1Font62
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p62.ttf
+    - family: QPCV1Font63
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p63.ttf
+    - family: QPCV1Font64
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p64.ttf
+    - family: QPCV1Font65
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p65.ttf
+    - family: QPCV1Font66
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p66.ttf
+    - family: QPCV1Font67
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p67.ttf
+    - family: QPCV1Font68
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p68.ttf
+    - family: QPCV1Font69
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p69.ttf
+    - family: QPCV1Font70
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p70.ttf
+    - family: QPCV1Font71
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p71.ttf
+    - family: QPCV1Font72
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p72.ttf
+    - family: QPCV1Font73
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p73.ttf
+    - family: QPCV1Font74
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p74.ttf
+    - family: QPCV1Font75
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p75.ttf
+    - family: QPCV1Font76
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p76.ttf
+    - family: QPCV1Font77
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p77.ttf
+    - family: QPCV1Font78
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p78.ttf
+    - family: QPCV1Font79
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p79.ttf
+    - family: QPCV1Font80
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p80.ttf
+    - family: QPCV1Font81
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p81.ttf
+    - family: QPCV1Font82
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p82.ttf
+    - family: QPCV1Font83
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p83.ttf
+    - family: QPCV1Font84
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p84.ttf
+    - family: QPCV1Font85
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p85.ttf
+    - family: QPCV1Font86
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p86.ttf
+    - family: QPCV1Font87
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p87.ttf
+    - family: QPCV1Font88
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p88.ttf
+    - family: QPCV1Font89
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p89.ttf
+    - family: QPCV1Font90
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p90.ttf
+    - family: QPCV1Font91
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p91.ttf
+    - family: QPCV1Font92
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p92.ttf
+    - family: QPCV1Font93
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p93.ttf
+    - family: QPCV1Font94
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p94.ttf
+    - family: QPCV1Font95
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p95.ttf
+    - family: QPCV1Font96
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p96.ttf
+    - family: QPCV1Font97
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p97.ttf
+    - family: QPCV1Font98
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p98.ttf
+    - family: QPCV1Font99
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p99.ttf
+    - family: QPCV1Font100
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p100.ttf
+    - family: QPCV1Font101
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p101.ttf
+    - family: QPCV1Font102
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p102.ttf
+    - family: QPCV1Font103
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p103.ttf
+    - family: QPCV1Font104
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p104.ttf
+    - family: QPCV1Font105
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p105.ttf
+    - family: QPCV1Font106
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p106.ttf
+    - family: QPCV1Font107
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p107.ttf
+    - family: QPCV1Font108
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p108.ttf
+    - family: QPCV1Font109
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p109.ttf
+    - family: QPCV1Font110
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p110.ttf
+    - family: QPCV1Font111
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p111.ttf
+    - family: QPCV1Font112
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p112.ttf
+    - family: QPCV1Font113
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p113.ttf
+    - family: QPCV1Font114
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p114.ttf
+    - family: QPCV1Font115
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p115.ttf
+    - family: QPCV1Font116
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p116.ttf
+    - family: QPCV1Font117
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p117.ttf
+    - family: QPCV1Font118
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p118.ttf
+    - family: QPCV1Font119
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p119.ttf
+    - family: QPCV1Font120
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p120.ttf
+    - family: QPCV1Font121
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p121.ttf
+    - family: QPCV1Font122
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p122.ttf
+    - family: QPCV1Font123
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p123.ttf
+    - family: QPCV1Font124
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p124.ttf
+    - family: QPCV1Font125
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p125.ttf
+    - family: QPCV1Font126
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p126.ttf
+    - family: QPCV1Font127
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p127.ttf
+    - family: QPCV1Font128
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p128.ttf
+    - family: QPCV1Font129
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p129.ttf
+    - family: QPCV1Font130
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p130.ttf
+    - family: QPCV1Font131
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p131.ttf
+    - family: QPCV1Font132
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p132.ttf
+    - family: QPCV1Font133
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p133.ttf
+    - family: QPCV1Font134
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p134.ttf
+    - family: QPCV1Font135
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p135.ttf
+    - family: QPCV1Font136
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p136.ttf
+    - family: QPCV1Font137
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p137.ttf
+    - family: QPCV1Font138
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p138.ttf
+    - family: QPCV1Font139
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p139.ttf
+    - family: QPCV1Font140
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p140.ttf
+    - family: QPCV1Font141
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p141.ttf
+    - family: QPCV1Font142
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p142.ttf
+    - family: QPCV1Font143
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p143.ttf
+    - family: QPCV1Font144
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p144.ttf
+    - family: QPCV1Font145
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p145.ttf
+    - family: QPCV1Font146
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p146.ttf
+    - family: QPCV1Font147
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p147.ttf
+    - family: QPCV1Font148
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p148.ttf
+    - family: QPCV1Font149
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p149.ttf
+    - family: QPCV1Font150
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p150.ttf
+    - family: QPCV1Font151
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p151.ttf
+    - family: QPCV1Font152
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p152.ttf
+    - family: QPCV1Font153
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p153.ttf
+    - family: QPCV1Font154
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p154.ttf
+    - family: QPCV1Font155
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p155.ttf
+    - family: QPCV1Font156
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p156.ttf
+    - family: QPCV1Font157
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p157.ttf
+    - family: QPCV1Font158
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p158.ttf
+    - family: QPCV1Font159
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p159.ttf
+    - family: QPCV1Font160
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p160.ttf
+    - family: QPCV1Font161
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p161.ttf
+    - family: QPCV1Font162
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p162.ttf
+    - family: QPCV1Font163
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p163.ttf
+    - family: QPCV1Font164
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p164.ttf
+    - family: QPCV1Font165
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p165.ttf
+    - family: QPCV1Font166
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p166.ttf
+    - family: QPCV1Font167
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p167.ttf
+    - family: QPCV1Font168
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p168.ttf
+    - family: QPCV1Font169
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p169.ttf
+    - family: QPCV1Font170
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p170.ttf
+    - family: QPCV1Font171
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p171.ttf
+    - family: QPCV1Font172
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p172.ttf
+    - family: QPCV1Font173
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p173.ttf
+    - family: QPCV1Font174
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p174.ttf
+    - family: QPCV1Font175
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p175.ttf
+    - family: QPCV1Font176
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p176.ttf
+    - family: QPCV1Font177
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p177.ttf
+    - family: QPCV1Font178
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p178.ttf
+    - family: QPCV1Font179
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p179.ttf
+    - family: QPCV1Font180
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p180.ttf
+    - family: QPCV1Font181
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p181.ttf
+    - family: QPCV1Font182
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p182.ttf
+    - family: QPCV1Font183
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p183.ttf
+    - family: QPCV1Font184
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p184.ttf
+    - family: QPCV1Font185
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p185.ttf
+    - family: QPCV1Font186
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p186.ttf
+    - family: QPCV1Font187
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p187.ttf
+    - family: QPCV1Font188
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p188.ttf
+    - family: QPCV1Font189
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p189.ttf
+    - family: QPCV1Font190
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p190.ttf
+    - family: QPCV1Font191
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p191.ttf
+    - family: QPCV1Font192
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p192.ttf
+    - family: QPCV1Font193
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p193.ttf
+    - family: QPCV1Font194
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p194.ttf
+    - family: QPCV1Font195
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p195.ttf
+    - family: QPCV1Font196
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p196.ttf
+    - family: QPCV1Font197
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p197.ttf
+    - family: QPCV1Font198
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p198.ttf
+    - family: QPCV1Font199
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p199.ttf
+    - family: QPCV1Font200
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p200.ttf
+    - family: QPCV1Font201
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p201.ttf
+    - family: QPCV1Font202
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p202.ttf
+    - family: QPCV1Font203
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p203.ttf
+    - family: QPCV1Font204
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p204.ttf
+    - family: QPCV1Font205
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p205.ttf
+    - family: QPCV1Font206
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p206.ttf
+    - family: QPCV1Font207
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p207.ttf
+    - family: QPCV1Font208
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p208.ttf
+    - family: QPCV1Font209
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p209.ttf
+    - family: QPCV1Font210
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p210.ttf
+    - family: QPCV1Font211
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p211.ttf
+    - family: QPCV1Font212
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p212.ttf
+    - family: QPCV1Font213
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p213.ttf
+    - family: QPCV1Font214
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p214.ttf
+    - family: QPCV1Font215
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p215.ttf
+    - family: QPCV1Font216
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p216.ttf
+    - family: QPCV1Font217
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p217.ttf
+    - family: QPCV1Font218
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p218.ttf
+    - family: QPCV1Font219
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p219.ttf
+    - family: QPCV1Font220
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p220.ttf
+    - family: QPCV1Font221
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p221.ttf
+    - family: QPCV1Font222
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p222.ttf
+    - family: QPCV1Font223
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p223.ttf
+    - family: QPCV1Font224
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p224.ttf
+    - family: QPCV1Font225
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p225.ttf
+    - family: QPCV1Font226
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p226.ttf
+    - family: QPCV1Font227
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p227.ttf
+    - family: QPCV1Font228
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p228.ttf
+    - family: QPCV1Font229
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p229.ttf
+    - family: QPCV1Font230
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p230.ttf
+    - family: QPCV1Font231
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p231.ttf
+    - family: QPCV1Font232
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p232.ttf
+    - family: QPCV1Font233
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p233.ttf
+    - family: QPCV1Font234
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p234.ttf
+    - family: QPCV1Font235
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p235.ttf
+    - family: QPCV1Font236
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p236.ttf
+    - family: QPCV1Font237
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p237.ttf
+    - family: QPCV1Font238
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p238.ttf
+    - family: QPCV1Font239
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p239.ttf
+    - family: QPCV1Font240
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p240.ttf
+    - family: QPCV1Font241
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p241.ttf
+    - family: QPCV1Font242
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p242.ttf
+    - family: QPCV1Font243
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p243.ttf
+    - family: QPCV1Font244
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p244.ttf
+    - family: QPCV1Font245
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p245.ttf
+    - family: QPCV1Font246
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p246.ttf
+    - family: QPCV1Font247
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p247.ttf
+    - family: QPCV1Font248
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p248.ttf
+    - family: QPCV1Font249
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p249.ttf
+    - family: QPCV1Font250
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p250.ttf
+    - family: QPCV1Font251
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p251.ttf
+    - family: QPCV1Font252
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p252.ttf
+    - family: QPCV1Font253
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p253.ttf
+    - family: QPCV1Font254
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p254.ttf
+    - family: QPCV1Font255
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p255.ttf
+    - family: QPCV1Font256
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p256.ttf
+    - family: QPCV1Font257
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p257.ttf
+    - family: QPCV1Font258
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p258.ttf
+    - family: QPCV1Font259
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p259.ttf
+    - family: QPCV1Font260
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p260.ttf
+    - family: QPCV1Font261
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p261.ttf
+    - family: QPCV1Font262
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p262.ttf
+    - family: QPCV1Font263
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p263.ttf
+    - family: QPCV1Font264
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p264.ttf
+    - family: QPCV1Font265
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p265.ttf
+    - family: QPCV1Font266
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p266.ttf
+    - family: QPCV1Font267
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p267.ttf
+    - family: QPCV1Font268
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p268.ttf
+    - family: QPCV1Font269
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p269.ttf
+    - family: QPCV1Font270
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p270.ttf
+    - family: QPCV1Font271
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p271.ttf
+    - family: QPCV1Font272
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p272.ttf
+    - family: QPCV1Font273
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p273.ttf
+    - family: QPCV1Font274
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p274.ttf
+    - family: QPCV1Font275
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p275.ttf
+    - family: QPCV1Font276
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p276.ttf
+    - family: QPCV1Font277
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p277.ttf
+    - family: QPCV1Font278
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p278.ttf
+    - family: QPCV1Font279
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p279.ttf
+    - family: QPCV1Font280
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p280.ttf
+    - family: QPCV1Font281
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p281.ttf
+    - family: QPCV1Font282
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p282.ttf
+    - family: QPCV1Font283
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p283.ttf
+    - family: QPCV1Font284
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p284.ttf
+    - family: QPCV1Font285
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p285.ttf
+    - family: QPCV1Font286
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p286.ttf
+    - family: QPCV1Font287
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p287.ttf
+    - family: QPCV1Font288
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p288.ttf
+    - family: QPCV1Font289
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p289.ttf
+    - family: QPCV1Font290
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p290.ttf
+    - family: QPCV1Font291
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p291.ttf
+    - family: QPCV1Font292
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p292.ttf
+    - family: QPCV1Font293
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p293.ttf
+    - family: QPCV1Font294
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p294.ttf
+    - family: QPCV1Font295
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p295.ttf
+    - family: QPCV1Font296
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p296.ttf
+    - family: QPCV1Font297
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p297.ttf
+    - family: QPCV1Font298
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p298.ttf
+    - family: QPCV1Font299
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p299.ttf
+    - family: QPCV1Font300
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p300.ttf
+    - family: QPCV1Font301
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p301.ttf
+    - family: QPCV1Font302
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p302.ttf
+    - family: QPCV1Font303
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p303.ttf
+    - family: QPCV1Font304
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p304.ttf
+    - family: QPCV1Font305
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p305.ttf
+    - family: QPCV1Font306
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p306.ttf
+    - family: QPCV1Font307
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p307.ttf
+    - family: QPCV1Font308
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p308.ttf
+    - family: QPCV1Font309
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p309.ttf
+    - family: QPCV1Font310
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p310.ttf
+    - family: QPCV1Font311
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p311.ttf
+    - family: QPCV1Font312
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p312.ttf
+    - family: QPCV1Font313
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p313.ttf
+    - family: QPCV1Font314
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p314.ttf
+    - family: QPCV1Font315
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p315.ttf
+    - family: QPCV1Font316
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p316.ttf
+    - family: QPCV1Font317
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p317.ttf
+    - family: QPCV1Font318
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p318.ttf
+    - family: QPCV1Font319
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p319.ttf
+    - family: QPCV1Font320
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p320.ttf
+    - family: QPCV1Font321
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p321.ttf
+    - family: QPCV1Font322
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p322.ttf
+    - family: QPCV1Font323
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p323.ttf
+    - family: QPCV1Font324
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p324.ttf
+    - family: QPCV1Font325
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p325.ttf
+    - family: QPCV1Font326
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p326.ttf
+    - family: QPCV1Font327
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p327.ttf
+    - family: QPCV1Font328
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p328.ttf
+    - family: QPCV1Font329
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p329.ttf
+    - family: QPCV1Font330
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p330.ttf
+    - family: QPCV1Font331
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p331.ttf
+    - family: QPCV1Font332
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p332.ttf
+    - family: QPCV1Font333
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p333.ttf
+    - family: QPCV1Font334
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p334.ttf
+    - family: QPCV1Font335
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p335.ttf
+    - family: QPCV1Font336
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p336.ttf
+    - family: QPCV1Font337
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p337.ttf
+    - family: QPCV1Font338
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p338.ttf
+    - family: QPCV1Font339
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p339.ttf
+    - family: QPCV1Font340
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p340.ttf
+    - family: QPCV1Font341
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p341.ttf
+    - family: QPCV1Font342
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p342.ttf
+    - family: QPCV1Font343
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p343.ttf
+    - family: QPCV1Font344
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p344.ttf
+    - family: QPCV1Font345
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p345.ttf
+    - family: QPCV1Font346
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p346.ttf
+    - family: QPCV1Font347
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p347.ttf
+    - family: QPCV1Font348
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p348.ttf
+    - family: QPCV1Font349
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p349.ttf
+    - family: QPCV1Font350
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p350.ttf
+    - family: QPCV1Font351
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p351.ttf
+    - family: QPCV1Font352
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p352.ttf
+    - family: QPCV1Font353
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p353.ttf
+    - family: QPCV1Font354
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p354.ttf
+    - family: QPCV1Font355
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p355.ttf
+    - family: QPCV1Font356
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p356.ttf
+    - family: QPCV1Font357
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p357.ttf
+    - family: QPCV1Font358
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p358.ttf
+    - family: QPCV1Font359
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p359.ttf
+    - family: QPCV1Font360
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p360.ttf
+    - family: QPCV1Font361
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p361.ttf
+    - family: QPCV1Font362
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p362.ttf
+    - family: QPCV1Font363
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p363.ttf
+    - family: QPCV1Font364
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p364.ttf
+    - family: QPCV1Font365
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p365.ttf
+    - family: QPCV1Font366
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p366.ttf
+    - family: QPCV1Font367
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p367.ttf
+    - family: QPCV1Font368
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p368.ttf
+    - family: QPCV1Font369
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p369.ttf
+    - family: QPCV1Font370
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p370.ttf
+    - family: QPCV1Font371
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p371.ttf
+    - family: QPCV1Font372
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p372.ttf
+    - family: QPCV1Font373
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p373.ttf
+    - family: QPCV1Font374
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p374.ttf
+    - family: QPCV1Font375
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p375.ttf
+    - family: QPCV1Font376
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p376.ttf
+    - family: QPCV1Font377
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p377.ttf
+    - family: QPCV1Font378
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p378.ttf
+    - family: QPCV1Font379
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p379.ttf
+    - family: QPCV1Font380
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p380.ttf
+    - family: QPCV1Font381
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p381.ttf
+    - family: QPCV1Font382
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p382.ttf
+    - family: QPCV1Font383
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p383.ttf
+    - family: QPCV1Font384
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p384.ttf
+    - family: QPCV1Font385
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p385.ttf
+    - family: QPCV1Font386
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p386.ttf
+    - family: QPCV1Font387
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p387.ttf
+    - family: QPCV1Font388
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p388.ttf
+    - family: QPCV1Font389
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p389.ttf
+    - family: QPCV1Font390
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p390.ttf
+    - family: QPCV1Font391
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p391.ttf
+    - family: QPCV1Font392
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p392.ttf
+    - family: QPCV1Font393
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p393.ttf
+    - family: QPCV1Font394
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p394.ttf
+    - family: QPCV1Font395
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p395.ttf
+    - family: QPCV1Font396
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p396.ttf
+    - family: QPCV1Font397
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p397.ttf
+    - family: QPCV1Font398
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p398.ttf
+    - family: QPCV1Font399
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p399.ttf
+    - family: QPCV1Font400
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p400.ttf
+    - family: QPCV1Font401
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p401.ttf
+    - family: QPCV1Font402
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p402.ttf
+    - family: QPCV1Font403
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p403.ttf
+    - family: QPCV1Font404
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p404.ttf
+    - family: QPCV1Font405
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p405.ttf
+    - family: QPCV1Font406
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p406.ttf
+    - family: QPCV1Font407
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p407.ttf
+    - family: QPCV1Font408
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p408.ttf
+    - family: QPCV1Font409
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p409.ttf
+    - family: QPCV1Font410
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p410.ttf
+    - family: QPCV1Font411
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p411.ttf
+    - family: QPCV1Font412
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p412.ttf
+    - family: QPCV1Font413
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p413.ttf
+    - family: QPCV1Font414
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p414.ttf
+    - family: QPCV1Font415
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p415.ttf
+    - family: QPCV1Font416
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p416.ttf
+    - family: QPCV1Font417
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p417.ttf
+    - family: QPCV1Font418
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p418.ttf
+    - family: QPCV1Font419
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p419.ttf
+    - family: QPCV1Font420
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p420.ttf
+    - family: QPCV1Font421
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p421.ttf
+    - family: QPCV1Font422
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p422.ttf
+    - family: QPCV1Font423
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p423.ttf
+    - family: QPCV1Font424
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p424.ttf
+    - family: QPCV1Font425
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p425.ttf
+    - family: QPCV1Font426
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p426.ttf
+    - family: QPCV1Font427
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p427.ttf
+    - family: QPCV1Font428
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p428.ttf
+    - family: QPCV1Font429
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p429.ttf
+    - family: QPCV1Font430
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p430.ttf
+    - family: QPCV1Font431
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p431.ttf
+    - family: QPCV1Font432
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p432.ttf
+    - family: QPCV1Font433
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p433.ttf
+    - family: QPCV1Font434
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p434.ttf
+    - family: QPCV1Font435
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p435.ttf
+    - family: QPCV1Font436
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p436.ttf
+    - family: QPCV1Font437
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p437.ttf
+    - family: QPCV1Font438
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p438.ttf
+    - family: QPCV1Font439
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p439.ttf
+    - family: QPCV1Font440
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p440.ttf
+    - family: QPCV1Font441
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p441.ttf
+    - family: QPCV1Font442
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p442.ttf
+    - family: QPCV1Font443
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p443.ttf
+    - family: QPCV1Font444
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p444.ttf
+    - family: QPCV1Font445
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p445.ttf
+    - family: QPCV1Font446
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p446.ttf
+    - family: QPCV1Font447
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p447.ttf
+    - family: QPCV1Font448
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p448.ttf
+    - family: QPCV1Font449
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p449.ttf
+    - family: QPCV1Font450
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p450.ttf
+    - family: QPCV1Font451
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p451.ttf
+    - family: QPCV1Font452
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p452.ttf
+    - family: QPCV1Font453
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p453.ttf
+    - family: QPCV1Font454
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p454.ttf
+    - family: QPCV1Font455
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p455.ttf
+    - family: QPCV1Font456
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p456.ttf
+    - family: QPCV1Font457
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p457.ttf
+    - family: QPCV1Font458
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p458.ttf
+    - family: QPCV1Font459
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p459.ttf
+    - family: QPCV1Font460
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p460.ttf
+    - family: QPCV1Font461
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p461.ttf
+    - family: QPCV1Font462
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p462.ttf
+    - family: QPCV1Font463
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p463.ttf
+    - family: QPCV1Font464
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p464.ttf
+    - family: QPCV1Font465
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p465.ttf
+    - family: QPCV1Font466
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p466.ttf
+    - family: QPCV1Font467
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p467.ttf
+    - family: QPCV1Font468
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p468.ttf
+    - family: QPCV1Font469
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p469.ttf
+    - family: QPCV1Font470
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p470.ttf
+    - family: QPCV1Font471
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p471.ttf
+    - family: QPCV1Font472
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p472.ttf
+    - family: QPCV1Font473
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p473.ttf
+    - family: QPCV1Font474
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p474.ttf
+    - family: QPCV1Font475
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p475.ttf
+    - family: QPCV1Font476
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p476.ttf
+    - family: QPCV1Font477
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p477.ttf
+    - family: QPCV1Font478
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p478.ttf
+    - family: QPCV1Font479
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p479.ttf
+    - family: QPCV1Font480
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p480.ttf
+    - family: QPCV1Font481
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p481.ttf
+    - family: QPCV1Font482
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p482.ttf
+    - family: QPCV1Font483
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p483.ttf
+    - family: QPCV1Font484
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p484.ttf
+    - family: QPCV1Font485
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p485.ttf
+    - family: QPCV1Font486
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p486.ttf
+    - family: QPCV1Font487
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p487.ttf
+    - family: QPCV1Font488
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p488.ttf
+    - family: QPCV1Font489
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p489.ttf
+    - family: QPCV1Font490
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p490.ttf
+    - family: QPCV1Font491
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p491.ttf
+    - family: QPCV1Font492
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p492.ttf
+    - family: QPCV1Font493
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p493.ttf
+    - family: QPCV1Font494
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p494.ttf
+    - family: QPCV1Font495
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p495.ttf
+    - family: QPCV1Font496
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p496.ttf
+    - family: QPCV1Font497
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p497.ttf
+    - family: QPCV1Font498
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p498.ttf
+    - family: QPCV1Font499
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p499.ttf
+    - family: QPCV1Font500
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p500.ttf
+    - family: QPCV1Font501
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p501.ttf
+    - family: QPCV1Font502
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p502.ttf
+    - family: QPCV1Font503
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p503.ttf
+    - family: QPCV1Font504
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p504.ttf
+    - family: QPCV1Font505
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p505.ttf
+    - family: QPCV1Font506
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p506.ttf
+    - family: QPCV1Font507
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p507.ttf
+    - family: QPCV1Font508
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p508.ttf
+    - family: QPCV1Font509
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p509.ttf
+    - family: QPCV1Font510
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p510.ttf
+    - family: QPCV1Font511
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p511.ttf
+    - family: QPCV1Font512
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p512.ttf
+    - family: QPCV1Font513
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p513.ttf
+    - family: QPCV1Font514
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p514.ttf
+    - family: QPCV1Font515
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p515.ttf
+    - family: QPCV1Font516
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p516.ttf
+    - family: QPCV1Font517
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p517.ttf
+    - family: QPCV1Font518
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p518.ttf
+    - family: QPCV1Font519
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p519.ttf
+    - family: QPCV1Font520
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p520.ttf
+    - family: QPCV1Font521
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p521.ttf
+    - family: QPCV1Font522
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p522.ttf
+    - family: QPCV1Font523
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p523.ttf
+    - family: QPCV1Font524
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p524.ttf
+    - family: QPCV1Font525
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p525.ttf
+    - family: QPCV1Font526
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p526.ttf
+    - family: QPCV1Font527
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p527.ttf
+    - family: QPCV1Font528
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p528.ttf
+    - family: QPCV1Font529
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p529.ttf
+    - family: QPCV1Font530
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p530.ttf
+    - family: QPCV1Font531
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p531.ttf
+    - family: QPCV1Font532
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p532.ttf
+    - family: QPCV1Font533
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p533.ttf
+    - family: QPCV1Font534
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p534.ttf
+    - family: QPCV1Font535
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p535.ttf
+    - family: QPCV1Font536
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p536.ttf
+    - family: QPCV1Font537
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p537.ttf
+    - family: QPCV1Font538
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p538.ttf
+    - family: QPCV1Font539
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p539.ttf
+    - family: QPCV1Font540
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p540.ttf
+    - family: QPCV1Font541
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p541.ttf
+    - family: QPCV1Font542
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p542.ttf
+    - family: QPCV1Font543
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p543.ttf
+    - family: QPCV1Font544
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p544.ttf
+    - family: QPCV1Font545
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p545.ttf
+    - family: QPCV1Font546
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p546.ttf
+    - family: QPCV1Font547
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p547.ttf
+    - family: QPCV1Font548
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p548.ttf
+    - family: QPCV1Font549
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p549.ttf
+    - family: QPCV1Font550
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p550.ttf
+    - family: QPCV1Font551
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p551.ttf
+    - family: QPCV1Font552
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p552.ttf
+    - family: QPCV1Font553
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p553.ttf
+    - family: QPCV1Font554
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p554.ttf
+    - family: QPCV1Font555
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p555.ttf
+    - family: QPCV1Font556
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p556.ttf
+    - family: QPCV1Font557
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p557.ttf
+    - family: QPCV1Font558
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p558.ttf
+    - family: QPCV1Font559
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p559.ttf
+    - family: QPCV1Font560
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p560.ttf
+    - family: QPCV1Font561
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p561.ttf
+    - family: QPCV1Font562
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p562.ttf
+    - family: QPCV1Font563
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p563.ttf
+    - family: QPCV1Font564
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p564.ttf
+    - family: QPCV1Font565
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p565.ttf
+    - family: QPCV1Font566
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p566.ttf
+    - family: QPCV1Font567
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p567.ttf
+    - family: QPCV1Font568
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p568.ttf
+    - family: QPCV1Font569
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p569.ttf
+    - family: QPCV1Font570
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p570.ttf
+    - family: QPCV1Font571
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p571.ttf
+    - family: QPCV1Font572
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p572.ttf
+    - family: QPCV1Font573
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p573.ttf
+    - family: QPCV1Font574
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p574.ttf
+    - family: QPCV1Font575
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p575.ttf
+    - family: QPCV1Font576
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p576.ttf
+    - family: QPCV1Font577
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p577.ttf
+    - family: QPCV1Font578
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p578.ttf
+    - family: QPCV1Font579
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p579.ttf
+    - family: QPCV1Font580
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p580.ttf
+    - family: QPCV1Font581
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p581.ttf
+    - family: QPCV1Font582
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p582.ttf
+    - family: QPCV1Font583
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p583.ttf
+    - family: QPCV1Font584
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p584.ttf
+    - family: QPCV1Font585
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p585.ttf
+    - family: QPCV1Font586
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p586.ttf
+    - family: QPCV1Font587
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p587.ttf
+    - family: QPCV1Font588
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p588.ttf
+    - family: QPCV1Font589
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p589.ttf
+    - family: QPCV1Font590
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p590.ttf
+    - family: QPCV1Font591
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p591.ttf
+    - family: QPCV1Font592
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p592.ttf
+    - family: QPCV1Font593
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p593.ttf
+    - family: QPCV1Font594
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p594.ttf
+    - family: QPCV1Font595
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p595.ttf
+    - family: QPCV1Font596
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p596.ttf
+    - family: QPCV1Font597
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p597.ttf
+    - family: QPCV1Font598
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p598.ttf
+    - family: QPCV1Font599
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p599.ttf
+    - family: QPCV1Font600
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p600.ttf
+    - family: QPCV1Font601
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p601.ttf
+    - family: QPCV1Font602
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p602.ttf
+    - family: QPCV1Font603
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p603.ttf
+    - family: QPCV1Font604
+      fonts:
+        - asset: assets/fonts/QPCV1Font/p604.ttf
+
+  uses-material-design: true
+
+  assets:
+    - assets/icons/
+    - assets/images/
+    - assets/fonts/
+    - assets/lottie/
+    - assets/data.zip
+
+import_sorter:
+  emojis: false
+  comments: false
+  ignored_files: []
