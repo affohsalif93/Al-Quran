@@ -37,6 +37,14 @@ class HomeController extends StateNotifier<HomeState> {
     );
   }
 
+  void controllerJumpToPage(int page) {
+    if (pageController.hasClients) {
+      pageController.jumpToPage(page - 1); // because 0 based index
+    } else {
+      logger.error("PageController has no clients");
+    }
+  }
+
   SharedPreferencesService get prefs => ref.read(sharedPreferencesProvider);
 
   int getMushafPageCount() {
@@ -79,11 +87,9 @@ class HomeController extends StateNotifier<HomeState> {
     if (viewMode == 'single') {
       state = state.copyWith(isBookView: false);
     } else if (viewMode == 'double') {
-      state = state.copyWith(isBookView: true);
-      if (state.currentPage.isEven) {
-        state = state.copyWith(currentPage: state.currentPage - 1);
-        pageController.jumpToPage(state.currentPage - 1);
-      }
+      final currentPage = state.currentPage - (state.currentPage.isEven ? 1 : 0);
+      state = state.copyWith(isBookView: true, currentPage: currentPage);
+      controllerJumpToPage(currentPage);
     }
   }
 
@@ -110,7 +116,7 @@ class HomeController extends StateNotifier<HomeState> {
       } else {
         state = state.setCurrentPage(state.currentPage + 1);
       }
-      pageController.jumpToPage(state.currentPage - 1); // because 0 based index
+      controllerJumpToPage(state.currentPage); // because 0 based index
       setLastReadPage();
     } else {
       logger.info("Cannot go to next page ${state.currentPage}");
@@ -124,7 +130,7 @@ class HomeController extends StateNotifier<HomeState> {
       } else {
         state = state.setCurrentPage(state.currentPage - 1);
       }
-      pageController.jumpToPage(state.currentPage - 1); // because 0 based index
+      controllerJumpToPage(state.currentPage);
       setLastReadPage();
     }
   }
@@ -134,11 +140,10 @@ class HomeController extends StateNotifier<HomeState> {
       logger.error("Invalid page number: $page");
       return;
     }
-    // offset if book view
     if (state.isBookView && page.isEven) {
         page = page - 1;
     }
-    pageController.jumpToPage(page);
+    controllerJumpToPage(page);
     state = state.setCurrentPageWithJump(page);
     setLastReadPage();
   }

@@ -12,8 +12,6 @@ class QuranViewer extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final homeState = ref.watch(homeControllerProvider);
     final homeController = ref.read(homeControllerProvider.notifier);
-    final aspectRatioRange =
-    homeState.isBookView ? (min: 0.96, max: 1.32) : (min: 1.0, max: 1.2);
 
     return PageView.builder(
       controller: homeController.pageController,
@@ -25,10 +23,9 @@ class QuranViewer extends ConsumerWidget {
       itemBuilder: (context, index) {
         return Center(
           child:
-          // homeState.isBookView
-          //     ? BookViewPage(index: index)
-          //     :
-              SinglePageViewer(index: index)
+              homeState.isBookView
+                  ? DoublePageViewer(index: index)
+                  : SinglePageViewer(index: index),
         );
       },
     );

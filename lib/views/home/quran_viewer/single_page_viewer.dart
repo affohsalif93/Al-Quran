@@ -9,14 +9,14 @@ class SinglePageViewer extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final pageContentBuilder = PageContentBuilder(ref);
+    final pageWidgetBuilder = PageContentBuilder(ref);
 
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
 
     return FutureBuilder<List<Widget>>(
       future: Future.wait([
-        pageContentBuilder.buildPageContent(index + 1, width, height),
+        pageWidgetBuilder.buildPageContent(index + 1, width, height),
       ]),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
@@ -28,10 +28,10 @@ class SinglePageViewer extends ConsumerWidget {
           child: AspectRatio(
             aspectRatio: 1 / 1.41,
             child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 55),
+              padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
                 color: const Color(0xFFF6F5EE),
-                border: Border.all(color: Colors.red),
+                border: Border.all(color: Colors.grey.shade300),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: widgets[0],
