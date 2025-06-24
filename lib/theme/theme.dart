@@ -14,6 +14,7 @@ abstract final class AppTheme {
   static BorderRadius get buttonBorderRadius => BorderRadius.circular(8);
 
   static ThemeData get lightTheme => buildTheme(ThemeMode.light);
+
   static ThemeData get darkTheme => buildTheme(ThemeMode.dark);
 
   static ThemeData buildTheme(ThemeMode themeMode) {
@@ -35,6 +36,10 @@ abstract final class AppTheme {
         brightness: brightness,
         seedColor: colors.primary,
       ),
+      drawerTheme: DrawerThemeData(
+        scrimColor: Colors.transparent,
+        elevation: 8,
+      ),
       iconTheme: IconThemeData(
         color: colors.textPrimary,
         fill: 0,
@@ -52,18 +57,14 @@ abstract final class AppTheme {
       filledButtonTheme: FilledButtonThemeData(
         style: FilledButton.styleFrom(
           textStyle: defaultButtonTextStyle,
-          shape: RoundedRectangleBorder(
-            borderRadius: buttonBorderRadius,
-          ),
+          shape: RoundedRectangleBorder(borderRadius: buttonBorderRadius),
         ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
           side: BorderSide(color: colors.strokeDarker),
           textStyle: defaultButtonTextStyle,
-          shape: RoundedRectangleBorder(
-            borderRadius: buttonBorderRadius,
-          ),
+          shape: RoundedRectangleBorder(borderRadius: buttonBorderRadius),
         ),
       ),
       appBarTheme: AppBarTheme(
@@ -100,15 +101,11 @@ abstract final class AppTheme {
       ),
       timePickerTheme: TimePickerThemeData(
         backgroundColor: Colors.white,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       ),
       datePickerTheme: DatePickerThemeData(
         backgroundColor: Colors.white,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         shadowColor: Colors.black45,
       ),
       checkboxTheme: CheckboxThemeData(
@@ -119,14 +116,10 @@ abstract final class AppTheme {
           return null;
         }),
         checkColor: WidgetStateProperty.all(Colors.white),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(3),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(3)),
         visualDensity: VisualDensity.comfortable,
         materialTapTargetSize: MaterialTapTargetSize.padded,
-        side: BorderSide(
-          color: colors.strokeDarker,
-        ),
+        side: BorderSide(color: colors.strokeDarker),
       ),
       listTileTheme: ListTileThemeData(
         titleTextStyle: TextStyle(

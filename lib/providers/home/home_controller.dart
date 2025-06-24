@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:quran/core/utils/logger.dart';
 import 'package:quran/providers/home/home_state.dart';
 import 'package:quran/repositories/quran/quran_data.dart';
-import 'package:quran/core/extensions/mushaf_extensions.dart';
 import 'package:quran/providers/shared_preferences_provider.dart';
 
 final GlobalKey<ScaffoldState> homeScaffoldKey = GlobalKey<ScaffoldState>();
@@ -39,10 +38,6 @@ class HomeController extends StateNotifier<HomeState> {
   }
 
   SharedPreferencesService get prefs => ref.read(sharedPreferencesProvider);
-
-  Future<Widget> getPageWidget(int pageNumber, WidgetRef wRef) async {
-    return state.currentMushaf.getPageWidget(pageNumber, wRef);
-  }
 
   int getMushafPageCount() {
     return state.currentMushaf.numberOfPages;
