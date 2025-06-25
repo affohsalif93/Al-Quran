@@ -2,28 +2,28 @@
 import 'package:quran/repositories/quran/quran_data.dart';
 
 abstract class QuranUtils {
-  static (int, int) indexToChapterVerse(int index) {
-    final chapterLengths =
-        QuranData.chapters.map((c) => c.numberOfAyahs).toList();
+  static (int, int) indexToSurahVerse(int index) {
+    final surahLengths =
+        QuranData.surahs.map((c) => c.numberOfAyahs).toList();
 
-    int chapter = 1;
+    int surah = 1;
     int verse = index;
 
-    while (verse > chapterLengths[chapter - 1]) {
-      verse -= chapterLengths[chapter - 1];
-      chapter++;
+    while (verse > surahLengths[surah - 1]) {
+      verse -= surahLengths[surah - 1];
+      surah++;
     }
 
-    return (chapter, verse);
+    return (surah, verse);
   }
 
-  static int chapterVerseToIndex(int chapter, int verse) {
-    final chapterLengths =
-        QuranData.chapters.map((c) => c.numberOfAyahs).toList();
+  static int surahVerseToIndex(int surah, int verse) {
+    final surahLengths =
+        QuranData.surahs.map((c) => c.numberOfAyahs).toList();
 
     int index = 0;
-    for (int i = 1; i < chapter; i++) {
-      index += chapterLengths[i - 1];
+    for (int i = 1; i < surah; i++) {
+      index += surahLengths[i - 1];
     }
 
     index += verse;
@@ -31,10 +31,10 @@ abstract class QuranUtils {
     return index;
   }
 
-  /// returns chapters of the first verse in the page
+  /// returns surahs of the first verse in the page
   static int firstVerseInPage(int page) {
-    final chapterVerse = QuranData.pageChapterVerse[page - 1];
-    return chapterVerseToIndex(chapterVerse[0], chapterVerse[1] - 1);
+    final surahVerse = QuranData.pageSurahVerse[page - 1];
+    return surahVerseToIndex(surahVerse[0], surahVerse[1] - 1);
   }
 }
 

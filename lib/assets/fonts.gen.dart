@@ -1832,6 +1832,9 @@ class FontFamily {
   /// Font family: Rubik
   static const String rubik = 'Rubik';
 
+  /// Font family: SurahNameV2
+  static const String surahNameV2 = 'SurahNameV2';
+
   /// Font family: UthmanTN
   static const String uthmanTN = 'UthmanTN';
 

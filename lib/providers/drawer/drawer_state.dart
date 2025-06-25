@@ -5,7 +5,7 @@ import 'package:quran/views/drawers/select_mushaf/mushaf_list.dart';
 import 'package:quran/views/settings/settings_screen.dart';
 
 enum DrawerComponentKey {
-  chapters,
+  surahs,
   books,
   settings,
   mushaf,
@@ -13,7 +13,7 @@ enum DrawerComponentKey {
 }
 
 final drawerComponents = <DrawerComponentKey, Widget>{
-  DrawerComponentKey.chapters: SelectChapterView(),
+  DrawerComponentKey.surahs: SelectSurahView(),
   DrawerComponentKey.books: Text('Books'),
   DrawerComponentKey.settings: SettingsScreen(),
   DrawerComponentKey.mushaf: MushafList(),

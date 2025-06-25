@@ -36,7 +36,6 @@ class HomeState extends Equatable {
   }
 
   HomeState setCurrentPage(int currentPage) {
-    logger.info("Setting current page to $currentPage");
     return copyWith(currentPage: currentPage);
   }
 

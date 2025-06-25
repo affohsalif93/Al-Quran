@@ -2,7 +2,7 @@ import "package:equatable/equatable.dart";
 
 class Word extends Equatable {
   final int id;
-  final int location;
+  final String location;
   final int surah;
   final int ayah;
   final String glyphCode;
@@ -22,10 +22,10 @@ class Word extends Equatable {
   factory Word.fromJson(Map<String, dynamic> json) {
     return Word(
       id: json['id'] as int,
-      location: json['location'] as int,
+      location: json['location'],
       surah: json['surah'] as int,
       ayah: json['ayah'] as int,
-      glyphCode: json['glyphCode'] as String,
+      glyphCode: json['glyphCode'],
     );
   }
 

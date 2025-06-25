@@ -1,30 +1,23 @@
-import 'dart:convert';
-import 'dart:io';
+import 'package:quran/assets/fonts.gen.dart';
 
-import 'package:quran/core/utils/io.dart';
+class SurahNameLigature {
+  final Map<String, String> _names;
+  final Map<String, String> _headers;
 
-Future<SurahLigatures> loadSurahLigatures() async {
-  final String ligatureFilePath = IO.joinFromSupportFolder("surah_name_ligatures.json");
-  final ligatureFile = File(ligatureFilePath);
+  SurahNameLigature({
+    required Map<String, String> names,
+    required Map<String, String> headers,
+  }) : _names = names,
+       _headers = headers;
 
-  if (!await ligatureFile.exists()) {
-    throw Exception("Surah ligatures file not found at $ligatureFilePath");
+  String getShortName(int surahNumber) {
+    return _names["surah-$surahNumber"]!;
   }
 
-  final fileContent = await ligatureFile.readAsString();
-
-  final Map<String, dynamic> jsonMap = jsonDecode(fileContent);
-  return SurahLigatures.fromJson(jsonMap);
-}
-
-class SurahLigatures {
-  final Map<String, String> ligatures;
-
-  SurahLigatures(this.ligatures);
-
-  factory SurahLigatures.fromJson(Map<String, dynamic> json) {
-    return SurahLigatures(
-      json.map((key, value) => MapEntry(key, value as String)),
-    );
+  String getHeaderSymbol(int surahNumber) {
+    return _headers["surah-$surahNumber"]!;
   }
+
+  get headerFontFamily => FontFamily.qCFSurahHeaderCOLORRegular;
+  get shortNameFontFamily => FontFamily.surahNameV2;
 }

@@ -4,11 +4,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:quran/views/widgets/custom_scaffold.dart';
 import 'package:quran/i18n/strings.g.dart';
-import 'chapters_list.dart';
+import 'surahs_list.dart';
 import 'quarters_list.dart';
 
-class SelectChapterView extends ConsumerWidget {
-  const SelectChapterView({super.key});
+class SelectSurahView extends ConsumerWidget {
+  const SelectSurahView({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -19,17 +19,17 @@ class SelectChapterView extends ConsumerWidget {
           // title: Text(context.t.index),
           title: TabBar(
             tabs: [
-              Tab(text: context.t.chapters),
+              Tab(text: context.t.surahs),
               Tab(text: context.t.quarters),
-              Tab(text: context.t.chapters),
+              Tab(text: context.t.surahs),
             ],
           ),
         ),
         body: const TabBarView(
           children: [
-            ChaptersList(),
+            SurahsList(),
             QuartersList(),
-            ChaptersList(),
+            SurahsList(),
           ],
         ),
       ),

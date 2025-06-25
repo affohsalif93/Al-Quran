@@ -62,7 +62,7 @@ class AzkarSlider extends HookWidget {
     final index = useState(0);
     final timerRef = useRef<Timer?>(null);
 
-    // Change chapters with dynamic duration
+    // Change surahs with dynamic duration
     useEffect(() {
       void changeIndex() {
         index.value = (index.value + 1) % Azkar.azkarList.length;

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:quran/core/extensions/context_extensions.dart';
 import 'package:quran/providers/home/home_controller.dart';
-import 'package:quran/views/home/quran_viewer/double_page_viewer.dart';
-import 'package:quran/views/home/quran_viewer/single_page_viewer.dart';
+import 'package:quran/views/home/viewer/double_page_viewer.dart';
+import 'package:quran/views/home/viewer/single_page_viewer.dart';
 
 class QuranViewer extends ConsumerWidget {
   const QuranViewer({super.key});

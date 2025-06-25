@@ -21,7 +21,7 @@ class HomeController extends StateNotifier<HomeState> {
   late PageController pageController;
 
   HomeController(this.ref): super(_initialState((ref))) {
-    pageController = PageController(initialPage: state.currentPage);
+    pageController = PageController(initialPage: state.currentPage - 1);
     ref.onDispose(() {
       pageController.dispose();
     });

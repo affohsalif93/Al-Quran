@@ -13,8 +13,10 @@ import 'package:quran/app.dart';
 import 'package:quran/core/utils/io.dart';
 import 'package:quran/i18n/strings.g.dart';
 import 'package:quran/providers/shared_preferences_provider.dart';
+import 'package:quran/providers/surah_name_ligature_provider.dart';
 import 'package:quran/repositories/quran/quran_repository.dart';
 import 'package:quran/services/quran_db_service.dart';
+import 'package:quran/services/surah_name_ligature_service.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 // ignore:depend_on_referenced_packages
@@ -33,7 +35,10 @@ Future<void> main() async {
   await SharedPreferencesService.init();
 
   // // * Initialize db
-  // await QuranDBService.init();
+  await QuranDBService.init();
+
+  // * Initialize Surah Name Ligature Service
+  await SurahNameLigatureService.init();
 
   // * Make GoRouter's push and pop methods work on web urls
   GoRouter.optionURLReflectsImperativeAPIs = true;
@@ -44,9 +49,6 @@ Future<void> main() async {
   // * Register error handlers. For more info, see:
   // * https://docs.flutter.dev/testing/errors
   registerErrorHandlers();
-
-  final container = ProviderContainer();
-  await container.read(quranRepositoryProvider.future);
 
   runApp(
     ProviderScope(

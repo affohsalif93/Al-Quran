@@ -3,13 +3,7 @@ import "package:quran/core/utils/logger.dart";
 import "package:sqflite/sqflite.dart";
 import "dart:io";
 
-// dbs enums
-enum QuranDB {
-  ayah,
-  wordText,
-  wordGlyph,
-  pageLines,
-}
+enum QuranDB { ayah, wordText, wordGlyph, pageLines }
 
 const Map<QuranDB, String> quranDbFileNames = {
   QuranDB.ayah: "qpc-hafs.db",
@@ -21,8 +15,13 @@ const Map<QuranDB, String> quranDbFileNames = {
 class QuranDBService {
   static final Map<String, Database> _databases = {};
 
-  static String _getDbPath(String fileName) =>
-      IO.joinFromSupportFolder("data", "dbs", fileName);
+  static Future<void> init() async {
+    for (final fileName in quranDbFileNames.values) {
+      await _openDbFromFile(fileName);
+    }
+  }
+
+  static String _getDbPath(String fileName) => IO.joinFromSupportFolder("data", "dbs", fileName);
 
   static Future<Database> _openDbFromFile(String fileName) async {
     if (_databases.containsKey(fileName)) {
@@ -42,24 +41,18 @@ class QuranDBService {
       rethrow;
     }
 
-    // return db;
     return _databases[fileName]!;
   }
 
-  static Future<Database> getAyahDb() =>
-      _openDbFromFile(quranDbFileNames[QuranDB.ayah]!);
+  static Database getAyahDb() => _databases[quranDbFileNames[QuranDB.ayah]]!;
 
-  static Future<Database> getWordTextDb() =>
-      _openDbFromFile(quranDbFileNames[QuranDB.wordText]!);
+  static Database getWordTextDb() => _databases[quranDbFileNames[QuranDB.wordText]]!;
 
-  static Future<Database> getWordGlyphDb() =>
-      _openDbFromFile(quranDbFileNames[QuranDB.wordGlyph]!);
+  static Database getWordGlyphDb() => _databases[quranDbFileNames[QuranDB.wordGlyph]]!;
 
-  static Future<Database> getPageLinesDb() =>
-      _openDbFromFile(quranDbFileNames[QuranDB.pageLines]!);
+  static Database getPageLinesDb() => _databases[quranDbFileNames[QuranDB.pageLines]]!;
 
-  static Future<Database> getTasfirDb() =>
-      _openDbFromFile(quranDbFileNames[QuranDB.wordText]!);
+  static Database getTasfirDb() => _databases[quranDbFileNames[QuranDB.ayah]]!;
 
   static Future<void> closeAllDatabases() async {
     for (final db in _databases.values) {

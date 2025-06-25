@@ -1,10 +1,10 @@
 import 'package:quran/core/utils/io.dart';
-import 'package:quran/models/chapter_model.dart';
+import 'package:quran/models/surah_model.dart';
 import 'package:quran/models/mushaf.dart';
 
 abstract class QuranData {
-  static final List<ChapterModel> chapters =
-      surahData.map(ChapterModel.fromJson).toList();
+  static final List<SurahModel> surahs =
+      surahData.map(SurahModel.fromJson).toList();
 
   static final defaultMushaf = madinahMushafV1;
 
@@ -29,7 +29,7 @@ abstract class QuranData {
   static final List<Mushaf> mushafs = [madinahMushafV1, madinahMushafV2];
 
   /// Contains the verse of each page in the Quran
-  static final pageChapterVerse = [
+  static final pageSurahVerse = [
     // [sura, aya]
     [1, 1], [2, 1], [2, 6], [2, 17], [2, 25],
     [2, 30], [2, 38], [2, 49], [2, 58], [2, 62],
@@ -157,7 +157,7 @@ abstract class QuranData {
   static const surahData = [
     {
       "id": 1,
-      "chapter_number": 1,
+      "surah_number": 1,
       "bismillah_pre": false,
       "revelation_order": 5,
       "revelation_place": "مكية",
@@ -170,7 +170,7 @@ abstract class QuranData {
     },
     {
       "id": 2,
-      "chapter_number": 2,
+      "surah_number": 2,
       "bismillah_pre": true,
       "revelation_order": 87,
       "revelation_place": "مدنية",
@@ -183,7 +183,7 @@ abstract class QuranData {
     },
     {
       "id": 3,
-      "chapter_number": 3,
+      "surah_number": 3,
       "bismillah_pre": true,
       "revelation_order": 89,
       "revelation_place": "مدنية",
@@ -199,7 +199,7 @@ abstract class QuranData {
     },
     {
       "id": 4,
-      "chapter_number": 4,
+      "surah_number": 4,
       "bismillah_pre": true,
       "revelation_order": 92,
       "revelation_place": "مدنية",
@@ -212,7 +212,7 @@ abstract class QuranData {
     },
     {
       "id": 5,
-      "chapter_number": 5,
+      "surah_number": 5,
       "bismillah_pre": true,
       "revelation_order": 112,
       "revelation_place": "مدنية",
@@ -228,7 +228,7 @@ abstract class QuranData {
     },
     {
       "id": 6,
-      "chapter_number": 6,
+      "surah_number": 6,
       "bismillah_pre": true,
       "revelation_order": 55,
       "revelation_place": "مكية",
@@ -241,7 +241,7 @@ abstract class QuranData {
     },
     {
       "id": 7,
-      "chapter_number": 7,
+      "surah_number": 7,
       "bismillah_pre": true,
       "revelation_order": 39,
       "revelation_place": "مكية",
@@ -254,7 +254,7 @@ abstract class QuranData {
     },
     {
       "id": 8,
-      "chapter_number": 8,
+      "surah_number": 8,
       "bismillah_pre": true,
       "revelation_order": 88,
       "revelation_place": "مدنية",
@@ -270,7 +270,7 @@ abstract class QuranData {
     },
     {
       "id": 9,
-      "chapter_number": 9,
+      "surah_number": 9,
       "bismillah_pre": false,
       "revelation_order": 113,
       "revelation_place": "مدنية",
@@ -283,7 +283,7 @@ abstract class QuranData {
     },
     {
       "id": 10,
-      "chapter_number": 10,
+      "surah_number": 10,
       "bismillah_pre": true,
       "revelation_order": 51,
       "revelation_place": "مكية",
@@ -296,7 +296,7 @@ abstract class QuranData {
     },
     {
       "id": 11,
-      "chapter_number": 11,
+      "surah_number": 11,
       "bismillah_pre": true,
       "revelation_order": 52,
       "revelation_place": "مكية",
@@ -309,7 +309,7 @@ abstract class QuranData {
     },
     {
       "id": 12,
-      "chapter_number": 12,
+      "surah_number": 12,
       "bismillah_pre": true,
       "revelation_order": 53,
       "revelation_place": "مكية",
@@ -322,7 +322,7 @@ abstract class QuranData {
     },
     {
       "id": 13,
-      "chapter_number": 13,
+      "surah_number": 13,
       "bismillah_pre": true,
       "revelation_order": 96,
       "revelation_place": "مدنية",
@@ -335,7 +335,7 @@ abstract class QuranData {
     },
     {
       "id": 14,
-      "chapter_number": 14,
+      "surah_number": 14,
       "bismillah_pre": true,
       "revelation_order": 72,
       "revelation_place": "مكية",
@@ -348,7 +348,7 @@ abstract class QuranData {
     },
     {
       "id": 15,
-      "chapter_number": 15,
+      "surah_number": 15,
       "bismillah_pre": true,
       "revelation_order": 54,
       "revelation_place": "مكية",
@@ -364,7 +364,7 @@ abstract class QuranData {
     },
     {
       "id": 16,
-      "chapter_number": 16,
+      "surah_number": 16,
       "bismillah_pre": true,
       "revelation_order": 70,
       "revelation_place": "مكية",
@@ -377,7 +377,7 @@ abstract class QuranData {
     },
     {
       "id": 17,
-      "chapter_number": 17,
+      "surah_number": 17,
       "bismillah_pre": true,
       "revelation_order": 50,
       "revelation_place": "مكية",
@@ -393,7 +393,7 @@ abstract class QuranData {
     },
     {
       "id": 18,
-      "chapter_number": 18,
+      "surah_number": 18,
       "bismillah_pre": true,
       "revelation_order": 69,
       "revelation_place": "مكية",
@@ -406,7 +406,7 @@ abstract class QuranData {
     },
     {
       "id": 19,
-      "chapter_number": 19,
+      "surah_number": 19,
       "bismillah_pre": true,
       "revelation_order": 44,
       "revelation_place": "مكية",
@@ -419,7 +419,7 @@ abstract class QuranData {
     },
     {
       "id": 20,
-      "chapter_number": 20,
+      "surah_number": 20,
       "bismillah_pre": true,
       "revelation_order": 45,
       "revelation_place": "مكية",
@@ -432,7 +432,7 @@ abstract class QuranData {
     },
     {
       "id": 21,
-      "chapter_number": 21,
+      "surah_number": 21,
       "bismillah_pre": true,
       "revelation_order": 73,
       "revelation_place": "مكية",
@@ -445,7 +445,7 @@ abstract class QuranData {
     },
     {
       "id": 22,
-      "chapter_number": 22,
+      "surah_number": 22,
       "bismillah_pre": true,
       "revelation_order": 103,
       "revelation_place": "مدنية",
@@ -458,7 +458,7 @@ abstract class QuranData {
     },
     {
       "id": 23,
-      "chapter_number": 23,
+      "surah_number": 23,
       "bismillah_pre": true,
       "revelation_order": 74,
       "revelation_place": "مكية",
@@ -471,7 +471,7 @@ abstract class QuranData {
     },
     {
       "id": 24,
-      "chapter_number": 24,
+      "surah_number": 24,
       "bismillah_pre": true,
       "revelation_order": 102,
       "revelation_place": "مدنية",
@@ -484,7 +484,7 @@ abstract class QuranData {
     },
     {
       "id": 25,
-      "chapter_number": 25,
+      "surah_number": 25,
       "bismillah_pre": true,
       "revelation_order": 42,
       "revelation_place": "مكية",
@@ -497,7 +497,7 @@ abstract class QuranData {
     },
     {
       "id": 26,
-      "chapter_number": 26,
+      "surah_number": 26,
       "bismillah_pre": true,
       "revelation_order": 47,
       "revelation_place": "مكية",
@@ -510,7 +510,7 @@ abstract class QuranData {
     },
     {
       "id": 27,
-      "chapter_number": 27,
+      "surah_number": 27,
       "bismillah_pre": true,
       "revelation_order": 48,
       "revelation_place": "مكية",
@@ -523,7 +523,7 @@ abstract class QuranData {
     },
     {
       "id": 28,
-      "chapter_number": 28,
+      "surah_number": 28,
       "bismillah_pre": true,
       "revelation_order": 49,
       "revelation_place": "مكية",
@@ -536,7 +536,7 @@ abstract class QuranData {
     },
     {
       "id": 29,
-      "chapter_number": 29,
+      "surah_number": 29,
       "bismillah_pre": true,
       "revelation_order": 85,
       "revelation_place": "مكية",
@@ -549,7 +549,7 @@ abstract class QuranData {
     },
     {
       "id": 30,
-      "chapter_number": 30,
+      "surah_number": 30,
       "bismillah_pre": true,
       "revelation_order": 84,
       "revelation_place": "مكية",
@@ -562,7 +562,7 @@ abstract class QuranData {
     },
     {
       "id": 31,
-      "chapter_number": 31,
+      "surah_number": 31,
       "bismillah_pre": true,
       "revelation_order": 57,
       "revelation_place": "مكية",
@@ -575,7 +575,7 @@ abstract class QuranData {
     },
     {
       "id": 32,
-      "chapter_number": 32,
+      "surah_number": 32,
       "bismillah_pre": true,
       "revelation_order": 75,
       "revelation_place": "مكية",
@@ -591,7 +591,7 @@ abstract class QuranData {
     },
     {
       "id": 33,
-      "chapter_number": 33,
+      "surah_number": 33,
       "bismillah_pre": true,
       "revelation_order": 90,
       "revelation_place": "مدنية",
@@ -607,7 +607,7 @@ abstract class QuranData {
     },
     {
       "id": 34,
-      "chapter_number": 34,
+      "surah_number": 34,
       "bismillah_pre": true,
       "revelation_order": 58,
       "revelation_place": "مكية",
@@ -620,7 +620,7 @@ abstract class QuranData {
     },
     {
       "id": 35,
-      "chapter_number": 35,
+      "surah_number": 35,
       "bismillah_pre": true,
       "revelation_order": 43,
       "revelation_place": "مكية",
@@ -633,7 +633,7 @@ abstract class QuranData {
     },
     {
       "id": 36,
-      "chapter_number": 36,
+      "surah_number": 36,
       "bismillah_pre": true,
       "revelation_order": 41,
       "revelation_place": "مكية",
@@ -646,7 +646,7 @@ abstract class QuranData {
     },
     {
       "id": 37,
-      "chapter_number": 37,
+      "surah_number": 37,
       "bismillah_pre": true,
       "revelation_order": 56,
       "revelation_place": "مكية",
@@ -662,7 +662,7 @@ abstract class QuranData {
     },
     {
       "id": 38,
-      "chapter_number": 38,
+      "surah_number": 38,
       "bismillah_pre": true,
       "revelation_order": 38,
       "revelation_place": "مكية",
@@ -678,7 +678,7 @@ abstract class QuranData {
     },
     {
       "id": 39,
-      "chapter_number": 39,
+      "surah_number": 39,
       "bismillah_pre": true,
       "revelation_order": 59,
       "revelation_place": "مكية",
@@ -691,7 +691,7 @@ abstract class QuranData {
     },
     {
       "id": 40,
-      "chapter_number": 40,
+      "surah_number": 40,
       "bismillah_pre": true,
       "revelation_order": 60,
       "revelation_place": "مكية",
@@ -704,7 +704,7 @@ abstract class QuranData {
     },
     {
       "id": 41,
-      "chapter_number": 41,
+      "surah_number": 41,
       "bismillah_pre": true,
       "revelation_order": 61,
       "revelation_place": "مكية",
@@ -720,7 +720,7 @@ abstract class QuranData {
     },
     {
       "id": 42,
-      "chapter_number": 42,
+      "surah_number": 42,
       "bismillah_pre": true,
       "revelation_order": 62,
       "revelation_place": "مكية",
@@ -736,7 +736,7 @@ abstract class QuranData {
     },
     {
       "id": 43,
-      "chapter_number": 43,
+      "surah_number": 43,
       "bismillah_pre": true,
       "revelation_order": 63,
       "revelation_place": "مكية",
@@ -752,7 +752,7 @@ abstract class QuranData {
     },
     {
       "id": 44,
-      "chapter_number": 44,
+      "surah_number": 44,
       "bismillah_pre": true,
       "revelation_order": 64,
       "revelation_place": "مكية",
@@ -765,7 +765,7 @@ abstract class QuranData {
     },
     {
       "id": 45,
-      "chapter_number": 45,
+      "surah_number": 45,
       "bismillah_pre": true,
       "revelation_order": 65,
       "revelation_place": "مكية",
@@ -778,7 +778,7 @@ abstract class QuranData {
     },
     {
       "id": 46,
-      "chapter_number": 46,
+      "surah_number": 46,
       "bismillah_pre": true,
       "revelation_order": 66,
       "revelation_place": "مكية",
@@ -794,7 +794,7 @@ abstract class QuranData {
     },
     {
       "id": 47,
-      "chapter_number": 47,
+      "surah_number": 47,
       "bismillah_pre": true,
       "revelation_order": 95,
       "revelation_place": "مدنية",
@@ -807,7 +807,7 @@ abstract class QuranData {
     },
     {
       "id": 48,
-      "chapter_number": 48,
+      "surah_number": 48,
       "bismillah_pre": true,
       "revelation_order": 111,
       "revelation_place": "مدنية",
@@ -820,7 +820,7 @@ abstract class QuranData {
     },
     {
       "id": 49,
-      "chapter_number": 49,
+      "surah_number": 49,
       "bismillah_pre": true,
       "revelation_order": 106,
       "revelation_place": "مدنية",
@@ -833,7 +833,7 @@ abstract class QuranData {
     },
     {
       "id": 50,
-      "chapter_number": 50,
+      "surah_number": 50,
       "bismillah_pre": true,
       "revelation_order": 34,
       "revelation_place": "مكية",
@@ -849,7 +849,7 @@ abstract class QuranData {
     },
     {
       "id": 51,
-      "chapter_number": 51,
+      "surah_number": 51,
       "bismillah_pre": true,
       "revelation_order": 67,
       "revelation_place": "مكية",
@@ -865,7 +865,7 @@ abstract class QuranData {
     },
     {
       "id": 52,
-      "chapter_number": 52,
+      "surah_number": 52,
       "bismillah_pre": true,
       "revelation_order": 76,
       "revelation_place": "مكية",
@@ -878,7 +878,7 @@ abstract class QuranData {
     },
     {
       "id": 53,
-      "chapter_number": 53,
+      "surah_number": 53,
       "bismillah_pre": true,
       "revelation_order": 23,
       "revelation_place": "مكية",
@@ -891,7 +891,7 @@ abstract class QuranData {
     },
     {
       "id": 54,
-      "chapter_number": 54,
+      "surah_number": 54,
       "bismillah_pre": true,
       "revelation_order": 37,
       "revelation_place": "مكية",
@@ -904,7 +904,7 @@ abstract class QuranData {
     },
     {
       "id": 55,
-      "chapter_number": 55,
+      "surah_number": 55,
       "bismillah_pre": true,
       "revelation_order": 97,
       "revelation_place": "مدنية",
@@ -917,7 +917,7 @@ abstract class QuranData {
     },
     {
       "id": 56,
-      "chapter_number": 56,
+      "surah_number": 56,
       "bismillah_pre": true,
       "revelation_order": 46,
       "revelation_place": "مكية",
@@ -930,7 +930,7 @@ abstract class QuranData {
     },
     {
       "id": 57,
-      "chapter_number": 57,
+      "surah_number": 57,
       "bismillah_pre": true,
       "revelation_order": 94,
       "revelation_place": "مدنية",
@@ -943,7 +943,7 @@ abstract class QuranData {
     },
     {
       "id": 58,
-      "chapter_number": 58,
+      "surah_number": 58,
       "bismillah_pre": true,
       "revelation_order": 105,
       "revelation_place": "مدنية",
@@ -959,7 +959,7 @@ abstract class QuranData {
     },
     {
       "id": 59,
-      "chapter_number": 59,
+      "surah_number": 59,
       "bismillah_pre": true,
       "revelation_order": 101,
       "revelation_place": "مدنية",
@@ -972,7 +972,7 @@ abstract class QuranData {
     },
     {
       "id": 60,
-      "chapter_number": 60,
+      "surah_number": 60,
       "bismillah_pre": true,
       "revelation_order": 91,
       "revelation_place": "مدنية",
@@ -988,7 +988,7 @@ abstract class QuranData {
     },
     {
       "id": 61,
-      "chapter_number": 61,
+      "surah_number": 61,
       "bismillah_pre": true,
       "revelation_order": 109,
       "revelation_place": "مدنية",
@@ -1001,7 +1001,7 @@ abstract class QuranData {
     },
     {
       "id": 62,
-      "chapter_number": 62,
+      "surah_number": 62,
       "bismillah_pre": true,
       "revelation_order": 110,
       "revelation_place": "مدنية",
@@ -1017,7 +1017,7 @@ abstract class QuranData {
     },
     {
       "id": 63,
-      "chapter_number": 63,
+      "surah_number": 63,
       "bismillah_pre": true,
       "revelation_order": 104,
       "revelation_place": "مدنية",
@@ -1030,7 +1030,7 @@ abstract class QuranData {
     },
     {
       "id": 64,
-      "chapter_number": 64,
+      "surah_number": 64,
       "bismillah_pre": true,
       "revelation_order": 108,
       "revelation_place": "مدنية",
@@ -1046,7 +1046,7 @@ abstract class QuranData {
     },
     {
       "id": 65,
-      "chapter_number": 65,
+      "surah_number": 65,
       "bismillah_pre": true,
       "revelation_order": 99,
       "revelation_place": "مدنية",
@@ -1059,7 +1059,7 @@ abstract class QuranData {
     },
     {
       "id": 66,
-      "chapter_number": 66,
+      "surah_number": 66,
       "bismillah_pre": true,
       "revelation_order": 107,
       "revelation_place": "مدنية",
@@ -1075,7 +1075,7 @@ abstract class QuranData {
     },
     {
       "id": 67,
-      "chapter_number": 67,
+      "surah_number": 67,
       "bismillah_pre": true,
       "revelation_order": 77,
       "revelation_place": "مكية",
@@ -1091,7 +1091,7 @@ abstract class QuranData {
     },
     {
       "id": 68,
-      "chapter_number": 68,
+      "surah_number": 68,
       "bismillah_pre": true,
       "revelation_order": 2,
       "revelation_place": "مكية",
@@ -1104,7 +1104,7 @@ abstract class QuranData {
     },
     {
       "id": 69,
-      "chapter_number": 69,
+      "surah_number": 69,
       "bismillah_pre": true,
       "revelation_order": 78,
       "revelation_place": "مكية",
@@ -1117,7 +1117,7 @@ abstract class QuranData {
     },
     {
       "id": 70,
-      "chapter_number": 70,
+      "surah_number": 70,
       "bismillah_pre": true,
       "revelation_order": 79,
       "revelation_place": "مكية",
@@ -1133,7 +1133,7 @@ abstract class QuranData {
     },
     {
       "id": 71,
-      "chapter_number": 71,
+      "surah_number": 71,
       "bismillah_pre": true,
       "revelation_order": 71,
       "revelation_place": "مكية",
@@ -1146,7 +1146,7 @@ abstract class QuranData {
     },
     {
       "id": 72,
-      "chapter_number": 72,
+      "surah_number": 72,
       "bismillah_pre": true,
       "revelation_order": 40,
       "revelation_place": "مكية",
@@ -1159,7 +1159,7 @@ abstract class QuranData {
     },
     {
       "id": 73,
-      "chapter_number": 73,
+      "surah_number": 73,
       "bismillah_pre": true,
       "revelation_order": 3,
       "revelation_place": "مكية",
@@ -1175,7 +1175,7 @@ abstract class QuranData {
     },
     {
       "id": 74,
-      "chapter_number": 74,
+      "surah_number": 74,
       "bismillah_pre": true,
       "revelation_order": 4,
       "revelation_place": "مكية",
@@ -1191,7 +1191,7 @@ abstract class QuranData {
     },
     {
       "id": 75,
-      "chapter_number": 75,
+      "surah_number": 75,
       "bismillah_pre": true,
       "revelation_order": 31,
       "revelation_place": "مكية",
@@ -1207,7 +1207,7 @@ abstract class QuranData {
     },
     {
       "id": 76,
-      "chapter_number": 76,
+      "surah_number": 76,
       "bismillah_pre": true,
       "revelation_order": 98,
       "revelation_place": "مدنية",
@@ -1220,7 +1220,7 @@ abstract class QuranData {
     },
     {
       "id": 77,
-      "chapter_number": 77,
+      "surah_number": 77,
       "bismillah_pre": true,
       "revelation_order": 33,
       "revelation_place": "مكية",
@@ -1233,7 +1233,7 @@ abstract class QuranData {
     },
     {
       "id": 78,
-      "chapter_number": 78,
+      "surah_number": 78,
       "bismillah_pre": true,
       "revelation_order": 80,
       "revelation_place": "مكية",
@@ -1246,7 +1246,7 @@ abstract class QuranData {
     },
     {
       "id": 79,
-      "chapter_number": 79,
+      "surah_number": 79,
       "bismillah_pre": true,
       "revelation_order": 81,
       "revelation_place": "مكية",
@@ -1262,7 +1262,7 @@ abstract class QuranData {
     },
     {
       "id": 80,
-      "chapter_number": 80,
+      "surah_number": 80,
       "bismillah_pre": true,
       "revelation_order": 24,
       "revelation_place": "مكية",
@@ -1275,7 +1275,7 @@ abstract class QuranData {
     },
     {
       "id": 81,
-      "chapter_number": 81,
+      "surah_number": 81,
       "bismillah_pre": true,
       "revelation_order": 7,
       "revelation_place": "مكية",
@@ -1291,7 +1291,7 @@ abstract class QuranData {
     },
     {
       "id": 82,
-      "chapter_number": 82,
+      "surah_number": 82,
       "bismillah_pre": true,
       "revelation_order": 82,
       "revelation_place": "مكية",
@@ -1304,7 +1304,7 @@ abstract class QuranData {
     },
     {
       "id": 83,
-      "chapter_number": 83,
+      "surah_number": 83,
       "bismillah_pre": true,
       "revelation_order": 86,
       "revelation_place": "مكية",
@@ -1317,7 +1317,7 @@ abstract class QuranData {
     },
     {
       "id": 84,
-      "chapter_number": 84,
+      "surah_number": 84,
       "bismillah_pre": true,
       "revelation_order": 83,
       "revelation_place": "مكية",
@@ -1330,7 +1330,7 @@ abstract class QuranData {
     },
     {
       "id": 85,
-      "chapter_number": 85,
+      "surah_number": 85,
       "bismillah_pre": true,
       "revelation_order": 27,
       "revelation_place": "مكية",
@@ -1346,7 +1346,7 @@ abstract class QuranData {
     },
     {
       "id": 86,
-      "chapter_number": 86,
+      "surah_number": 86,
       "bismillah_pre": true,
       "revelation_order": 36,
       "revelation_place": "مكية",
@@ -1362,7 +1362,7 @@ abstract class QuranData {
     },
     {
       "id": 87,
-      "chapter_number": 87,
+      "surah_number": 87,
       "bismillah_pre": true,
       "revelation_order": 8,
       "revelation_place": "مكية",
@@ -1375,7 +1375,7 @@ abstract class QuranData {
     },
     {
       "id": 88,
-      "chapter_number": 88,
+      "surah_number": 88,
       "bismillah_pre": true,
       "revelation_order": 68,
       "revelation_place": "مكية",
@@ -1391,7 +1391,7 @@ abstract class QuranData {
     },
     {
       "id": 89,
-      "chapter_number": 89,
+      "surah_number": 89,
       "bismillah_pre": true,
       "revelation_order": 10,
       "revelation_place": "مكية",
@@ -1404,7 +1404,7 @@ abstract class QuranData {
     },
     {
       "id": 90,
-      "chapter_number": 90,
+      "surah_number": 90,
       "bismillah_pre": true,
       "revelation_order": 35,
       "revelation_place": "مكية",
@@ -1417,7 +1417,7 @@ abstract class QuranData {
     },
     {
       "id": 91,
-      "chapter_number": 91,
+      "surah_number": 91,
       "bismillah_pre": true,
       "revelation_order": 26,
       "revelation_place": "مكية",
@@ -1430,7 +1430,7 @@ abstract class QuranData {
     },
     {
       "id": 92,
-      "chapter_number": 92,
+      "surah_number": 92,
       "bismillah_pre": true,
       "revelation_order": 9,
       "revelation_place": "مكية",
@@ -1443,7 +1443,7 @@ abstract class QuranData {
     },
     {
       "id": 93,
-      "chapter_number": 93,
+      "surah_number": 93,
       "bismillah_pre": true,
       "revelation_order": 11,
       "revelation_place": "مكية",
@@ -1459,7 +1459,7 @@ abstract class QuranData {
     },
     {
       "id": 94,
-      "chapter_number": 94,
+      "surah_number": 94,
       "bismillah_pre": true,
       "revelation_order": 12,
       "revelation_place": "مكية",
@@ -1472,7 +1472,7 @@ abstract class QuranData {
     },
     {
       "id": 95,
-      "chapter_number": 95,
+      "surah_number": 95,
       "bismillah_pre": true,
       "revelation_order": 28,
       "revelation_place": "مكية",
@@ -1485,7 +1485,7 @@ abstract class QuranData {
     },
     {
       "id": 96,
-      "chapter_number": 96,
+      "surah_number": 96,
       "bismillah_pre": true,
       "revelation_order": 1,
       "revelation_place": "مكية",
@@ -1498,7 +1498,7 @@ abstract class QuranData {
     },
     {
       "id": 97,
-      "chapter_number": 97,
+      "surah_number": 97,
       "bismillah_pre": true,
       "revelation_order": 25,
       "revelation_place": "مكية",
@@ -1511,7 +1511,7 @@ abstract class QuranData {
     },
     {
       "id": 98,
-      "chapter_number": 98,
+      "surah_number": 98,
       "bismillah_pre": true,
       "revelation_order": 100,
       "revelation_place": "مدنية",
@@ -1527,7 +1527,7 @@ abstract class QuranData {
     },
     {
       "id": 99,
-      "chapter_number": 99,
+      "surah_number": 99,
       "bismillah_pre": true,
       "revelation_order": 93,
       "revelation_place": "مدنية",
@@ -1540,7 +1540,7 @@ abstract class QuranData {
     },
     {
       "id": 100,
-      "chapter_number": 100,
+      "surah_number": 100,
       "bismillah_pre": true,
       "revelation_order": 14,
       "revelation_place": "مكية",
@@ -1553,7 +1553,7 @@ abstract class QuranData {
     },
     {
       "id": 101,
-      "chapter_number": 101,
+      "surah_number": 101,
       "bismillah_pre": true,
       "revelation_order": 30,
       "revelation_place": "مكية",
@@ -1566,7 +1566,7 @@ abstract class QuranData {
     },
     {
       "id": 102,
-      "chapter_number": 102,
+      "surah_number": 102,
       "bismillah_pre": true,
       "revelation_order": 16,
       "revelation_place": "مكية",
@@ -1582,7 +1582,7 @@ abstract class QuranData {
     },
     {
       "id": 103,
-      "chapter_number": 103,
+      "surah_number": 103,
       "bismillah_pre": true,
       "revelation_order": 13,
       "revelation_place": "مكية",
@@ -1598,7 +1598,7 @@ abstract class QuranData {
     },
     {
       "id": 104,
-      "chapter_number": 104,
+      "surah_number": 104,
       "bismillah_pre": true,
       "revelation_order": 32,
       "revelation_place": "مكية",
@@ -1611,7 +1611,7 @@ abstract class QuranData {
     },
     {
       "id": 105,
-      "chapter_number": 105,
+      "surah_number": 105,
       "bismillah_pre": true,
       "revelation_order": 19,
       "revelation_place": "مكية",
@@ -1624,7 +1624,7 @@ abstract class QuranData {
     },
     {
       "id": 106,
-      "chapter_number": 106,
+      "surah_number": 106,
       "bismillah_pre": true,
       "revelation_order": 29,
       "revelation_place": "مكية",
@@ -1637,7 +1637,7 @@ abstract class QuranData {
     },
     {
       "id": 107,
-      "chapter_number": 107,
+      "surah_number": 107,
       "bismillah_pre": true,
       "revelation_order": 17,
       "revelation_place": "مكية",
@@ -1653,7 +1653,7 @@ abstract class QuranData {
     },
     {
       "id": 108,
-      "chapter_number": 108,
+      "surah_number": 108,
       "bismillah_pre": true,
       "revelation_order": 15,
       "revelation_place": "مكية",
@@ -1666,7 +1666,7 @@ abstract class QuranData {
     },
     {
       "id": 109,
-      "chapter_number": 109,
+      "surah_number": 109,
       "bismillah_pre": true,
       "revelation_order": 18,
       "revelation_place": "مكية",
@@ -1682,7 +1682,7 @@ abstract class QuranData {
     },
     {
       "id": 110,
-      "chapter_number": 110,
+      "surah_number": 110,
       "bismillah_pre": true,
       "revelation_order": 114,
       "revelation_place": "مدنية",
@@ -1698,7 +1698,7 @@ abstract class QuranData {
     },
     {
       "id": 111,
-      "chapter_number": 111,
+      "surah_number": 111,
       "bismillah_pre": true,
       "revelation_order": 6,
       "revelation_place": "مكية",
@@ -1711,7 +1711,7 @@ abstract class QuranData {
     },
     {
       "id": 112,
-      "chapter_number": 112,
+      "surah_number": 112,
       "bismillah_pre": true,
       "revelation_order": 22,
       "revelation_place": "مكية",
@@ -1724,7 +1724,7 @@ abstract class QuranData {
     },
     {
       "id": 113,
-      "chapter_number": 113,
+      "surah_number": 113,
       "bismillah_pre": true,
       "revelation_order": 20,
       "revelation_place": "مكية",
@@ -1737,7 +1737,7 @@ abstract class QuranData {
     },
     {
       "id": 114,
-      "chapter_number": 114,
+      "surah_number": 114,
       "bismillah_pre": true,
       "revelation_order": 21,
       "revelation_place": "مكية",

@@ -26,9 +26,9 @@ class TopMenuBar extends ConsumerWidget {
               size: 18.spMin,
               color: Colors.green,
             ),
-            label: const Text("Chapters"),
+            label: const Text("Surahs"),
             onPressed: () {
-              drawerActions.toggleLeftDrawer(DrawerComponentKey.chapters);
+              drawerActions.toggleLeftDrawer(DrawerComponentKey.surahs);
             },
             style: TextButton.styleFrom(
               foregroundColor: Colors.green,

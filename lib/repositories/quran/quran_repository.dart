@@ -11,34 +11,23 @@ import 'package:quran/models/verse_model.dart';
 import 'package:quran/models/quran/line.dart';
 import 'package:sqflite/sqflite.dart';
 
-final quranRepositoryProvider = FutureProvider<QuranRepository>((ref) async {
-  final repo = QuranRepository();
-  await repo.init();
-  return repo;
+final quranRepositoryProvider = Provider<QuranRepository>((ref) {
+  return QuranRepository();
 });
 
 class QuranRepository {
-  late final Database ayahDb;
-  late final Database wordDb;
-  late final Database linesDb;
-
-  late final SurahLigatures surahLigatures;
+  final Database ayahDb = QuranDBService.getAyahDb();
+  final Database wordDb = QuranDBService.getWordGlyphDb();
+  final Database linesDb = QuranDBService.getPageLinesDb();
+  // final Database tafsirDb = QuranDBService.getTasfirDb();
 
   QuranRepository();
 
-  Future<void> init() async {
-    surahLigatures = await loadSurahLigatures();
-
-    ayahDb = await QuranDBService.getAyahDb();
-    wordDb = await QuranDBService.getWordGlyphDb();
-    linesDb = await QuranDBService.getPageLinesDb();
-  }
-
-  Future<Verse> getVerse(int chapter, int verse) async {
+  Future<Verse> getVerse(int surah, int verse) async {
     final List<Map<String, dynamic>> results = await ayahDb.query(
       'text',
       where: 'verse_key = ?',
-      whereArgs: ["$chapter:$verse"],
+      whereArgs: ["$surah:$verse"],
       limit: 1,
     );
     return Verse.fromJson(results.first);
@@ -55,7 +44,7 @@ class QuranRepository {
     return results.map((row) {
       return Word(
         id: row['id'] as int,
-        location: row['word'] as int,
+        location: row['location'],
         surah: row['surah'] as int,
         ayah: row['ayah'] as int,
         glyphCode: row['text'],
@@ -142,9 +131,9 @@ class QuranRepository {
     }
   }
 
-  // Future<List<TafsirModel>> getTafsir(int chapter, int verse) async {
+  // Future<List<TafsirModel>> getTafsir(int surah, int verse) async {
   //   try {
-  //     final tafsirData = await _dataSource.getTafsir(chapter, verse);
+  //     final tafsirData = await _dataSource.getTafsir(surah, verse);
   //     return tafsirData;
   //   } catch (e, st) {
   //     logger.fine('error: $e');
@@ -155,8 +144,8 @@ class QuranRepository {
   //
   // Future<Verse> getVerseFromIndex(int index) async {
   //   try {
-  //     final (chapter, verse) = QuranUtils.indexToChapterVerse(index + 1);
-  //     final verseData = await _dataSource.getVerse(chapter, verse);
+  //     final (surah, verse) = QuranUtils.indexToSurahVerse(index + 1);
+  //     final verseData = await _dataSource.getVerse(surah, verse);
   //     return Verse.fromJson(verseData);
   //   } catch (e, st) {
   //     logger.fine('error: $e');
@@ -167,8 +156,8 @@ class QuranRepository {
   //
   // Future<List<TafsirModel>> getTafsirFromIndex(int index) async {
   //   try {
-  //     final (chapter, verse) = QuranUtils.indexToChapterVerse(index + 1);
-  //     final tafsirData = await _dataSource.getTafsir(chapter, verse);
+  //     final (surah, verse) = QuranUtils.indexToSurahVerse(index + 1);
+  //     final tafsirData = await _dataSource.getTafsir(surah, verse);
   //     return tafsirData;
   //   } catch (e, st) {
   //     logger.fine('error55: $e');
