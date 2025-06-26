@@ -1,4 +1,6 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:quran/core/utils/logger.dart';
 import 'package:quran/models/quran/word.dart';
@@ -24,23 +26,11 @@ class WordWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final highlights = ref.watch(highlightControllerProvider)[pageNumber] ?? [];
+    final highlights = ref.watch(highlightControllerProvider).highlights[pageNumber] ?? [];
     final highlighter = ref.read(highlightControllerProvider.notifier);
 
     void defaultOnTap() {
-      if (word.isAyahNrSymbol) {
-        if (highlighter.isHighlighted(pageNumber, word.location)) {
-          highlighter.clearWordHighlights(pageNumber, ayahWordLocations);
-        } else {
-          highlighter.highlightWords(pageNumber, ayahWordLocations, Colors.yellow.withOpacity(0.5));
-        }
-      } else {
-        if (highlighter.isHighlighted(pageNumber, word.location)) {
-          highlighter.clearWordHighlight(pageNumber, word.location);
-        } else {
-          highlighter.highlightWords(pageNumber, [word.location], Colors.yellow.withOpacity(0.5));
-        }
-      }
+
     }
 
     final highlight = highlights.firstWhere(
@@ -49,9 +39,21 @@ class WordWidget extends ConsumerWidget {
     );
 
     final isHighlighted = highlight.color != Colors.transparent;
+    return Listener(
+      behavior: HitTestBehavior.translucent,
+      onPointerDown: (event) {
+        final isCtrlPressed = HardwareKeyboard.instance.isControlPressed;
+        if (word.isAyahNrSymbol) {
+          highlighter.toggleWordsHighlight(pageNumber, ayahWordLocations);
+        } else {
+          if (isCtrlPressed) {
+            highlighter.toggleWordsHighlight(pageNumber, [word.location]);
+          } else {
+            highlighter.toggleWordsHighlight(pageNumber, ayahWordLocations);
+          }
+        }
 
-    return GestureDetector(
-      onTap: onTap ?? defaultOnTap,
+      },
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 1, vertical: 1),
         decoration: isHighlighted ? BoxDecoration(color: highlight.color) : null,

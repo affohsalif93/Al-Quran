@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:quran/core/utils/logger.dart';
 import 'package:quran/models/mushaf.dart';
 import 'package:quran/providers/drawer/drawer_state.dart';
 
