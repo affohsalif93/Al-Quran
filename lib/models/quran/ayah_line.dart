@@ -1,7 +1,7 @@
-import 'package:quran/models/quran/line.dart';
+import 'package:quran/models/quran/page_line.dart';
 import 'package:quran/models/quran/word.dart';
 
-class AyahLine extends Line {
+class AyahLine extends PageLine {
   final int? firstWordId;
   final int? lastWordId;
   final int? surahNumber;

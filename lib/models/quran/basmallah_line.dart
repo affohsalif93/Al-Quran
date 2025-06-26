@@ -1,7 +1,7 @@
-import 'package:quran/models/quran/line.dart';
+import 'package:quran/models/quran/page_line.dart';
 import 'package:quran/models/quran/word.dart';
 
-class BasmallahLine extends Line {
+class BasmallahLine extends PageLine {
   final int surahNumber;
   final int ayahNumber;
   final List<Word> words;

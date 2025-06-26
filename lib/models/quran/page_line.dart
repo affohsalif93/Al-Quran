@@ -5,13 +5,13 @@ import "package:quran/models/quran/surah_name_line.dart";
 
 enum LineType { ayah, surahName, basmallah }
 
-abstract class Line extends Equatable {
+abstract class PageLine extends Equatable {
   final int pageNumber;
   final int lineNumber;
   final LineType lineType;
   final bool isCentered;
 
-  const Line({
+  const PageLine({
     required this.pageNumber,
     required this.lineNumber,
     required this.lineType,
@@ -28,7 +28,7 @@ abstract class Line extends Equatable {
     isCentered,
   ];
 
-  static Line fromJson(Map<String, dynamic> json) {
+  static PageLine fromJson(Map<String, dynamic> json) {
     final lineType = parseLineType(json['line_type']);
 
     switch (lineType) {

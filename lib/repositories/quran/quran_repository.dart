@@ -7,8 +7,8 @@ import 'package:quran/models/quran/word.dart';
 import 'package:quran/services/quran_db_service.dart';
 import 'package:riverpod/riverpod.dart';
 
-import 'package:quran/models/verse_model.dart';
-import 'package:quran/models/quran/line.dart';
+import 'package:quran/models/ayah_model.dart';
+import 'package:quran/models/quran/page_line.dart';
 import 'package:sqflite/sqflite.dart';
 
 final quranRepositoryProvider = Provider<QuranRepository>((ref) {
@@ -23,17 +23,17 @@ class QuranRepository {
 
   QuranRepository();
 
-  Future<Verse> getVerse(int surah, int verse) async {
+  Future<Ayah> getAyah(int surah, int verse) async {
     final List<Map<String, dynamic>> results = await ayahDb.query(
       'text',
       where: 'verse_key = ?',
       whereArgs: ["$surah:$verse"],
       limit: 1,
     );
-    return Verse.fromJson(results.first);
+    return Ayah.fromJson(results.first);
   }
 
-  Future<List<Word>> getWordsInRange(int pageNumber, int firstWordId, int lastWordId) async {
+  Future<List<Word>> _getWordsInRange(int pageNumber, int firstWordId, int lastWordId) async {
     final List<Map<String, dynamic>> results = await wordDb.query(
       'words',
       where: 'id BETWEEN ? AND ?',
@@ -48,11 +48,12 @@ class QuranRepository {
         surah: row['surah'] as int,
         ayah: row['ayah'] as int,
         glyphCode: row['text'],
+        isAyahNrSymbol: (row['is_ayah_number'] as int) == 1,
       );
     }).toList();
   }
 
-  Future<Map<int, Line>> getPageLines(int pageNumber) async {
+  Future<Map<int, PageLine>> getPageLines(int pageNumber) async {
     try {
       final List<Map<String, dynamic>> results = await linesDb.query(
         'pages',
@@ -61,11 +62,11 @@ class QuranRepository {
         orderBy: 'line_number ASC',
       );
 
-      final Map<int, Line> lines = {};
+      final Map<int, PageLine> lines = {};
 
       for (final row in results) {
         final String typeStr = row['line_type'] as String;
-        final LineType lineType = Line.parseLineType(typeStr);
+        final LineType lineType = PageLine.parseLineType(typeStr);
 
         final int lineNumber = row['line_number'] as int;
         final int page = row['page_number'] as int;
@@ -75,7 +76,7 @@ class QuranRepository {
           final int firstWordId = row['first_word_id'] as int;
           final int lastWordId = row['last_word_id'] as int;
 
-          final List<Word> words = await getWordsInRange(
+          final List<Word> words = await _getWordsInRange(
             page,
             firstWordId,
             lastWordId,
@@ -97,7 +98,7 @@ class QuranRepository {
 
         } else if (lineType == LineType.basmallah) {
 
-          final basmallahWords = await getWordsInRange(page, 1, 4);
+          final basmallahWords = await _getWordsInRange(page, 1, 4);
 
           final line = BasmallahLine(
             pageNumber: page,
@@ -131,38 +132,23 @@ class QuranRepository {
     }
   }
 
-  // Future<List<TafsirModel>> getTafsir(int surah, int verse) async {
-  //   try {
-  //     final tafsirData = await _dataSource.getTafsir(surah, verse);
-  //     return tafsirData;
-  //   } catch (e, st) {
-  //     logger.fine('error: $e');
-  //     logger.fine(st);
-  //     rethrow;
-  //   }
-  // }
-  //
-  // Future<Verse> getVerseFromIndex(int index) async {
-  //   try {
-  //     final (surah, verse) = QuranUtils.indexToSurahVerse(index + 1);
-  //     final verseData = await _dataSource.getVerse(surah, verse);
-  //     return Verse.fromJson(verseData);
-  //   } catch (e, st) {
-  //     logger.fine('error: $e');
-  //     logger.fine(st);
-  //     rethrow;
-  //   }
-  // }
-  //
-  // Future<List<TafsirModel>> getTafsirFromIndex(int index) async {
-  //   try {
-  //     final (surah, verse) = QuranUtils.indexToSurahVerse(index + 1);
-  //     final tafsirData = await _dataSource.getTafsir(surah, verse);
-  //     return tafsirData;
-  //   } catch (e, st) {
-  //     logger.fine('error55: $e');
-  //     logger.fine(st);
-  //     rethrow;
-  //   }
-  // }
+  Future<List<Word>> getWordsInAyah(int surah, int verse) async {
+    final List<Map<String, dynamic>> results = await wordDb.query(
+      'words',
+      where: 'surah = ? AND ayah = ?',
+      whereArgs: [surah, verse],
+      orderBy: 'id ASC',
+    );
+
+    return results.map((row) {
+      return Word(
+        id: row['id'] as int,
+        location: row['location'],
+        surah: row['surah'] as int,
+        ayah: row['ayah'] as int,
+        glyphCode: row['text'],
+        isAyahNrSymbol: (row['is_ayah_number'] as int) == 1,
+      );
+    }).toList();
+  }
 }

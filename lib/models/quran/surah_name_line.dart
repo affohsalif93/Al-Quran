@@ -1,6 +1,6 @@
-import 'package:quran/models/quran/line.dart';
+import 'package:quran/models/quran/page_line.dart';
 
-class SurahNameLine extends Line {
+class SurahNameLine extends PageLine {
   final int surahNumber;
 
   SurahNameLine({

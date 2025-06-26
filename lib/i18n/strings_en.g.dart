@@ -86,11 +86,11 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 	String get page => 'Page';
 	String get juz => 'Juz';
 	String get ayah => 'Ayah';
-	String get verse => 'Verse';
-	String get verses => 'Verses';
+	String get verse => 'Ayah';
+	String get verses => 'Ayahs';
 	String verseCount({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(n,
-		one: '1 Verse',
-		other: '${n} Verses',
+		one: '1 Ayah',
+		other: '${n} Ayahs',
 	);
 	String get word => 'Word';
 	String get retry => 'Retry';
@@ -219,11 +219,11 @@ extension on Translations {
 			case 'page': return 'Page';
 			case 'juz': return 'Juz';
 			case 'ayah': return 'Ayah';
-			case 'verse': return 'Verse';
-			case 'verses': return 'Verses';
+			case 'verse': return 'Ayah';
+			case 'verses': return 'Ayahs';
 			case 'verseCount': return ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(n,
-				one: '1 Verse',
-				other: '${n} Verses',
+				one: '1 Ayah',
+				other: '${n} Ayahs',
 			);
 			case 'word': return 'Word';
 			case 'retry': return 'Retry';

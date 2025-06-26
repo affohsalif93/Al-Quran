@@ -10,23 +10,38 @@ class WordWidget extends ConsumerWidget {
   final int pageNumber;
   final double fontSize;
   final String fontFamily;
-  final void Function(Word word)? onTap;
+  final List<String> ayahWordLocations;
+  final void Function()? onTap;
 
   WordWidget({
     super.key,
     required this.word,
     required this.pageNumber,
     required this.fontSize,
+    required this.ayahWordLocations,
     this.onTap,
   }) : fontFamily = Word.fontFamilyForPage(pageNumber);
 
-   void defaultOnTap(Word word) {
-    logger.fine("font $fontFamily Tapped on word at location: ${word.location}, glyph: ${word.glyphCode}");
-  }
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final highlights = ref.watch(pageHighlightsProvider)[pageNumber] ?? [];
+    final highlights = ref.watch(highlightControllerProvider)[pageNumber] ?? [];
+    final highlighter = ref.read(highlightControllerProvider.notifier);
+
+    void defaultOnTap() {
+      if (word.isAyahNrSymbol) {
+        if (highlighter.isHighlighted(pageNumber, word.location)) {
+          highlighter.clearWordHighlights(pageNumber, ayahWordLocations);
+        } else {
+          highlighter.highlightWords(pageNumber, ayahWordLocations, Colors.yellow.withOpacity(0.5));
+        }
+      } else {
+        if (highlighter.isHighlighted(pageNumber, word.location)) {
+          highlighter.clearWordHighlight(pageNumber, word.location);
+        } else {
+          highlighter.highlightWords(pageNumber, [word.location], Colors.yellow.withOpacity(0.5));
+        }
+      }
+    }
 
     final highlight = highlights.firstWhere(
       (h) => h.location == word.location,
@@ -36,13 +51,10 @@ class WordWidget extends ConsumerWidget {
     final isHighlighted = highlight.color != Colors.transparent;
 
     return GestureDetector(
-      onTap: () => (onTap ?? defaultOnTap).call(word),
+      onTap: onTap ?? defaultOnTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 1),
-        decoration:
-            isHighlighted
-                ? BoxDecoration(color: highlight.color, borderRadius: BorderRadius.circular(4))
-                : null,
+        padding: const EdgeInsets.symmetric(horizontal: 1, vertical: 1),
+        decoration: isHighlighted ? BoxDecoration(color: highlight.color) : null,
         child: Text(
           word.glyphCode,
           style: TextStyle(fontSize: fontSize, fontFamily: fontFamily, color: Colors.black87),

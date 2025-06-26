@@ -46,11 +46,11 @@
    "page": "Page",
    "juz": "Juz",
    "ayah": "Ayah",
-   "verse": "Verse",
-   "verses": "Verses",
+   "verse": "Ayah",
+   "verses": "Ayahs",
    "verseCount": {
-      "one": "1 Verse",
-      "other": "$n Verses"
+      "one": "1 Ayah",
+      "other": "$n Ayahs"
    },
    "word": "Word",
    "retry": "Retry",

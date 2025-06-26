@@ -29,7 +29,7 @@ abstract class QuranData {
   static final List<Mushaf> mushafs = [madinahMushafV1, madinahMushafV2];
 
   /// Contains the verse of each page in the Quran
-  static final pageSurahVerse = [
+  static final pageSurahAyah = [
     // [sura, aya]
     [1, 1], [2, 1], [2, 6], [2, 17], [2, 25],
     [2, 30], [2, 38], [2, 49], [2, 58], [2, 62],

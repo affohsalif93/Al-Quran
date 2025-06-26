@@ -6,6 +6,7 @@ class Word extends Equatable {
   final int surah;
   final int ayah;
   final String glyphCode;
+  final bool isAyahNrSymbol;
 
   const Word({
     required this.id,
@@ -13,6 +14,7 @@ class Word extends Equatable {
     required this.surah,
     required this.ayah,
     required this.glyphCode,
+    this.isAyahNrSymbol = false,
   });
 
   static String fontFamilyForPage(int pageNumber) {

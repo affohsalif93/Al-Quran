@@ -1,13 +1,13 @@
 import 'package:equatable/equatable.dart';
 
-class Verse extends Equatable {
+class Ayah extends Equatable {
   final int id;
   final int surahNumber;
   final int ayahNumber;
   final String verseKey;
   final String text;
 
-  Verse({
+  Ayah({
     required this.id,
     required this.surahNumber,
     required this.ayahNumber,
@@ -15,8 +15,8 @@ class Verse extends Equatable {
     required this.text,
   });
 
-  factory Verse.fromJson(dynamic json) {
-    return Verse(
+  factory Ayah.fromJson(dynamic json) {
+    return Ayah(
       id: json['id'],
       surahNumber: json['surah_number'],
       ayahNumber: json['ayah_number'],

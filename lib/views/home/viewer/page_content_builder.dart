@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:quran/core/utils/logger.dart';
+import 'package:quran/core/utils/quran_utils.dart';
+import 'package:quran/models/ayah_model.dart';
 import 'package:quran/models/quran/ayah_line.dart';
 import 'package:quran/models/quran/basmallah_line.dart';
 import 'package:quran/models/quran/surah_name_line.dart';
@@ -29,6 +31,15 @@ class PageContentBuilder {
     const ayahVerticalSpacing = 10.0;
 
     final List<Widget> lineWidgets = [];
+
+    // all words
+    final List<String> allAyahWordLocations =
+        lines.values.expand((line) {
+          if (line is AyahLine) {
+            return line.words.map((word) => word.location).toList();
+          }
+          return [] as List<String>;
+        }).toList();
 
     for (final line in lines.values) {
       if (line is SurahNameLine) {
@@ -77,8 +88,25 @@ class PageContentBuilder {
       } else if (line is AyahLine && line.words.isNotEmpty) {
         final wordWidgets =
             line.words.map((word) {
-              return WordWidget(pageNumber: pageNumber, word: word, fontSize: scalingFactor);
+              return WordWidget(
+                pageNumber: pageNumber,
+                word: word,
+                fontSize: scalingFactor,
+                ayahWordLocations:
+                    allAyahWordLocations.where((location) {
+                      return location.startsWith('${word.surah}:${word.ayah}');
+                    }).toList(),
+              );
             }).toList();
+
+        line.words.map((word) {
+          return WordWidget(
+            pageNumber: pageNumber,
+            word: word,
+            fontSize: scalingFactor,
+            ayahWordLocations: allAyahWordLocations,
+          );
+        }).toList();
 
         lineWidgets.add(
           Container(
@@ -86,7 +114,6 @@ class PageContentBuilder {
             child: Wrap(
               textDirection: TextDirection.rtl,
               alignment: WrapAlignment.start,
-              spacing: 1,
               children: wordWidgets,
             ),
           ),
