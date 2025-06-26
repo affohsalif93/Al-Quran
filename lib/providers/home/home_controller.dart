@@ -45,10 +45,31 @@ class HomeController extends StateNotifier<HomeState> {
     }
   }
 
+  void setCurrentTabByIndex(int index) {
+    if (index < 1 || index > HomeTab.values.length) {
+      logger.error("Invalid tab index: $index");
+      return;
+    }
+    final tabValue = HomeTab.values[index - 1];
+    if (tabValue == HomeTab.mushaf) {
+      state = state.copyWith(currentTab: HomeTab.mushaf, viewerMode: ViewerMode.double);
+    } else {
+      state = state.copyWith(currentTab: tabValue, viewerMode: ViewerMode.single);
+    }
+  }
+
   SharedPreferencesService get prefs => ref.read(sharedPreferencesProvider);
 
   int getMushafPageCount() {
     return state.currentMushaf.numberOfPages;
+  }
+
+  int getCurrentTabIndex() {
+    return HomeTab.values.indexOf(state.currentTab) + 1;
+  }
+
+  void toTafsirTab() {
+    state = state.copyWith(currentTab: HomeTab.tafsir, viewerMode: ViewerMode.single);
   }
 
   void toggleMenu() {
@@ -83,12 +104,12 @@ class HomeController extends StateNotifier<HomeState> {
     return state.currentPage < 604;
   }
 
-  void setViewMode(String viewMode) {
-    if (viewMode == 'single') {
-      state = state.copyWith(isBookView: false);
-    } else if (viewMode == 'double') {
+  void setViewMode(ViewerMode viewMode) {
+    if (viewMode == ViewerMode.single) {
+      state = state.copyWith(viewerMode: viewMode);
+    } else if (viewMode == ViewerMode.double) {
       final currentPage = state.currentPage - (state.currentPage.isEven ? 1 : 0);
-      state = state.copyWith(isBookView: true, currentPage: currentPage);
+      state = state.copyWith(viewerMode: viewMode, currentPage: currentPage);
       controllerJumpToPage(currentPage);
     }
   }
@@ -144,7 +165,7 @@ class HomeController extends StateNotifier<HomeState> {
         page = page - 1;
     }
     controllerJumpToPage(page);
-    state = state.setCurrentPageWithJump(page);
+    state = state.setCurrentPage(page);
     setLastReadPage();
   }
 

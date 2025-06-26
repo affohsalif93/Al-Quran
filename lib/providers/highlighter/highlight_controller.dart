@@ -111,6 +111,10 @@ class HighlighterState extends Equatable {
     );
   }
 
+  HighlighterState setHighlights(Map<int, List<WordHighlight>> newHighlights) {
+    return copyWith(highlights: newHighlights);
+  }
+
   @override
   List<Object?> get props => [highlights, mode];
 

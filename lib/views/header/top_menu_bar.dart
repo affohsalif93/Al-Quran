@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:material_symbols_icons/symbols.dart';
+import 'package:quran/core/utils/logger.dart';
 import 'package:quran/providers/drawer/drawer_provider.dart';
 import 'package:quran/providers/drawer/drawer_state.dart';
+import 'package:quran/providers/home/home_controller.dart';
 import 'package:quran/views/widgets/animated_show_hide.dart';
 import 'package:quran/views/widgets/menu_wrapper.dart';
 
@@ -14,11 +16,12 @@ class TopMenuBar extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final drawerActions = ref.watch(drawerControllerProvider.notifier);
+    final homeController = ref.watch(homeControllerProvider.notifier);
 
     return MenuWrapper(
       direction: AnimationDirection.appearFromTop,
+      height: 45,
       child: Row(
-        // textDirection: TextDirection.rtl,
         children: [
           TextButton.icon(
             icon: Icon(
@@ -38,21 +41,19 @@ class TopMenuBar extends ConsumerWidget {
             child: Container(
               alignment: Alignment.center,
               child: CustomSlidingSegmentedControl<int>(
-                initialValue: 2,
-                isShowDivider: true,
-                // isStretch: true,
+                initialValue: homeController.getCurrentTabIndex(),
                 children: {
-                  1: Text('Mushaf'),
-                  2: Text('Tafsir'),
-                  3: Text('Books'),
+                  1: Text('Mushaf', style: TextStyle(fontWeight: FontWeight.w500)),
+                  2: Text('Tafsir', style: TextStyle(fontWeight: FontWeight.w500)),
+                  3: Text('Hifz', style: TextStyle(fontWeight: FontWeight.w500)),
+                  4: Text('Notes', style: TextStyle(fontWeight: FontWeight.w500)),
                 },
                 decoration: BoxDecoration(
-                  // color: CupertinoColors.lightBackgroundGray,
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(4),
                 ),
                 padding: 30,
-                height: 30,
+                height: 35,
                 thumbDecoration: BoxDecoration(
                   color: Colors.lightGreen,
                   borderRadius: BorderRadius.circular(4),
@@ -60,22 +61,11 @@ class TopMenuBar extends ConsumerWidget {
                     color: Colors.green,
                     width: 2,
                   ),
-                  // boxShadow: [
-                  //   BoxShadow(
-                  //     color: Colors.black.withOpacity(.3),
-                  //     blurRadius: 2.0,
-                  //     spreadRadius: 0.5,
-                  //     offset: Offset(
-                  //       0.0,
-                  //       1.0,
-                  //     ),
-                  //   ),
-                  // ],
                 ),
                 duration: Duration(milliseconds: 100),
                 curve: Curves.easeInToLinear,
                 onValueChanged: (v) {
-                  print(v);
+                  homeController.setCurrentTabByIndex(v);
                 },
               ),
             ),

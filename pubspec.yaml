@@ -119,6 +119,7 @@ dependencies:
   vector_graphics: any
   flutter_web_plugins:
     sdk: flutter
+  multi_split_view: ^3.6.0
 
 dev_dependencies:
   flutter_test:

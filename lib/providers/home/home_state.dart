@@ -2,18 +2,33 @@ import 'package:equatable/equatable.dart';
 import 'package:quran/models/mushaf.dart';
 import 'package:quran/providers/drawer/drawer_state.dart';
 
+enum HomeTab {
+  mushaf,
+  tafsir,
+  hifz,
+  notes,
+}
+
+enum ViewerMode {
+  double,
+  single,
+  translation,
+}
+
 class HomeState extends Equatable {
   final int currentPage;
-  final bool isBookView;
+  final ViewerMode viewerMode;
   final bool isShowMenu;
   final bool isShowBookmarkMenu;
   final Mushaf currentMushaf;
+  final HomeTab currentTab;
 
   const HomeState({
     this.currentPage = 1,
     this.isShowMenu = true,
     this.isShowBookmarkMenu = false,
-    this.isBookView = false,
+    this.viewerMode = ViewerMode.double,
+    this.currentTab = HomeTab.mushaf,
     required this.currentMushaf,
   });
 
@@ -21,33 +36,42 @@ class HomeState extends Equatable {
     int? currentPage,
     bool? isShowMenu,
     bool? isShowBookmarkMenu,
-    bool? isBookView,
+    ViewerMode? viewerMode,
     DrawerState? drawerState,
     Mushaf? currentMushaf,
+    HomeTab? currentTab,
   }) {
     return HomeState(
       currentPage: currentPage ?? this.currentPage,
       isShowMenu: isShowMenu ?? this.isShowMenu,
       isShowBookmarkMenu: isShowBookmarkMenu ?? this.isShowBookmarkMenu,
-      isBookView: isBookView ?? this.isBookView,
+      viewerMode: viewerMode ?? this.viewerMode,
       currentMushaf: currentMushaf ?? this.currentMushaf,
+      currentTab: currentTab ?? this.currentTab,
     );
   }
+
+  get isBookView => viewerMode == ViewerMode.double;
+
+  get isViewerToggleEnabled => currentTab == HomeTab.mushaf;
+
+  get isSplitViewer => currentTab != HomeTab.mushaf;
 
   HomeState setCurrentPage(int currentPage) {
     return copyWith(currentPage: currentPage);
   }
 
-  HomeState setCurrentPageWithJump(int currentPage) {
-    return copyWith(currentPage: currentPage);
+  int getCurrentTabIndex() {
+    return HomeTab.values.indexOf(currentTab);
   }
 
   @override
   List<Object?> get props => [
     currentPage,
-    isBookView,
+    viewerMode,
     isShowBookmarkMenu,
     isShowMenu,
     currentMushaf,
+    currentTab,
   ];
 }

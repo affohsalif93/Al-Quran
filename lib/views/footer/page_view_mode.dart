@@ -5,6 +5,7 @@ import 'package:custom_sliding_segmented_control/custom_sliding_segmented_contro
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:quran/providers/home/home_controller.dart';
+import 'package:quran/providers/home/home_state.dart';
 
 class PageViewMode extends ConsumerWidget {
   const PageViewMode({super.key});
@@ -17,6 +18,7 @@ class PageViewMode extends ConsumerWidget {
     return CustomSlidingSegmentedControl<int>(
       initialValue: homeState.isBookView ? 1 : 2,
       isShowDivider: true,
+      isDisabled: !homeState.isViewerToggleEnabled,
       children: {
         1: Icon(
           CupertinoIcons.book_fill,
@@ -33,7 +35,7 @@ class PageViewMode extends ConsumerWidget {
         color: Colors.white,
         borderRadius: BorderRadius.circular(4),
       ),
-      padding: 30,
+      padding: 25,
       height: 30,
       thumbDecoration: BoxDecoration(
         color: Colors.lightGreen,
@@ -44,7 +46,7 @@ class PageViewMode extends ConsumerWidget {
         ),
       ),
       onValueChanged: (value) {
-        homeActions.setViewMode(value == 1 ? "double" : "single");
+        homeActions.setViewMode(value == 1 ? ViewerMode.double : ViewerMode.single);
       },
     );
   }

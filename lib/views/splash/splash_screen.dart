@@ -22,6 +22,8 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    context.goNamed(Routes.home.name);
+
     return CustomScaffold(
       appBar: AppBar(toolbarHeight: 0),
       body: ScrollableColumn(

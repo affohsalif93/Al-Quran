@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -29,9 +31,7 @@ class WordWidget extends ConsumerWidget {
     final highlights = ref.watch(highlightControllerProvider).highlights[pageNumber] ?? [];
     final highlighter = ref.read(highlightControllerProvider.notifier);
 
-    void defaultOnTap() {
-
-    }
+    void defaultOnTap() {}
 
     final highlight = highlights.firstWhere(
       (h) => h.location == word.location,
@@ -43,16 +43,21 @@ class WordWidget extends ConsumerWidget {
       behavior: HitTestBehavior.translucent,
       onPointerDown: (event) {
         final isCtrlPressed = HardwareKeyboard.instance.isControlPressed;
-        if (word.isAyahNrSymbol) {
-          highlighter.toggleWordsHighlight(pageNumber, ayahWordLocations);
+        final isRightClick =
+            event.kind == PointerDeviceKind.mouse && event.buttons == kSecondaryMouseButton;;
+        if (isRightClick) {
+          logger.info("Right click detected");
         } else {
-          if (isCtrlPressed) {
-            highlighter.toggleWordsHighlight(pageNumber, [word.location]);
-          } else {
+          if (word.isAyahNrSymbol) {
             highlighter.toggleWordsHighlight(pageNumber, ayahWordLocations);
+          } else {
+            if (isCtrlPressed) {
+              highlighter.toggleWordsHighlight(pageNumber, [word.location]);
+            } else {
+              highlighter.toggleWordsHighlight(pageNumber, ayahWordLocations);
+            }
           }
         }
-
       },
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 1, vertical: 1),
