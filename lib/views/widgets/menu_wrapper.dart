@@ -17,8 +17,6 @@ class MenuWrapper extends ConsumerWidget {
   final Widget child;
   final AnimationDirection direction;
   final double height;
-  // margin
-
 
 
   @override
@@ -33,18 +31,6 @@ class MenuWrapper extends ConsumerWidget {
         height: height,
         decoration: BoxDecoration(
           color: const Color.fromARGB(206, 226, 220, 220),
-          // borderRadius: BorderRadius.circular(8.r),
-
-          // color: context.isDark
-          //     ? const Color.fromARGB(140, 233, 225, 225)
-          //     : Colors.transparent,
-          // width: 1.r,
-          // border: Border(
-          //   bottom: BorderSide(
-          //     color: Colors.grey,
-          //     width: 1,
-          //   ),
-          // ),
         ),
         child: child,
       ),

@@ -3,12 +3,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:multi_split_view/multi_split_view.dart';
 import 'package:quran/core/extensions/context_extensions.dart';
 import 'package:quran/providers/home/home_controller.dart';
-import 'package:quran/views/home/viewer/double_page_viewer.dart';
+import 'package:quran/views/home/panes/right_view.dart';
+import 'package:quran/views/home/viewer/double_page_view.dart';
+import 'package:quran/views/home/panes/left_view.dart';
 import 'package:quran/views/home/viewer/quran_viewer.dart';
-import 'package:quran/views/home/viewer/single_page_viewer.dart';
+import 'package:quran/views/home/viewer/single_page_view.dart';
 
-class HomeView extends ConsumerWidget {
-  const HomeView({super.key});
+class MainView extends ConsumerWidget {
+  const MainView({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -20,8 +22,8 @@ class HomeView extends ConsumerWidget {
           homeState.isSplitViewer
               ? MultiSplitView(
                 initialAreas: [
-                  Area(flex: 5, min: 4, builder: (context, area) => QuranViewer()),
-                  Area(flex: 5, min: 4, builder: (context, area) => Draft.yellow()),
+                  Area(flex: 5, min: 4, builder: (context, area) => LeftView()),
+                  Area(flex: 5, min: 4, builder: (context, area) => RightView()),
                 ],
               )
               : QuranViewer(),

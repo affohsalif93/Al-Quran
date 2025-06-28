@@ -1,29 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:quran/core/utils/logger.dart';
-import 'package:quran/core/utils/quran_utils.dart';
-import 'package:quran/models/ayah_model.dart';
 import 'package:quran/models/quran/ayah_line.dart';
 import 'package:quran/models/quran/basmallah_line.dart';
 import 'package:quran/models/quran/surah_name_line.dart';
 import 'package:quran/models/quran/word.dart';
 import 'package:quran/providers/surah_name_ligature_provider.dart';
 import 'package:quran/repositories/quran/quran_repository.dart';
-import 'package:quran/views/home/viewer/quran_word.dart';
+import 'package:quran/views/home/viewer/quran_word_widget.dart';
 
-class PageContentBuilder {
+class QuranPageBuilder {
   final WidgetRef ref;
 
-  PageContentBuilder(this.ref);
+  QuranPageBuilder(this.ref);
 
   Future<Widget> buildPageContent(
-    int pageNumber,
-    double width,
-    double height, {
-    bool withColor = false,
-  }) async {
+      int pageNumber,
+      double width,
+      double height, {
+        bool withColor = false,
+      }) async {
     final ligature = ref.read(surahNameLigatureProvider);
-    final lines = await ref.read(quranRepositoryProvider).getPageLines(pageNumber);
+    final pageData = await ref.read(quranRepositoryProvider).getPageData(pageNumber);
 
     const avgLines = 15;
     final lineHeight = height / avgLines;
@@ -32,16 +30,7 @@ class PageContentBuilder {
 
     final List<Widget> lineWidgets = [];
 
-    // all words
-    final List<String> allAyahWordLocations =
-        lines.values.expand((line) {
-          if (line is AyahLine) {
-            return line.words.map((word) => word.location).toList();
-          }
-          return [] as List<String>;
-        }).toList();
-
-    for (final line in lines.values) {
+    for (final line in pageData.lines.values) {
       if (line is SurahNameLine) {
         lineWidgets.add(
           SizedBox(
@@ -67,7 +56,6 @@ class PageContentBuilder {
         );
       } else if (line is BasmallahLine) {
         final basmallahText = line.words.map((word) => word.glyphCode).join('');
-
         lineWidgets.add(
           Container(
             padding: const EdgeInsets.symmetric(vertical: ayahVerticalSpacing * 1.8),
@@ -86,25 +74,15 @@ class PageContentBuilder {
           ),
         );
       } else if (line is AyahLine && line.words.isNotEmpty) {
-        final wordWidgets =
-            line.words.map((word) {
-              return WordWidget(
-                pageNumber: pageNumber,
-                word: word,
-                fontSize: scalingFactor,
-                ayahWordLocations:
-                    allAyahWordLocations.where((location) {
-                      return location.startsWith('${word.surah}:${word.ayah}');
-                    }).toList(),
-              );
-            }).toList();
+        final wordWidgets = line.words.map((word) {
+          final ayahKey = (word.surah, word.ayah);
+          final ayahWords = pageData.ayahMap[ayahKey] ?? [];
 
-        line.words.map((word) {
-          return WordWidget(
+          return QuranWordWidget(
             pageNumber: pageNumber,
             word: word,
-            fontSize: scalingFactor,
-            ayahWordLocations: allAyahWordLocations,
+            fontSize: 1.5 * scalingFactor,
+            ayahWordLocations: ayahWords.map((w) => w.location).toList(),
           );
         }).toList();
 
@@ -121,10 +99,35 @@ class PageContentBuilder {
       }
     }
 
+    lineWidgets.add(
+      SizedBox(height: ayahVerticalSpacing * 1.5),
+    );
+
+    lineWidgets.add(
+      Text(
+        "$pageNumber",
+        style: TextStyle(
+          fontSize: 1 * scalingFactor,
+          color: Colors.black54,
+        ),
+      ),
+    );
+
     return FittedBox(
       fit: BoxFit.contain,
       alignment: Alignment.center,
-      child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: lineWidgets),
+      child: Container(
+        decoration: BoxDecoration(
+          // border: Border.all(color: Colors.red),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        padding: EdgeInsets.symmetric(vertical: ayahVerticalSpacing * 5),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: lineWidgets,
+        ),
+      ),
     );
   }
 }
+

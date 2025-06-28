@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:quran/views/home/viewer/page_content_builder.dart';
+import 'package:quran/views/home/viewer/quran_page_builder.dart';
 
 class DoublePageViewer extends ConsumerWidget {
   final int index;
@@ -9,7 +9,7 @@ class DoublePageViewer extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final pageContentBuilder = PageContentBuilder(ref);
+    final pageContentBuilder = QuranPageBuilder(ref);
 
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
@@ -27,7 +27,7 @@ class DoublePageViewer extends ConsumerWidget {
 
         return Center(
           child: AspectRatio(
-            aspectRatio: 2 / 1.41,
+            aspectRatio: 1.9 / 1.41,
             child: Row(
               spacing: 0,
               children: [
@@ -66,7 +66,6 @@ class BookPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Container(
-        padding: const EdgeInsets.all(50),
         decoration: BoxDecoration(
           color: const Color(0xFFF6F5EE),
           border: Border.all(color: Colors.grey.shade300),
@@ -89,18 +88,7 @@ class BookPage extends StatelessWidget {
             tileMode: TileMode.clamp,
           ),
         ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const SizedBox(height: 38),
-            Expanded(child: AspectRatio(aspectRatio: 1 / 1.41, child: widget)),
-            const SizedBox(height: 8),
-            Text(
-              "$pageNumber",
-              style: const TextStyle(fontSize: 18, color: Colors.black54),
-            ),
-          ],
-        ),
+        child: AspectRatio(aspectRatio: 0.9 / 1.41, child: widget),
       ),
     );
   }

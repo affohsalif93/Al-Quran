@@ -1,7 +1,9 @@
+import 'dart:math';
+
 import 'package:quran/core/utils/logger.dart';
 import 'package:quran/models/quran/ayah_line.dart';
 import 'package:quran/models/quran/basmallah_line.dart';
-import 'package:quran/models/quran/surah_name_ligature.dart';
+import 'package:quran/models/quran/page_data.dart';
 import 'package:quran/models/quran/surah_name_line.dart';
 import 'package:quran/models/quran/word.dart';
 import 'package:quran/services/quran_db_service.dart';
@@ -33,7 +35,7 @@ class QuranRepository {
     return Ayah.fromJson(results.first);
   }
 
-  Future<List<Word>> _getWordsInRange(int pageNumber, int firstWordId, int lastWordId) async {
+  Future<List<Word>> _getWordsInRange(int firstWordId, int lastWordId) async {
     final List<Map<String, dynamic>> results = await wordDb.query(
       'words',
       where: 'id BETWEEN ? AND ?',
@@ -53,9 +55,60 @@ class QuranRepository {
     }).toList();
   }
 
-  Future<Map<int, PageLine>> getPageLines(int pageNumber) async {
+
+  Future<List<Word>> getWordsForPage(int pageNumber) async {
     try {
-      final List<Map<String, dynamic>> results = await linesDb.query(
+      final List<Map<String, dynamic>> lineRows = await linesDb.query(
+        'pages',
+        where: 'page_number = ?',
+        whereArgs: [pageNumber],
+        orderBy: 'line_number ASC',
+      );
+
+      final wordIdRanges = lineRows
+          .map((row) => (row['first_word_id'] as int, row['last_word_id'] as int))
+          .toList();
+
+      final allWordIds = wordIdRanges.expand((pair) => [pair.$1, pair.$2]).toList();
+      final minWordId = allWordIds.reduce(min);
+      final maxWordId = allWordIds.reduce(max);
+
+      final List<Map<String, dynamic>> wordRows = await wordDb.query(
+        'words',
+        where: 'id BETWEEN ? AND ?',
+        whereArgs: [minWordId, maxWordId],
+        orderBy: 'id ASC',
+      );
+
+      final words = wordRows.map((row) =>
+        Word(
+          id: row['id'] as int,
+          location: row['location'],
+          surah: row['surah'] as int,
+          ayah: row['ayah'] as int,
+          glyphCode: row['text'],
+          isAyahNrSymbol: (row['is_ayah_number'] as int) == 1,
+        )).toList();
+
+      return words;
+    } catch (e, st) {
+      logger.fine('Error loading words for page $pageNumber: $e');
+      logger.fine(st);
+      rethrow;
+    }
+  }
+
+  Future<QuranPageData> getPageData(int pageNumber) async {
+    try {
+      final pageWords = await getWordsForPage(pageNumber);
+
+      final Map<(int, int), List<Word>> ayahGroups = {};
+      for (final word in pageWords) {
+        final key = (word.surah, word.ayah);
+        ayahGroups.putIfAbsent(key, () => []).add(word);
+      }
+
+      final List<Map<String, dynamic>> lineRows = await linesDb.query(
         'pages',
         where: 'page_number = ?',
         whereArgs: [pageNumber],
@@ -64,7 +117,7 @@ class QuranRepository {
 
       final Map<int, PageLine> lines = {};
 
-      for (final row in results) {
+      for (final row in lineRows) {
         final String typeStr = row['line_type'] as String;
         final LineType lineType = PageLine.parseLineType(typeStr);
 
@@ -76,15 +129,12 @@ class QuranRepository {
           final int firstWordId = row['first_word_id'] as int;
           final int lastWordId = row['last_word_id'] as int;
 
-          final List<Word> words = await _getWordsInRange(
-            page,
-            firstWordId,
-            lastWordId,
-          );
+          final List<Word> words = pageWords.where((w) =>
+          w.id >= firstWordId && w.id <= lastWordId).toList();
 
           final int surah = words.first.surah;
 
-          final line = AyahLine(
+          lines[lineNumber] = AyahLine(
             pageNumber: page,
             lineNumber: lineNumber,
             surahNumber: surah,
@@ -94,13 +144,10 @@ class QuranRepository {
             words: words,
           );
 
-          lines[lineNumber] = line;
-
         } else if (lineType == LineType.basmallah) {
+          final basmallahWords = pageWords.where((w) => w.id >= 1 && w.id <= 4).toList();
 
-          final basmallahWords = await _getWordsInRange(page, 1, 4);
-
-          final line = BasmallahLine(
+          lines[lineNumber] = BasmallahLine(
             pageNumber: page,
             lineNumber: lineNumber,
             isCentered: isCentered,
@@ -108,25 +155,25 @@ class QuranRepository {
             words: basmallahWords,
           );
 
-          lines[lineNumber] = line;
-
         } else if (lineType == LineType.surahName) {
           final int surahNumber = row['surah_number'] as int;
 
-          final line = SurahNameLine(
+          lines[lineNumber] = SurahNameLine(
             pageNumber: page,
             lineNumber: lineNumber,
             isCentered: isCentered,
             surahNumber: surahNumber,
           );
-
-          lines[lineNumber] = line;
         }
       }
 
-      return lines;
+      return QuranPageData(
+        lines: lines,
+        words: pageWords,
+        ayahMap: ayahGroups,
+      );
     } catch (e, st) {
-      logger.fine('Error loading page lines: $e');
+      logger.fine('Error loading page data: $e');
       logger.fine(st);
       rethrow;
     }

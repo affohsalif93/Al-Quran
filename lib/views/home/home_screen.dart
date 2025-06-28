@@ -7,7 +7,7 @@ import 'package:quran/providers/drawer/drawer_provider.dart';
 import 'package:quran/providers/home/home_controller.dart';
 import 'package:quran/views/footer/bottom_menu_bar.dart';
 import 'package:quran/views/header/top_menu_bar.dart';
-import 'package:quran/views/home/viewer/home_view.dart';
+import 'package:quran/views/home/panes/main_view.dart';
 import 'package:quran/views/home/viewer/quran_viewer.dart';
 
 class HomeScreen extends ConsumerWidget {
@@ -40,7 +40,7 @@ class HomeScreen extends ConsumerWidget {
             horizontal: 10,
             vertical: 20,
           ),
-          child: HomeView(),
+          child: MainView(),
         ),
         drawer: Drawer(
           width: 350,

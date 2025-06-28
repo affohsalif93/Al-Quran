@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:quran/core/utils/logger.dart';
 import 'package:quran/providers/highlighter/word_highlight.dart';
 import 'package:quran/repositories/quran/quran_repository.dart';
 
@@ -12,15 +13,17 @@ class HighlightController extends StateNotifier<HighlighterState> {
     repo = ref.read(quranRepositoryProvider);
   }
 
-  void highlightWords(int page, List<String> wordLocations, Color color) {
-    final current = state.highlights;
+  void highlightWords(int page, List<String> wordLocations) {
+    logger.info("Highlighting words for page $page: ${wordLocations.length}");
+    final current = Map<int, List<WordHighlight>>.from(state.highlights);
     final existing = current[page] ?? [];
 
     final updated = [
       ...existing.where((h) => !wordLocations.contains(h.location)),
-      ...wordLocations.map((location) => WordHighlight(location: location, color: color)),
+      ...wordLocations.map((location) => WordHighlight(location: location, color: Colors.yellow.withOpacity(0.5))),
     ];
 
+    logger.info("updated highlights for page $page: ${updated.length} existing highlights");
     current[page] = updated;
     state = state.copyWith(highlights: current);
   }
@@ -51,7 +54,7 @@ class HighlightController extends StateNotifier<HighlighterState> {
   }
 
   void toggleWordsHighlight(int page, List<String> wordLocations) {
-    final current = state.highlights;
+    final current = Map<int, List<WordHighlight>>.from(state.highlights);
     final existing = current[page] ?? [];
 
     final updated = existing.where((h) => !wordLocations.contains(h.location)).toList();

@@ -8,8 +8,9 @@ import 'package:quran/core/utils/logger.dart';
 import 'package:quran/models/quran/word.dart';
 import 'package:quran/providers/highlighter/highlighter_provider.dart';
 import 'package:quran/providers/highlighter/word_highlight.dart';
+import 'package:quran/providers/word_click_provider.dart';
 
-class WordWidget extends ConsumerWidget {
+class QuranWordWidget extends ConsumerWidget {
   final Word word;
   final int pageNumber;
   final double fontSize;
@@ -17,7 +18,7 @@ class WordWidget extends ConsumerWidget {
   final List<String> ayahWordLocations;
   final void Function()? onTap;
 
-  WordWidget({
+  QuranWordWidget({
     super.key,
     required this.word,
     required this.pageNumber,
@@ -29,9 +30,7 @@ class WordWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final highlights = ref.watch(highlightControllerProvider).highlights[pageNumber] ?? [];
-    final highlighter = ref.read(highlightControllerProvider.notifier);
-
-    void defaultOnTap() {}
+    final wordClickController = ref.watch(wordClickControllerProvider.notifier);
 
     final highlight = highlights.firstWhere(
       (h) => h.location == word.location,
@@ -39,25 +38,22 @@ class WordWidget extends ConsumerWidget {
     );
 
     final isHighlighted = highlight.color != Colors.transparent;
+    
     return Listener(
       behavior: HitTestBehavior.translucent,
       onPointerDown: (event) {
         final isCtrlPressed = HardwareKeyboard.instance.isControlPressed;
         final isRightClick =
             event.kind == PointerDeviceKind.mouse && event.buttons == kSecondaryMouseButton;;
-        if (isRightClick) {
-          logger.info("Right click detected");
-        } else {
-          if (word.isAyahNrSymbol) {
-            highlighter.toggleWordsHighlight(pageNumber, ayahWordLocations);
-          } else {
-            if (isCtrlPressed) {
-              highlighter.toggleWordsHighlight(pageNumber, [word.location]);
-            } else {
-              highlighter.toggleWordsHighlight(pageNumber, ayahWordLocations);
-            }
-          }
-        }
+
+        final ctx = WordClickContext(
+          word: word,
+          page: pageNumber,
+          ctrlPressed: isCtrlPressed,
+          isRightClick: isRightClick,
+        );
+
+        wordClickController.handleClick(ref, ctx);
       },
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 1, vertical: 1),
