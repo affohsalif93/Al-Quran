@@ -6,7 +6,7 @@ class BasmallahLine extends PageLine {
   final int ayahNumber;
   final List<Word> words;
 
-  BasmallahLine({
+  const BasmallahLine({
     required super.pageNumber,
     required super.lineNumber,
     required super.isCentered,

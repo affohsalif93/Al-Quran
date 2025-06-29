@@ -7,7 +7,7 @@ class AyahLine extends PageLine {
   final int? surahNumber;
   final List<Word> words;
 
-  AyahLine({
+  const AyahLine({
     required super.pageNumber,
     required super.lineNumber,
     required super.isCentered,

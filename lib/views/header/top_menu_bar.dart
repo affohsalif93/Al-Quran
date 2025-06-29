@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:material_symbols_icons/symbols.dart';
-import 'package:quran/core/utils/logger.dart';
 import 'package:quran/providers/drawer/drawer_provider.dart';
 import 'package:quran/providers/drawer/drawer_state.dart';
 import 'package:quran/providers/home/home_controller.dart';

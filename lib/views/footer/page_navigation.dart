@@ -11,7 +11,6 @@ class PageNavigation extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final homeController = ref.read(homeControllerProvider.notifier);
-    final homeState = ref.watch(homeControllerProvider);
 
     return Container(
       alignment: Alignment.center,

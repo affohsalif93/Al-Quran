@@ -247,7 +247,7 @@ class CustomButton extends StatelessWidget {
             child: Center(
               child: CustomLoading(
                 strokeWidth: 3,
-                color: context.colors.primary.withOpacity(0.7),
+                color: context.colors.primary.withValues(alpha: 0.7),
               ),
             ),
           ),

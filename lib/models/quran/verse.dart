@@ -7,7 +7,7 @@ class Ayah extends Equatable {
   final String verseKey;
   final String text;
 
-  Ayah({
+  const Ayah({
     required this.id,
     required this.surahNumber,
     required this.ayahNumber,

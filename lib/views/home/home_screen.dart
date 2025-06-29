@@ -8,7 +8,6 @@ import 'package:quran/providers/home/home_controller.dart';
 import 'package:quran/views/footer/bottom_menu_bar.dart';
 import 'package:quran/views/header/top_menu_bar.dart';
 import 'package:quran/views/home/panes/main_view.dart';
-import 'package:quran/views/home/viewer/quran_viewer.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});

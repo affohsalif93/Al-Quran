@@ -88,7 +88,7 @@ class AsyncValueBuilder<T> extends StatelessWidget {
     final errorWidget = error?.call(appException) ??
         DottedBorder(
           color:
-              (foregroundColor ?? context.colors.textPrimary).withOpacity(.3),
+              (foregroundColor ?? context.colors.textPrimary).withValues(alpha: .3),
           strokeWidth: 1,
           radius: const Radius.circular(8),
           borderType: BorderType.RRect,
@@ -105,7 +105,7 @@ class AsyncValueBuilder<T> extends StatelessWidget {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: (foregroundColor ?? context.colors.textPrimary)
-                        .withOpacity(0.9),
+                        .withValues(alpha: 0.9),
                   ),
                 ),
                 10.gapH,
@@ -113,7 +113,7 @@ class AsyncValueBuilder<T> extends StatelessWidget {
                   CustomButton(
                     foregroundColor: context.colors.textPrimary,
                     backgroundColor: Colors.transparent,
-                    strokeColor: context.colors.textPrimary.withOpacity(.3),
+                    strokeColor: context.colors.textPrimary.withValues(alpha: .3),
                     icon: Symbols.refresh,
                     onPressed: onRefresh,
                     text: context.t.retry,

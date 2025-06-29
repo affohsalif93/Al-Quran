@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:quran/core/utils/logger.dart';
 import 'package:quran/models/quran/ayah_line.dart';
 import 'package:quran/models/quran/basmallah_line.dart';
 import 'package:quran/models/quran/page_data.dart';
@@ -8,7 +7,6 @@ import 'package:quran/models/quran/surah_name_line.dart';
 import 'package:quran/models/quran/word.dart';
 import 'package:quran/providers/quran_page_provider.dart';
 import 'package:quran/providers/surah_name_ligature_provider.dart';
-import 'package:quran/repositories/quran/quran_repository.dart';
 import 'package:quran/views/home/viewer/quran_word_widget.dart';
 
 class QuranPageBuilder {
@@ -17,19 +15,12 @@ class QuranPageBuilder {
   QuranPageBuilder(this.ref);
 
   Future<Widget> buildPageContent(int pageNumber, double width, double height) async {
-    final controller = ref.read(quranPageControllerProvider.notifier);
-    final repo = ref.read(quranRepositoryProvider);
+    final controller = ref.read(quranPageControllerProvider(pageNumber).notifier);
 
-    await controller.loadPage(pageNumber, repo);
+    await controller.loadPage();
 
-    final state = ref.read(quranPageControllerProvider);
-    final pageData = state.data;
-
-    if (pageData == null) {
-      return const Center(child: CircularProgressIndicator());
-    }
-
-    return _buildFromData(pageData, pageNumber, width, height);
+    final state = ref.read(quranPageControllerProvider(pageNumber));
+    return _buildFromData(state.data, pageNumber, width, height);
   }
 
   Widget _buildFromData(QuranPageData pageData, int pageNumber, double width, double height) {
@@ -69,9 +60,6 @@ class QuranPageBuilder {
       } else if (line is BasmallahLine) {
         final basmallahWords =
             line.words.map((word) {
-              final ayahKey = (word.surah, word.ayah);
-              final ayahWords = pageData.ayahToWordsMap[ayahKey] ?? [];
-
               return QuranWordWidget.withFont(
                 pageNumber: pageNumber,
                 word: word,
@@ -89,9 +77,6 @@ class QuranPageBuilder {
       } else if (line is AyahLine && line.words.isNotEmpty) {
         final wordWidgets =
             line.words.map((word) {
-              final ayahKey = (word.surah, word.ayah);
-              final ayahWords = pageData.ayahToWordsMap[ayahKey] ?? [];
-
               return QuranWordWidget(
                 pageNumber: pageNumber,
                 word: word,

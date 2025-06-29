@@ -3,7 +3,7 @@ import 'package:quran/models/quran/page_line.dart';
 class SurahNameLine extends PageLine {
   final int surahNumber;
 
-  SurahNameLine({
+  const SurahNameLine({
     required super.pageNumber,
     required super.lineNumber,
     required super.isCentered,

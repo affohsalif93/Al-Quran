@@ -8,12 +8,10 @@ import 'package:quran/models/quran/word.dart';
 import 'package:quran/providers/highlighter/highlighter_provider.dart';
 import 'package:quran/providers/highlighter/highlighter_state.dart';
 import 'package:quran/providers/home/home_controller.dart';
-import 'package:quran/providers/home/home_state.dart';
 import 'package:quran/repositories/quran/quran_repository.dart';
 
-final quranPageControllerProvider = NotifierProvider<QuranPageController, QuranPageState>(
-  () => QuranPageController(),
-);
+final quranPageControllerProvider =
+    NotifierProvider.family<QuranPageController, QuranPageState, int>(QuranPageController.new);
 
 class WordClickContext {
   final Word word;
@@ -46,35 +44,37 @@ class QuranPageState {
 
 final focusHighlighter = LabeledHighlight(
   label: "focus",
-  color: Colors.grey.withOpacity(0.3),
+  color: Colors.grey.withValues(alpha: 0.3),
   highlights: {},
 );
 
 final genericHighlighter = LabeledHighlight(
   label: "generic",
-  color: Colors.yellow.withOpacity(0.3),
+  color: Colors.yellow.withValues(alpha: 0.3),
   highlights: {},
 );
 
-class QuranPageController extends Notifier<QuranPageState> {
+class QuranPageController extends FamilyNotifier<QuranPageState, int> {
+  late final int pageNumber;
+
   @override
-  QuranPageState build() {
-    return QuranPageState(data: QuranPageData.empty(), currentPage: 1);
+  QuranPageState build(int pageNumber) {
+    this.pageNumber = pageNumber;
+    return QuranPageState(data: QuranPageData.empty(), currentPage: pageNumber);
   }
 
-  Future<void> loadPage(int pageNumber, QuranRepository repo) async {
+  Future<void> loadPage() async {
+    final repo = ref.read(quranRepositoryProvider);
     final data = await repo.getPageData(pageNumber);
     state = QuranPageState(data: data, currentPage: pageNumber);
-    // Auto-focus on the first Ayah of the page
 
     final homeState = ref.read(homeControllerProvider);
-
     if (!homeState.isMushafTab) {
       autoFocusOnFirstAyahOfPage(data);
     }
   }
 
-  (int, int, int) getFirstAyahOfPage(QuranPageData data) {
+  (int, int, int) _getFirstAyahOfPage(QuranPageData data) {
     final firstAyahLine =
         data.lines.values.firstWhere((line) => line.lineType == LineType.ayah) as AyahLine;
 
@@ -84,13 +84,13 @@ class QuranPageController extends Notifier<QuranPageState> {
   }
 
   void autoFocusOnFirstAyahOfPage(QuranPageData data) {
-    final f = getFirstAyahOfPage(data);
+    final f = _getFirstAyahOfPage(data);
     focusOnAyah(f.$1, f.$2, f.$3);
   }
 
   void focusOnAyah(int pageNumber, int surah, int ayah) {
     final highlighter = ref.read(highlightControllerProvider.notifier);
-    final ayahWords = state.getWordsForAyah(surah, ayah) ?? [];
+    final ayahWords = state.getWordsForAyah(surah, ayah);
 
     highlighter.clearAllForLabel(focusHighlighter.label);
 

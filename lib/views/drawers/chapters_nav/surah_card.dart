@@ -26,7 +26,7 @@ class SurahCard extends ConsumerWidget {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 4),
       decoration: BoxDecoration(
-        border: Border(bottom: BorderSide(color: context.colorScheme.onSurface.withOpacity(.03))),
+        border: Border(bottom: BorderSide(color: context.colorScheme.onSurface.withValues(alpha: 0.3))),
       ),
       child: ListTile(
         onTap: onSelectedSurah,

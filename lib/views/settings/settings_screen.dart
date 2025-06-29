@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:go_router/go_router.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
 import 'package:quran/views/widgets/custom_scaffold.dart';
 import 'package:quran/views/widgets/scrollable_column.dart';
 import 'package:quran/core/extensions/context_extensions.dart';
 import 'package:quran/i18n/strings.g.dart';
-import 'package:quran/router/routes.dart';
 import 'choose_locale_dialog.dart';
 import 'choose_theme_dialog.dart';
 

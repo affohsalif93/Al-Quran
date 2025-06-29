@@ -27,12 +27,12 @@ class MushafCard extends ConsumerWidget {
       padding: EdgeInsets.symmetric(vertical: 2, horizontal: 10),
       decoration: BoxDecoration(
         color: isCurrentMushaf
-            ? context.colorScheme.primary.withOpacity(.1)
+            ? context.colorScheme.primary.withValues(alpha: .1)
             : context.colorScheme.surface,
         borderRadius: BorderRadius.circular(8),
         border: Border(
           bottom: BorderSide(
-            color: context.colorScheme.onSurface.withOpacity(.03),
+            color: context.colorScheme.onSurface.withValues(alpha: .03),
           ),
         ),
       ),
@@ -50,7 +50,7 @@ class MushafCard extends ConsumerWidget {
         trailing: Icon(
           Symbols.arrow_forward_ios,
           size: 14.spMin,
-          color: context.colorScheme.onSurface.withOpacity(.4),
+          color: context.colorScheme.onSurface.withValues(alpha: .4),
         ),
       ),
     );
