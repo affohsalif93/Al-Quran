@@ -3,8 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:quran/core/utils/logger.dart';
 import 'package:quran/models/quran/ayah_line.dart';
 import 'package:quran/models/quran/basmallah_line.dart';
+import 'package:quran/models/quran/page_data.dart';
 import 'package:quran/models/quran/surah_name_line.dart';
 import 'package:quran/models/quran/word.dart';
+import 'package:quran/providers/quran_page_provider.dart';
 import 'package:quran/providers/surah_name_ligature_provider.dart';
 import 'package:quran/repositories/quran/quran_repository.dart';
 import 'package:quran/views/home/viewer/quran_word_widget.dart';
@@ -14,14 +16,24 @@ class QuranPageBuilder {
 
   QuranPageBuilder(this.ref);
 
-  Future<Widget> buildPageContent(
-      int pageNumber,
-      double width,
-      double height, {
-        bool withColor = false,
-      }) async {
+  Future<Widget> buildPageContent(int pageNumber, double width, double height) async {
+    final controller = ref.read(quranPageControllerProvider.notifier);
+    final repo = ref.read(quranRepositoryProvider);
+
+    await controller.loadPage(pageNumber, repo);
+
+    final state = ref.read(quranPageControllerProvider);
+    final pageData = state.data;
+
+    if (pageData == null) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    return _buildFromData(pageData, pageNumber, width, height);
+  }
+
+  Widget _buildFromData(QuranPageData pageData, int pageNumber, double width, double height) {
     final ligature = ref.read(surahNameLigatureProvider);
-    final pageData = await ref.read(quranRepositoryProvider).getPageData(pageNumber);
 
     const avgLines = 15;
     final lineHeight = height / avgLines;
@@ -39,7 +51,7 @@ class QuranPageBuilder {
               alignment: Alignment.center,
               child: Transform(
                 alignment: Alignment.center,
-                transform: Matrix4.diagonal3Values(1.0, 0.8, 1.0),
+                transform: Matrix4.diagonal3Values(1.5, 1.0, 1.0),
                 child: Text(
                   ligature.getHeaderSymbol(line.surahNumber),
                   style: TextStyle(
@@ -55,40 +67,42 @@ class QuranPageBuilder {
           ),
         );
       } else if (line is BasmallahLine) {
-        final basmallahText = line.words.map((word) => word.glyphCode).join('');
+        final basmallahWords =
+            line.words.map((word) {
+              final ayahKey = (word.surah, word.ayah);
+              final ayahWords = pageData.ayahToWordsMap[ayahKey] ?? [];
+
+              return QuranWordWidget.withFont(
+                pageNumber: pageNumber,
+                word: word,
+                fontSize: 1.7 * scalingFactor,
+                fontFamily: Word.fontFamilyForPage(1),
+              );
+            }).toList();
+
         lineWidgets.add(
           Container(
-            padding: const EdgeInsets.symmetric(vertical: ayahVerticalSpacing * 1.8),
-            child: Center(
-              child: Text(
-                basmallahText,
-                style: TextStyle(
-                  fontSize: scalingFactor * 1.3,
-                  fontFamily: Word.fontFamilyForPage(1),
-                  color: Colors.black87,
-                  height: 1.0,
-                ),
-                textDirection: TextDirection.rtl,
-              ),
-            ),
+            padding: const EdgeInsets.symmetric(vertical: ayahVerticalSpacing / 2),
+            child: Wrap(textDirection: TextDirection.rtl, children: basmallahWords),
           ),
         );
       } else if (line is AyahLine && line.words.isNotEmpty) {
-        final wordWidgets = line.words.map((word) {
-          final ayahKey = (word.surah, word.ayah);
-          final ayahWords = pageData.ayahMap[ayahKey] ?? [];
+        final wordWidgets =
+            line.words.map((word) {
+              final ayahKey = (word.surah, word.ayah);
+              final ayahWords = pageData.ayahToWordsMap[ayahKey] ?? [];
 
-          return QuranWordWidget(
-            pageNumber: pageNumber,
-            word: word,
-            fontSize: 1.5 * scalingFactor,
-            ayahWordLocations: ayahWords.map((w) => w.location).toList(),
-          );
-        }).toList();
+              return QuranWordWidget(
+                pageNumber: pageNumber,
+                word: word,
+                fontSize: 1.5 * scalingFactor,
+              );
+            }).toList();
 
         lineWidgets.add(
           Container(
-            padding: const EdgeInsets.only(bottom: ayahVerticalSpacing),
+            padding: const EdgeInsets.symmetric(vertical: ayahVerticalSpacing / 2),
+            // decoration: BoxDecoration(border: Border.all(color: Colors.red, width: 0.5)),
             child: Wrap(
               textDirection: TextDirection.rtl,
               alignment: WrapAlignment.start,
@@ -99,18 +113,10 @@ class QuranPageBuilder {
       }
     }
 
-    lineWidgets.add(
-      SizedBox(height: ayahVerticalSpacing * 1.5),
-    );
+    lineWidgets.add(SizedBox(height: ayahVerticalSpacing * 1.5));
 
     lineWidgets.add(
-      Text(
-        "$pageNumber",
-        style: TextStyle(
-          fontSize: 1 * scalingFactor,
-          color: Colors.black54,
-        ),
-      ),
+      Text("$pageNumber", style: TextStyle(fontSize: 1 * scalingFactor, color: Colors.black54)),
     );
 
     return FittedBox(
@@ -121,13 +127,9 @@ class QuranPageBuilder {
           // border: Border.all(color: Colors.red),
           borderRadius: BorderRadius.circular(8),
         ),
-        padding: EdgeInsets.symmetric(vertical: ayahVerticalSpacing * 5),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: lineWidgets,
-        ),
+        padding: EdgeInsets.symmetric(vertical: ayahVerticalSpacing * 7),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: lineWidgets),
       ),
     );
   }
 }
-

@@ -57,6 +57,8 @@ class HomeState extends Equatable {
 
   get isSplitViewer => currentTab != HomeTab.mushaf;
 
+  get isMushafTab => currentTab == HomeTab.mushaf;
+
   HomeState setCurrentPage(int currentPage) {
     return copyWith(currentPage: currentPage);
   }

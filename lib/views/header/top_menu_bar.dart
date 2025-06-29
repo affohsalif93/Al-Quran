@@ -20,7 +20,7 @@ class TopMenuBar extends ConsumerWidget {
 
     return MenuWrapper(
       direction: AnimationDirection.appearFromTop,
-      height: 45,
+      height: 40,
       child: Row(
         children: [
           TextButton.icon(

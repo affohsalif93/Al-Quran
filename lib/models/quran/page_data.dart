@@ -1,15 +1,22 @@
+import 'package:quran/models/quran/page_line.dart';
 import 'package:quran/models/quran/word.dart';
-
-import 'page_line.dart';
 
 class QuranPageData {
   final Map<int, PageLine> lines;
   final List<Word> words;
-  final Map<(int surah, int ayah), List<Word>> ayahMap;
+  final Map<(int surah, int ayah), List<Word>> ayahToWordsMap;
 
   QuranPageData({
     required this.lines,
     required this.words,
-    required this.ayahMap,
+    required this.ayahToWordsMap,
   });
+
+  static empty() {
+    return QuranPageData(
+      lines: {},
+      words: [],
+      ayahToWordsMap: {},
+    );
+  }
 }

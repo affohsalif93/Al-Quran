@@ -66,6 +66,7 @@ class QuranRepository {
       );
 
       final wordIdRanges = lineRows
+          .where((row) => row['line_type'] == 'ayah')
           .map((row) => (row['first_word_id'] as int, row['last_word_id'] as int))
           .toList();
 
@@ -145,7 +146,7 @@ class QuranRepository {
           );
 
         } else if (lineType == LineType.basmallah) {
-          final basmallahWords = pageWords.where((w) => w.id >= 1 && w.id <= 4).toList();
+          final basmallahWords = await _getWordsInRange(1, 4);
 
           lines[lineNumber] = BasmallahLine(
             pageNumber: page,
@@ -170,7 +171,7 @@ class QuranRepository {
       return QuranPageData(
         lines: lines,
         words: pageWords,
-        ayahMap: ayahGroups,
+        ayahToWordsMap: ayahGroups,
       );
     } catch (e, st) {
       logger.fine('Error loading page data: $e');
