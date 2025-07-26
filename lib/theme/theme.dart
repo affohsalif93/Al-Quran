@@ -38,7 +38,8 @@ abstract final class AppTheme {
       ),
       drawerTheme: DrawerThemeData(
         scrimColor: Colors.transparent,
-        elevation: 8,
+        elevation: 50,
+        shadowColor: Colors.black45,
       ),
       iconTheme: IconThemeData(
         color: colors.textPrimary,
@@ -83,7 +84,7 @@ abstract final class AppTheme {
           systemNavigationBarIconBrightness: Brightness.light,
         ),
       ),
-      dialogTheme: DialogTheme(
+      dialogTheme: DialogThemeData(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         shadowColor: Colors.black45,
         titleTextStyle: TextStyle(
@@ -145,7 +146,7 @@ abstract final class AppTheme {
         contentPadding: EdgeInsets.symmetric(horizontal: 16),
         horizontalTitleGap: 8,
       ),
-      tabBarTheme: TabBarTheme(
+      tabBarTheme: TabBarThemeData(
         labelStyle: TextStyle(
           fontFamily: fontFamily,
           fontSize: 15,

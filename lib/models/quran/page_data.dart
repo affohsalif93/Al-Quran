@@ -19,4 +19,8 @@ class QuranPageData {
       ayahToWordsMap: {},
     );
   }
+
+  get isEmpty {
+    return lines.isEmpty && words.isEmpty && ayahToWordsMap.isEmpty;
+  }
 }

@@ -6,7 +6,7 @@ import 'package:quran/models/quran/page_data.dart';
 import 'package:quran/models/quran/surah_name_line.dart';
 import 'package:quran/models/quran/word.dart';
 import 'package:quran/providers/quran_page_provider.dart';
-import 'package:quran/providers/surah_name_ligature_provider.dart';
+import 'package:quran/repositories/quran/static_quran_data.dart';
 import 'package:quran/views/home/viewer/quran_word_widget.dart';
 
 class QuranPageBuilder {
@@ -15,16 +15,17 @@ class QuranPageBuilder {
   QuranPageBuilder(this.ref);
 
   Future<Widget> buildPageContent(int pageNumber, double width, double height) async {
-    final controller = ref.read(quranPageControllerProvider(pageNumber).notifier);
+    final state = ref.watch(quranPageControllerProvider(pageNumber));
 
-    await controller.loadPage();
+    if (state.data.isEmpty) {
+      ref.read(quranPageControllerProvider(pageNumber).notifier).loadPage();
+      return Center(child: CircularProgressIndicator());
+    }
 
-    final state = ref.read(quranPageControllerProvider(pageNumber));
     return _buildFromData(state.data, pageNumber, width, height);
   }
 
   Widget _buildFromData(QuranPageData pageData, int pageNumber, double width, double height) {
-    final ligature = ref.read(surahNameLigatureProvider);
 
     const avgLines = 15;
     final lineHeight = height / avgLines;
@@ -44,10 +45,10 @@ class QuranPageBuilder {
                 alignment: Alignment.center,
                 transform: Matrix4.diagonal3Values(1.5, 1.0, 1.0),
                 child: Text(
-                  ligature.getHeaderSymbol(line.surahNumber),
+                  StaticQuranData.namesLigatures.getHeaderSymbol(line.surahNumber),
                   style: TextStyle(
                     fontSize: scalingFactor * 4.7,
-                    fontFamily: ligature.headerFontFamily,
+                    fontFamily: StaticQuranData.namesLigatures.headerFontFamily,
                     color: Colors.black,
                     height: 0.33,
                   ),
@@ -98,11 +99,10 @@ class QuranPageBuilder {
       }
     }
 
-    lineWidgets.add(SizedBox(height: ayahVerticalSpacing * 1.5));
-
-    lineWidgets.add(
+    lineWidgets.addAll([
+      SizedBox(height: ayahVerticalSpacing * 1.5),
       Text("$pageNumber", style: TextStyle(fontSize: 1 * scalingFactor, color: Colors.black54)),
-    );
+    ]);
 
     return FittedBox(
       fit: BoxFit.contain,
@@ -112,7 +112,7 @@ class QuranPageBuilder {
           // border: Border.all(color: Colors.red),
           borderRadius: BorderRadius.circular(8),
         ),
-        padding: EdgeInsets.symmetric(vertical: ayahVerticalSpacing * 7),
+        margin: EdgeInsets.only(top: ayahVerticalSpacing * 7, bottom: ayahVerticalSpacing * 2),
         child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: lineWidgets),
       ),
     );

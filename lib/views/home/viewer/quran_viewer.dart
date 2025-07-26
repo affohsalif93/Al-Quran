@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:quran/core/extensions/context_extensions.dart';
-import 'package:quran/providers/home/home_controller.dart';
+import 'package:quran/providers/global/global_controller.dart';
 import 'package:quran/views/home/viewer/double_page_view.dart';
 import 'package:quran/views/home/viewer/single_page_view.dart';
 
@@ -10,22 +10,22 @@ class QuranViewer extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final homeState = ref.watch(homeControllerProvider);
-    final homeController = ref.read(homeControllerProvider.notifier);
+    final globalState = ref.watch(globalControllerProvider);
+    final globalController = ref.read(globalControllerProvider.notifier);
 
     return PageView.builder(
-      controller: homeController.pageController,
+      controller: globalController.pageController,
       reverse: context.isLtr,
-      itemCount: homeController.getMushafPageCount(),
+      itemCount: globalController.getMushafPageCount(),
       onPageChanged: (index) {
-        // homeController.setCurrentPage(index + 1);
+        // globalController.setCurrentPage(index + 1);
       },
       itemBuilder: (context, index) {
         return Center(
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 0, vertical: 30),
+            padding: EdgeInsets.symmetric(horizontal: 0, vertical: 10),
             child:
-              homeState.isBookView
+              globalState.isBookView
                   ? DoublePageViewer(index: index)
                   : SinglePageViewer(index: index),
           )

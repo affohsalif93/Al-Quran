@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:quran/providers/shared_preferences_provider.dart';
-import '../../providers/home/home_controller.dart';
+import '../../providers/global/global_controller.dart';
 
 final bookmarkControllerProvider =
     StateNotifierProvider<BookmarkController, int?>((ref) {
@@ -30,7 +30,7 @@ class BookmarkController extends StateNotifier<int?> {
 
   void goToBookmark() {
     if (state != null) {
-      ref.read(homeControllerProvider.notifier).goToPage(state!);
+      ref.read(globalControllerProvider.notifier).goToPage(state!);
     }
   }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:quran/providers/drawer/drawer_state.dart';
-import 'package:quran/providers/home/home_controller.dart';
+import 'package:quran/providers/global/global_controller.dart';
 
 class DrawerController extends StateNotifier<DrawerState> {
   DrawerController() : super(const DrawerState());
@@ -19,7 +19,7 @@ class DrawerController extends StateNotifier<DrawerState> {
 
   void closeLeftDrawer() {
     state = state.copyWith(isLeftDrawerOpen: false, leftDrawerComponentKey: null, leftDrawerComponent: null);
-    homeScaffoldKey.currentState?.closeDrawer();
+    globalScaffoldKey.currentState?.closeDrawer();
   }
 
   void toggleRightDrawer(DrawerComponentKey key) {
@@ -37,7 +37,7 @@ class DrawerController extends StateNotifier<DrawerState> {
   void closeRightDrawer() {
     state =
         state.copyWith(isRightDrawerOpen: false, rightDrawerComponentKey: null, rightDrawerComponent: null);
-    homeScaffoldKey.currentState?.closeEndDrawer();
+    globalScaffoldKey.currentState?.closeEndDrawer();
   }
 
   void selectLeftDrawerComponent(DrawerComponentKey componentKey) {

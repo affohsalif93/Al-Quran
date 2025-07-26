@@ -8,7 +8,7 @@ import 'package:quran/core/extensions/context_extensions.dart';
 import 'package:quran/models/mushaf.dart';
 import 'package:quran/providers/drawer/drawer_provider.dart';
 import 'package:quran/providers/drawer/drawer_state.dart';
-import 'package:quran/providers/home/home_controller.dart';
+import 'package:quran/providers/global/global_controller.dart';
 
 class MushafCard extends ConsumerWidget {
   const MushafCard(this.mushaf, {super.key});
@@ -17,7 +17,7 @@ class MushafCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final drawerActions = ref.read(drawerControllerProvider.notifier);
-    final isCurrentMushaf = ref.watch(homeControllerProvider).currentMushaf.id == mushaf.id;
+    final isCurrentMushaf = ref.watch(globalControllerProvider).currentMushaf.id == mushaf.id;
 
     void selectMushaf() {
       drawerActions.toggleRightDrawer(DrawerComponentKey.mushaf);

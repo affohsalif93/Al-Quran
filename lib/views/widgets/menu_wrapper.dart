@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../providers/home/home_controller.dart';
+import '../../../providers/global/global_controller.dart';
 import 'animated_show_hide.dart';
 
 class MenuWrapper extends ConsumerWidget {
@@ -22,7 +22,7 @@ class MenuWrapper extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isShow =
-        ref.watch(homeControllerProvider.select((c) => c.isShowMenu));
+        ref.watch(globalControllerProvider.select((c) => c.isShowMenu));
     return AnimatedShowHide(
       direction: direction,
       isShow: isShow,

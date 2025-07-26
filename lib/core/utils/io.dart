@@ -50,6 +50,10 @@ abstract class IO {
     return join(supportFolderPath, a, b, c);
   }
 
+  static String joinFromMetadataFolder(String a, [String? b, String? c, ]) {
+    return join(supportFolderPath, "data", "metadata", a, b, c);
+  }
+
   static String joinPath(String a, [String? b, String? c]) {
     return join(a, b, c);
   }

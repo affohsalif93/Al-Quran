@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:quran/core/extensions/context_extensions.dart';
 import 'package:quran/providers/drawer/drawer_provider.dart';
-import 'package:quran/providers/home/home_controller.dart';
+import 'package:quran/providers/global/global_controller.dart';
 import 'package:quran/views/footer/bottom_menu_bar.dart';
 import 'package:quran/views/header/top_menu_bar.dart';
 import 'package:quran/views/home/panes/main_view.dart';
@@ -18,10 +18,10 @@ class HomeScreen extends ConsumerWidget {
     final drawerActions = ref.read(drawerControllerProvider.notifier);
 
     if (drawerState.isLeftDrawerOpen) {
-      homeScaffoldKey.currentState?.openDrawer();
+      globalScaffoldKey.currentState?.openDrawer();
     }
     if (drawerState.isRightDrawerOpen) {
-      homeScaffoldKey.currentState?.openEndDrawer();
+      globalScaffoldKey.currentState?.openEndDrawer();
     }
 
     return Scaffold(
@@ -30,14 +30,16 @@ class HomeScreen extends ConsumerWidget {
         child: TopMenuBar(),
       ),
       body: Scaffold(
-        key: homeScaffoldKey,
+        key: globalScaffoldKey,
         body: Container(
           decoration: BoxDecoration(
-            color: Color(0xFFDEDEDE),
+            // color: Color(0xFFDEDEDE),
+            color: Colors.white,
+            // color: Color(0xFFFBF7DB)
           ),
           padding: EdgeInsets.symmetric(
             horizontal: 10,
-            vertical: 20,
+            vertical: 5,
           ),
           child: MainView(),
         ),

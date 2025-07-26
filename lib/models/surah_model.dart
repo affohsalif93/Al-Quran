@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:quran/core/enums/revelation_enum.dart';
 import 'package:quran/core/extensions/context_extensions.dart';
 import 'package:quran/i18n/strings.g.dart';
+import 'package:quran/models/quran_part_mixin.dart';
 
 class SurahModel {
   final int id;
@@ -52,7 +53,7 @@ class SurahModel {
       englishNameTranslation: json['translated_name']['name'],
       numberOfAyahs: json['verses_count'],
       revelationType: json['revelation_place'],
-      pages: json['pages'],
+      pages: List<int>.from(json['pages'] as List),
       revelationOrder: json['revelation_order'],
       surahNumber: json['surah_number'],
     );

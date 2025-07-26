@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:quran/core/utils/logger.dart';
+import 'package:quran/models/quran/ayah_model.dart';
 import 'package:quran/models/quran/ayah_line.dart';
 import 'package:quran/models/quran/page_data.dart';
 import 'package:quran/models/quran/page_line.dart';
 import 'package:quran/models/quran/word.dart';
+import 'package:quran/providers/global/global_provider.dart';
+import 'package:quran/providers/global/global_state.dart';
 import 'package:quran/providers/highlighter/highlighter_provider.dart';
 import 'package:quran/providers/highlighter/highlighter_state.dart';
-import 'package:quran/providers/home/home_controller.dart';
+import 'package:quran/providers/global/global_controller.dart';
 import 'package:quran/repositories/quran/quran_repository.dart';
 
-final quranPageControllerProvider =
-    NotifierProvider.family<QuranPageController, QuranPageState, int>(QuranPageController.new);
+final quranPageControllerProvider = NotifierProvider.family
+    .autoDispose<QuranPageController, QuranPageState, int>(() => QuranPageController());
 
 class WordClickContext {
   final Word word;
@@ -31,7 +34,7 @@ class QuranPageState {
   final QuranPageData data;
   final int currentPage;
 
-  QuranPageState({required this.data, this.currentPage = 1});
+  QuranPageState({required this.data, required this.currentPage});
 
   QuranPageState copyWith({QuranPageData? data, int? currentPage}) {
     return QuranPageState(data: data ?? this.data, currentPage: currentPage ?? this.currentPage);
@@ -54,45 +57,89 @@ final genericHighlighter = LabeledHighlight(
   highlights: {},
 );
 
-class QuranPageController extends FamilyNotifier<QuranPageState, int> {
+class QuranPageController extends AutoDisposeFamilyNotifier<QuranPageState, int> {
   late final int pageNumber;
 
   @override
   QuranPageState build(int pageNumber) {
     this.pageNumber = pageNumber;
-    return QuranPageState(data: QuranPageData.empty(), currentPage: pageNumber);
+    final initialState = QuranPageState(data: QuranPageData.empty(), currentPage: pageNumber);
+
+    ref.listen<GlobalState>(globalControllerProvider, (prev, next) {
+      final wasNull = prev?.selectedAyah == null;
+      final isNowNonNull = next.selectedAyah != null;
+
+      if (wasNull && isNowNonNull) {
+        final shouldFocus = state.data.words.isNotEmpty;
+        if (shouldFocus) {
+          logger.fine("selectedAyah became non-null -> focus first ayah of page $pageNumber");
+          autoFocusOnFirstAyahOfPage(state.data);
+        } else {
+          logger.warning("Page $pageNumber has no data yet, skipping focus");
+        }
+      }
+    });
+
+    return initialState;
   }
 
   Future<void> loadPage() async {
     final repo = ref.read(quranRepositoryProvider);
     final data = await repo.getPageData(pageNumber);
-    state = QuranPageState(data: data, currentPage: pageNumber);
 
-    final homeState = ref.read(homeControllerProvider);
-    if (!homeState.isMushafTab) {
-      autoFocusOnFirstAyahOfPage(data);
-    }
+    state = QuranPageState(data: data, currentPage: pageNumber);
+    autoFocusOnFirstAyahOfPage(data);
   }
 
-  (int, int, int) _getFirstAyahOfPage(QuranPageData data) {
+  Ayah _getFirstAyahOfPage(QuranPageData data) {
     final firstAyahLine =
         data.lines.values.firstWhere((line) => line.lineType == LineType.ayah) as AyahLine;
 
     final firstWord = data.words.firstWhere((word) => word.id == firstAyahLine.words.first.id);
 
-    return (firstAyahLine.pageNumber, firstWord.surah, firstWord.ayah);
+    final ayahText = data.words
+        .where((word) {
+          return word.surah == firstWord.surah && word.ayah == firstWord.ayah;
+        }).toList().join("");
+
+    return Ayah(
+      pageNumber: firstAyahLine.pageNumber,
+      surah: firstWord.surah,
+      ayah: firstWord.ayah,
+      text: ayahText,
+    );
   }
 
   void autoFocusOnFirstAyahOfPage(QuranPageData data) {
-    final f = _getFirstAyahOfPage(data);
-    focusOnAyah(f.$1, f.$2, f.$3);
+    final globalState = ref.read(globalControllerProvider);
+    final globalController = ref.read(globalControllerProvider.notifier);
+
+    if (globalState.selectedAyah == null) {
+      logger.fine("No ayah selected");
+      return;
+    }
+
+    final ayah = _getFirstAyahOfPage(data);
+    logger.fine("Auto-focusing on first ayah of page: ${ayah.surah}:${ayah.ayah}");
+    globalController.setSelectedAyah(ayah);
+    focusOnAyah(ayah);
   }
 
-  void focusOnAyah(int pageNumber, int surah, int ayah) {
+  void focusOnAyah(Ayah ayah) {
     final highlighter = ref.read(highlightControllerProvider.notifier);
-    final ayahWords = state.getWordsForAyah(surah, ayah);
+    final globalController = ref.read(globalControllerProvider.notifier);
+    final ayahWords = state.getWordsForAyah(ayah.surah, ayah.ayah);
+
+    final focusedWords = highlighter.getWordsForLabel(focusHighlighter.label);
 
     highlighter.clearAllForLabel(focusHighlighter.label);
+
+    final firstWordOfHighlight = (ayah.pageNumber, "${ayah.surah}:${ayah.ayah}:1");
+
+    if (focusedWords.contains(firstWordOfHighlight)) {
+      globalController.clearSelectedAyah();
+      return;
+    }
 
     final ayahWordLocations = ayahWords.map((w) => (pageNumber, w.location)).toList();
 
@@ -116,6 +163,7 @@ class QuranPageController extends FamilyNotifier<QuranPageState, int> {
 
   void handleWordClick(WordClickContext ctx, WidgetRef ref) {
     final highlighterState = ref.read(highlightControllerProvider);
+    final highlighterController = ref.read(highlightControllerProvider.notifier);
 
     final isWordHighlight =
         highlighterState.mode == HighlightMode.highlight &&
@@ -124,11 +172,9 @@ class QuranPageController extends FamilyNotifier<QuranPageState, int> {
     final isFocusHighlight = highlighterState.mode == HighlightMode.focus;
 
     if (isWordHighlight) {
-      logger.fine("Highlighting word ${ctx.word.surah}:${ctx.word.ayah} on page ${ctx.page}");
       highlightWords(ctx.page, [ctx.word]);
     } else if (isFocusHighlight) {
-      logger.fine("Highlighting Ayah ${ctx.word.surah}:${ctx.word.ayah} on page ${ctx.page}");
-      focusOnAyah(ctx.page, ctx.word.surah, ctx.word.ayah);
+      focusOnAyah(Ayah(pageNumber: ctx.page, surah: ctx.word.surah, ayah: ctx.word.ayah, text: ""));
     }
   }
 }

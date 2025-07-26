@@ -9,7 +9,7 @@ import 'package:quran/models/quran/word.dart';
 import 'package:quran/services/quran_db_service.dart';
 import 'package:riverpod/riverpod.dart';
 
-import 'package:quran/models/ayah_model.dart';
+import 'package:quran/models/quran/ayah_model.dart';
 import 'package:quran/models/quran/page_line.dart';
 import 'package:sqflite/sqflite.dart';
 

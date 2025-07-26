@@ -1,4 +1,6 @@
-class RubModel {
+import 'package:quran/models/quran_part_mixin.dart';
+
+class RubModel with QuranPartMixin {
   final int rubNumber;
   final int versesCount;
   final String firstAyahKey;

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:quran/views/widgets/custom_scaffold.dart';
-import 'package:quran/repositories/quran/quran_data.dart';
+import 'package:quran/repositories/quran/static_quran_data.dart';
 import 'package:quran/views/drawers/select_mushaf/mushaf_card.dart';
 
 class MushafList extends StatelessWidget {
@@ -16,9 +16,9 @@ class MushafList extends StatelessWidget {
       ),
       body: ListView.builder(
         padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 5),
-        itemCount: QuranData.mushafs.length,
+        itemCount: StaticQuranData.mushafs.length,
         itemBuilder: (BuildContext context, int index) {
-          return MushafCard(QuranData.mushafs[index]);
+          return MushafCard(StaticQuranData.mushafs[index]);
         },
       ),
     );

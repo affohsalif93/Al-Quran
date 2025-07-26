@@ -34,7 +34,7 @@ dependencies:
   # l10n & date format
   flutter_localizations:
     sdk: flutter
-  intl: 0.19.0
+  intl: ^0.20.2
   slang: ^4.6.0
   slang_flutter: ^4.6.0
 
@@ -120,6 +120,7 @@ dependencies:
   flutter_web_plugins:
     sdk: flutter
   multi_split_view: ^3.6.0
+  shimmer: ^3.0.0
 
 dev_dependencies:
   flutter_test:

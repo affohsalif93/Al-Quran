@@ -1,4 +1,6 @@
-class JuzModel {
+import 'package:quran/models/quran_part_mixin.dart';
+
+class JuzModel with QuranPartMixin {
   final int juzNumber;
   final int versesCount;
   final String firstAyahKey;

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:quran/core/utils/logger.dart';
 import 'package:quran/providers/highlighter/highlighter_state.dart';
 import 'package:quran/repositories/quran/quran_repository.dart';
 
@@ -35,6 +36,10 @@ class HighlightController extends StateNotifier<HighlighterState> {
     );
 
     state = state.copyWith(labels: current);
+  }
+
+  Set<(int page, String location)> getWordsForLabel(String label) {
+    return state.labels[label]?.highlights ?? {};
   }
 
   void toggleWordsHighlight({
@@ -88,6 +93,10 @@ class HighlightController extends StateNotifier<HighlighterState> {
 
   Color? highlightColor(int page, String location) {
     return state.highlightColor(page, location);
+  }
+
+  void setHighlightMode(HighlightMode mode) {
+    state = state.copyWith(mode: mode);
   }
 }
 

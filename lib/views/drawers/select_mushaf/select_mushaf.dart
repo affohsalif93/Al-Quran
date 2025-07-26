@@ -4,14 +4,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:quran/providers/drawer/drawer_provider.dart';
 import 'package:quran/providers/drawer/drawer_state.dart';
-import 'package:quran/providers/home/home_controller.dart';
+import 'package:quran/providers/global/global_controller.dart';
 
 class SelectMushaf extends ConsumerWidget {
   const SelectMushaf({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final homeActions = ref.watch(homeControllerProvider.notifier);
+    final homeActions = ref.watch(globalControllerProvider.notifier);
     final drawerActions = ref.read(drawerControllerProvider.notifier);
 
     // add icon to the button

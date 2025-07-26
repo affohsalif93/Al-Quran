@@ -4,21 +4,21 @@ import 'package:flutter/material.dart';
 import 'package:custom_sliding_segmented_control/custom_sliding_segmented_control.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:quran/providers/home/home_controller.dart';
-import 'package:quran/providers/home/home_state.dart';
+import 'package:quran/providers/global/global_controller.dart';
+import 'package:quran/providers/global/global_state.dart';
 
 class PageViewMode extends ConsumerWidget {
   const PageViewMode({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final homeState = ref.watch(homeControllerProvider);
-    final homeActions = ref.read(homeControllerProvider.notifier);
+    final globalState = ref.watch(globalControllerProvider);
+    final homeActions = ref.read(globalControllerProvider.notifier);
 
     return CustomSlidingSegmentedControl<int>(
-      initialValue: homeState.isBookView ? 1 : 2,
+      initialValue: globalState.isBookView ? 1 : 2,
       isShowDivider: true,
-      isDisabled: !homeState.isViewerToggleEnabled,
+      isDisabled: !globalState.isViewerToggleEnabled,
       children: {
         1: Icon(
           CupertinoIcons.book_fill,

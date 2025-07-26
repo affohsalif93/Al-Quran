@@ -1,26 +1,26 @@
 import 'package:equatable/equatable.dart';
 
-class Ayah extends Equatable {
+class AyahModel extends Equatable {
   final int id;
   final int surahNumber;
   final int ayahNumber;
-  final String verseKey;
+  final String ayahKey;
   final String text;
 
-  const Ayah({
+  const AyahModel({
     required this.id,
     required this.surahNumber,
     required this.ayahNumber,
-    required this.verseKey,
+    required this.ayahKey,
     required this.text,
   });
 
-  factory Ayah.fromJson(dynamic json) {
-    return Ayah(
+  factory AyahModel.fromJson(dynamic json) {
+    return AyahModel(
       id: json['id'],
       surahNumber: json['surah_number'],
       ayahNumber: json['ayah_number'],
-      verseKey: json['verse_key'],
+      ayahKey: json['ayah_key'],
       text: json['text'],
     );
   }
@@ -30,13 +30,13 @@ class Ayah extends Equatable {
       'id': id,
       'surah_number': surahNumber,
       'ayah_number': ayahNumber,
-      'verse_key': verseKey,
+      'ayah_key': ayahKey,
       'text': text,
     };
   }
 
   @override
-  List<Object?> get props => [id, surahNumber, ayahNumber, verseKey, text];
+  List<Object?> get props => [id, surahNumber, ayahNumber, ayahKey, text];
 
   @override
   bool get stringify => true;

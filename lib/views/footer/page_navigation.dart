@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:material_symbols_icons/symbols.dart';
-import 'package:quran/providers/home/home_controller.dart';
+import 'package:quran/providers/global/global_controller.dart';
 
 class PageNavigation extends ConsumerWidget {
 
@@ -10,7 +10,8 @@ class PageNavigation extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final homeController = ref.read(homeControllerProvider.notifier);
+    final globalController = ref.watch(globalControllerProvider.notifier);
+    final globalState = ref.watch(globalControllerProvider);
 
     return Container(
       alignment: Alignment.center,
@@ -22,7 +23,7 @@ class PageNavigation extends ConsumerWidget {
         children: [
           IconButton(
             padding: EdgeInsets.zero,
-            onPressed: homeController.goToNextPage,
+            onPressed: globalController.goToNextPage,
             icon: Icon(
               Symbols.arrow_back_rounded,
               color: Colors.green,
@@ -47,12 +48,12 @@ class PageNavigation extends ConsumerWidget {
               ),
             ),
             child: Center(
-              child: Text(homeController.getCurrentPageText()),
+              child: Text(globalController.getCurrentPageText()),
             ),
           ),
           IconButton(
             padding: EdgeInsets.zero,
-            onPressed: homeController.goToPreviousPage,
+            onPressed: globalController.goToPreviousPage,
             icon: Icon(
               Symbols.arrow_forward_rounded,
               color: Colors.green,

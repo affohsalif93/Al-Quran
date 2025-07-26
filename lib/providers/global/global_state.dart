@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
+import 'package:quran/models/quran/ayah_model.dart';
 import 'package:quran/models/mushaf.dart';
-import 'package:quran/providers/drawer/drawer_state.dart';
 
 enum HomeTab {
   mushaf,
@@ -15,39 +15,38 @@ enum ViewerMode {
   translation,
 }
 
-class HomeState extends Equatable {
+class GlobalState extends Equatable {
   final int currentPage;
   final ViewerMode viewerMode;
   final bool isShowMenu;
-  final bool isShowBookmarkMenu;
   final Mushaf currentMushaf;
   final HomeTab currentTab;
+  final Ayah? selectedAyah;
 
-  const HomeState({
+  const GlobalState({
     this.currentPage = 1,
     this.isShowMenu = true,
-    this.isShowBookmarkMenu = false,
     this.viewerMode = ViewerMode.double,
     this.currentTab = HomeTab.mushaf,
+    this.selectedAyah,
     required this.currentMushaf,
   });
 
-  HomeState copyWith({
+  GlobalState copyWith({
     int? currentPage,
     bool? isShowMenu,
-    bool? isShowBookmarkMenu,
     ViewerMode? viewerMode,
-    DrawerState? drawerState,
     Mushaf? currentMushaf,
     HomeTab? currentTab,
+    Ayah? selectedAyah,
   }) {
-    return HomeState(
+    return GlobalState(
       currentPage: currentPage ?? this.currentPage,
       isShowMenu: isShowMenu ?? this.isShowMenu,
-      isShowBookmarkMenu: isShowBookmarkMenu ?? this.isShowBookmarkMenu,
       viewerMode: viewerMode ?? this.viewerMode,
       currentMushaf: currentMushaf ?? this.currentMushaf,
       currentTab: currentTab ?? this.currentTab,
+      selectedAyah: selectedAyah ?? this.selectedAyah,
     );
   }
 
@@ -59,10 +58,6 @@ class HomeState extends Equatable {
 
   get isMushafTab => currentTab == HomeTab.mushaf;
 
-  HomeState setCurrentPage(int currentPage) {
-    return copyWith(currentPage: currentPage);
-  }
-
   int getCurrentTabIndex() {
     return HomeTab.values.indexOf(currentTab);
   }
@@ -71,9 +66,9 @@ class HomeState extends Equatable {
   List<Object?> get props => [
     currentPage,
     viewerMode,
-    isShowBookmarkMenu,
     isShowMenu,
     currentMushaf,
     currentTab,
+    selectedAyah,
   ];
 }

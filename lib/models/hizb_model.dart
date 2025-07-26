@@ -1,4 +1,6 @@
-class HizbModel {
+import 'package:quran/models/quran_part_mixin.dart';
+
+class HizbModel with QuranPartMixin {
   final int hizbNumber;
   final int versesCount;
   final String firstAyahKey;

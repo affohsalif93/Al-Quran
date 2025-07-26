@@ -5,7 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
 import 'package:quran/i18n/strings.g.dart';
-import 'package:quran/providers/home/home_controller.dart';
+import 'package:quran/providers/global/global_controller.dart';
 import 'package:quran/views/home/bookmark_controller.dart';
 
 class BookmarkMenu extends ConsumerWidget {

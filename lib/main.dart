@@ -13,7 +13,7 @@ import 'package:quran/core/utils/io.dart';
 import 'package:quran/i18n/strings.g.dart';
 import 'package:quran/providers/shared_preferences_provider.dart';
 import 'package:quran/services/quran_db_service.dart';
-import 'package:quran/services/surah_name_ligature_service.dart';
+import 'package:quran/services/static_quran_data_loader.dart';
 // ignore:depend_on_referenced_packages
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
@@ -34,7 +34,7 @@ Future<void> main() async {
   await QuranDBService.init();
 
   // * Initialize Surah Name Ligature Service
-  await SurahNameLigatureService.init();
+  await StaticQuranDataLoader.load();
 
   // * Make GoRouter's push and pop methods work on web urls
   GoRouter.optionURLReflectsImperativeAPIs = true;

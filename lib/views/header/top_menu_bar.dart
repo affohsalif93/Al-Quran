@@ -5,7 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:quran/providers/drawer/drawer_provider.dart';
 import 'package:quran/providers/drawer/drawer_state.dart';
-import 'package:quran/providers/home/home_controller.dart';
+import 'package:quran/providers/global/global_controller.dart';
 import 'package:quran/views/widgets/animated_show_hide.dart';
 import 'package:quran/views/widgets/menu_wrapper.dart';
 
@@ -15,20 +15,21 @@ class TopMenuBar extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final drawerActions = ref.watch(drawerControllerProvider.notifier);
-    final homeController = ref.watch(homeControllerProvider.notifier);
+    final globalController = ref.watch(globalControllerProvider.notifier);
 
     return MenuWrapper(
       direction: AnimationDirection.appearFromTop,
-      height: 40,
+      height: 50,
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           TextButton.icon(
             icon: Icon(
               Symbols.menu_book,
-              size: 18.spMin,
+              size: 25.spMin,
               color: Colors.green,
             ),
-            label: const Text("Surahs"),
+            label: const Text("Surahs", style: TextStyle(fontWeight: FontWeight.w500)),
             onPressed: () {
               drawerActions.toggleLeftDrawer(DrawerComponentKey.surahs);
             },
@@ -40,7 +41,7 @@ class TopMenuBar extends ConsumerWidget {
             child: Container(
               alignment: Alignment.center,
               child: CustomSlidingSegmentedControl<int>(
-                initialValue: homeController.getCurrentTabIndex(),
+                initialValue: globalController.getCurrentTabIndex(),
                 children: {
                   1: Text('Mushaf', style: TextStyle(fontWeight: FontWeight.w500)),
                   2: Text('Tafsir', style: TextStyle(fontWeight: FontWeight.w500)),
@@ -64,7 +65,7 @@ class TopMenuBar extends ConsumerWidget {
                 duration: Duration(milliseconds: 100),
                 curve: Curves.easeInToLinear,
                 onValueChanged: (v) {
-                  homeController.setCurrentTabByIndex(v);
+                  globalController.setCurrentTabByIndex(v);
                 },
               ),
             ),
