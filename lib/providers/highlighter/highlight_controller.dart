@@ -4,7 +4,6 @@ import 'package:quran/core/utils/logger.dart';
 import 'package:quran/providers/highlighter/highlighter_state.dart';
 import 'package:quran/repositories/quran/quran_repository.dart';
 
-
 class HighlightController extends StateNotifier<HighlighterState> {
   final Ref ref;
   late final QuranRepository repo;
@@ -13,28 +12,16 @@ class HighlightController extends StateNotifier<HighlighterState> {
     repo = ref.read(quranRepositoryProvider);
   }
 
-  void highlightNamed(LabeledHighlight highlight) {
-    final current = Map<String, LabeledHighlight>.from(state.labels);
-    current[highlight.label] = highlight;
-    state = state.copyWith(labels: current);
-  }
-
   void highlightWords({
-    required String label,
-    required Color color,
+    required Highlight highlight,
     required List<(int page, String location)> targets,
   }) {
     final current = Map<String, LabeledHighlight>.from(state.labels);
-    final existing = current[label];
+    final existing = current[highlight.label];
 
     final updatedHighlights = {...(existing?.highlights ?? {})}..addAll(targets);
 
-    current[label] = LabeledHighlight(
-      label: label,
-      color: color,
-      highlights: updatedHighlights,
-    );
-
+    current[highlight.label] = LabeledHighlight.fromHighlight(highlight, updatedHighlights);
     state = state.copyWith(labels: current);
   }
 
@@ -43,12 +30,11 @@ class HighlightController extends StateNotifier<HighlighterState> {
   }
 
   void toggleWordsHighlight({
-    required String label,
-    required Color color,
+    required Highlight highlight,
     required List<(int page, String location)> targets,
   }) {
     final current = Map<String, LabeledHighlight>.from(state.labels);
-    final existing = current[label];
+    final existing = current[highlight.label];
 
     final existingSet = existing?.highlights ?? {};
     final newSet = Set.of(existingSet);
@@ -61,12 +47,7 @@ class HighlightController extends StateNotifier<HighlighterState> {
       newSet.addAll(targets);
     }
 
-    current[label] = LabeledHighlight(
-      label: label,
-      color: color,
-      highlights: newSet,
-    );
-
+    current[highlight.label] = LabeledHighlight.fromHighlight(highlight, newSet);
     state = state.copyWith(labels: current);
   }
 
@@ -99,4 +80,3 @@ class HighlightController extends StateNotifier<HighlighterState> {
     state = state.copyWith(mode: mode);
   }
 }
-

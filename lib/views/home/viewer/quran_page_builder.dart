@@ -66,12 +66,13 @@ class QuranPageBuilder {
                 word: word,
                 fontSize: 1.7 * scalingFactor,
                 fontFamily: Word.fontFamilyForPage(1),
+                paddingVertical: 0,
               );
             }).toList();
 
         lineWidgets.add(
           Container(
-            padding: const EdgeInsets.symmetric(vertical: ayahVerticalSpacing / 2),
+            // padding: const EdgeInsets.symmetric(vertical: ayahVerticalSpacing / 2),
             child: Wrap(textDirection: TextDirection.rtl, children: basmallahWords),
           ),
         );
@@ -82,12 +83,13 @@ class QuranPageBuilder {
                 pageNumber: pageNumber,
                 word: word,
                 fontSize: 1.5 * scalingFactor,
+                paddingVertical: ayahVerticalSpacing / 2,
               );
             }).toList();
 
         lineWidgets.add(
           Container(
-            padding: const EdgeInsets.symmetric(vertical: ayahVerticalSpacing / 2),
+            // padding: const EdgeInsets.symmetric(vertical: ayahVerticalSpacing / 2),
             // decoration: BoxDecoration(border: Border.all(color: Colors.red, width: 0.5)),
             child: Wrap(
               textDirection: TextDirection.rtl,

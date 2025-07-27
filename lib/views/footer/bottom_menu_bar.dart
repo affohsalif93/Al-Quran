@@ -20,7 +20,7 @@ class BottomBar extends ConsumerWidget {
         padding: const EdgeInsets.symmetric(horizontal: 30),
         child: Row(
           children: [
-            // PageViewMode(),
+            PageViewMode(),
             Expanded(
               child: PageNavigation(),
             ),
