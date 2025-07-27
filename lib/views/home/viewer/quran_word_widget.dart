@@ -12,6 +12,7 @@ class QuranWordWidget extends ConsumerWidget {
   final int pageNumber;
   final double fontSize;
   final String fontFamily;
+  final double lineHeight;
   final double paddingVertical;
   final void Function()? onTap;
 
@@ -20,6 +21,7 @@ class QuranWordWidget extends ConsumerWidget {
     required this.word,
     required this.pageNumber,
     required this.fontSize,
+    required this.lineHeight,
     required this.paddingVertical,
     this.onTap,
   }) : fontFamily = Word.fontFamilyForPage(pageNumber);
@@ -30,6 +32,7 @@ class QuranWordWidget extends ConsumerWidget {
     required this.pageNumber,
     required this.fontSize,
     required this.fontFamily,
+    required this.lineHeight,
     required this.paddingVertical,
     this.onTap,
   });
@@ -73,14 +76,15 @@ class QuranWordWidget extends ConsumerWidget {
         quranPageController.handleWordClick(ctx, ref);
       },
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: paddingVertical),
+        padding: EdgeInsets.symmetric(vertical: paddingVertical ),
+        height: lineHeight,
         decoration: BoxDecoration(color: fullHeightHighlightColor),
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 1),
           decoration: BoxDecoration(color: wordHeightHighlightColor),
           child: Text(
             word.glyphCode,
-            style: TextStyle(fontSize: fontSize, fontFamily: fontFamily, color: Colors.black87),
+            style: TextStyle(fontSize: fontSize, fontFamily: fontFamily, color: Colors.black),
             textDirection: TextDirection.rtl,
           ),
         ),

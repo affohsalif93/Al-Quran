@@ -56,7 +56,7 @@ final ayahHighlight = Highlight(
   label: "ayah",
   color: Colors.yellow.withValues(alpha: 0.3),
   zIndex: 1,
-  isFullHeight: true,
+  isFullHeight: false,
 );
 
 final wordHighlight = Highlight(
@@ -172,6 +172,12 @@ class QuranPageController extends AutoDisposeFamilyNotifier<QuranPageState, int>
   void handleWordClick(WordClickContext ctx, WidgetRef ref) {
     final highlighterState = ref.read(highlightControllerProvider);
     final highlighterController = ref.read(highlightControllerProvider.notifier);
+
+    if (ctx.word.isAyahNrSymbol) {
+      logger.fine("Ayah number symbol clicked");
+    } else {
+      logger.fine("Word clicked: ${ctx.word.location}");
+    }
 
     final isWordHighlight =
         // highlighterState.mode == HighlightMode.highlight &&

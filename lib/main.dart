@@ -50,7 +50,7 @@ Future<void> main() async {
     ProviderScope(
       child: TranslationProvider(
         child: ScreenUtilInit(
-          designSize: const Size(360, 800),
+          designSize: const Size(800, 800),
           builder: (_, __) => const QuranApp(),
         ),
       ),

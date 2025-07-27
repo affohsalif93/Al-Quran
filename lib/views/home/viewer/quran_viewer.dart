@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:quran/core/extensions/context_extensions.dart';
+import 'package:quran/core/utils/logger.dart';
 import 'package:quran/providers/global/global_controller.dart';
 import 'package:quran/views/home/viewer/quran_page.dart';
 import 'package:quran/views/home/viewer/quran_page_builder.dart';
@@ -44,17 +45,39 @@ class SinglePageViewer extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final pageWidgetBuilder = QuranPageBuilder(ref);
 
-    final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.height;
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final availableWidth = constraints.maxWidth;
+        final availableHeight = constraints.maxHeight;
 
-    return FutureBuilder<List<Widget>>(
-      future: Future.wait([pageWidgetBuilder.buildPageContent(index + 1, width, height)]),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          return const Center(child: CircularProgressIndicator());
-        }
-        final contents = snapshot.data!;
-        return QuranPage(pageNumber: index + 1, widget: contents.first);
+        final pageDimensions = getPageDimensions(
+          availableHeight: availableHeight,
+          availableWidth: availableWidth,
+          pageAspectRatio: 0.9 / 1.41,
+          contentAspectRatio: 1 / 1.41,
+        );
+
+        return FutureBuilder<List<Widget>>(
+          future: Future.wait([
+            pageWidgetBuilder.buildPageContent(
+              pageNumber: index + 1,
+              width: pageDimensions.contentWidth,
+              height: pageDimensions.contentHeight,
+            ),
+          ]),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            final contents = snapshot.data!;
+            return QuranPage(
+              width: pageDimensions.pageWidth,
+              height: pageDimensions.pageHeight,
+              pageNumber: index + 1,
+              content: contents.first,
+            );
+          },
+        );
       },
     );
   }
@@ -69,32 +92,104 @@ class DoublePageViewer extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final pageContentBuilder = QuranPageBuilder(ref);
 
-    final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.height;
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final availableWidth = constraints.maxWidth;
+        final availableHeight = constraints.maxHeight;
 
-    return FutureBuilder<List<Widget>>(
-      future: Future.wait([
-        pageContentBuilder.buildPageContent(index + 2, width / 2, height),
-        pageContentBuilder.buildPageContent(index + 1, width / 2, height),
-      ]),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          return const Center(child: CircularProgressIndicator());
-        }
-        final widgets = snapshot.data!;
+        final pageDimensions = getPageDimensions(
+          availableHeight: availableHeight,
+          availableWidth: availableWidth,
+          pageAspectRatio: 0.9 / 1.41,
+          contentAspectRatio: 1 / 1.41,
+        );
 
-        return Center(
-          child: AspectRatio(
-            aspectRatio: 1.9 / 1.41,
-            child: Row(
-              children: [
-                QuranPage(widget: widgets[0], pageNumber: index + 2),
-                QuranPage(widget: widgets[1], pageNumber: index + 1),
-              ],
+        return FutureBuilder<List<Widget>>(
+          future: Future.wait([
+            pageContentBuilder.buildPageContent(
+              pageNumber: index + 2,
+              width: pageDimensions.contentWidth,
+              height: pageDimensions.contentHeight,
             ),
-          ),
+            pageContentBuilder.buildPageContent(
+              pageNumber: index + 1,
+              width: pageDimensions.contentWidth,
+              height: pageDimensions.contentHeight,
+            ),
+          ]),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            final widgets = snapshot.data!;
+
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                QuranPage(
+                  content: widgets[0],
+                  width: pageDimensions.pageWidth,
+                  height: pageDimensions.pageHeight,
+                  pageNumber: index + 2,
+                ),
+                QuranPage(
+                  content: widgets[1],
+                  width: pageDimensions.pageWidth,
+                  height: pageDimensions.pageHeight,
+                  pageNumber: index + 1,
+                ),
+              ],
+            );
+          },
         );
       },
     );
   }
 }
+
+class PageDimensions {
+  final double pageWidth;
+  final double pageHeight;
+  final double contentWidth;
+  final double contentHeight;
+
+  PageDimensions({
+    required this.pageWidth,
+    required this.pageHeight,
+    required this.contentWidth,
+    required this.contentHeight,
+  });
+}
+
+PageDimensions getPageDimensions({
+  required double availableHeight,
+  required double availableWidth,
+  required double pageAspectRatio,
+  required double contentAspectRatio,
+}) {
+  // First fit the page within available space preserving page aspect ratio
+  double pageWidth = availableWidth;
+  double pageHeight = pageWidth / pageAspectRatio;
+
+  if (pageHeight > availableHeight) {
+    pageHeight = availableHeight;
+    pageWidth = pageHeight * pageAspectRatio;
+  }
+
+  // Now fit the content inside the page preserving content aspect ratio
+  double contentWidth = pageWidth;
+  double contentHeight = contentWidth / contentAspectRatio;
+
+  if (contentHeight > pageHeight) {
+    contentHeight = pageHeight;
+    contentWidth = contentHeight * contentAspectRatio;
+  }
+
+  return PageDimensions(
+    pageWidth: pageWidth,
+    pageHeight: pageHeight,
+    contentWidth: contentWidth,
+    contentHeight: contentHeight,
+  );
+}
+

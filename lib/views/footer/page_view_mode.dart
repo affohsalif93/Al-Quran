@@ -35,7 +35,7 @@ class PageViewMode extends ConsumerWidget {
         color: Colors.white,
         borderRadius: BorderRadius.circular(4),
       ),
-      padding: 25,
+      padding: 20,
       height: 30,
       thumbDecoration: BoxDecoration(
         color: Colors.lightGreen,

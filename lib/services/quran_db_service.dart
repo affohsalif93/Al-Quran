@@ -33,6 +33,7 @@ class QuranDBService {
         return;
       }
 
+      logger.info("Adding is_ayah_number column to table $table...");
       await db.execute("ALTER TABLE $table ADD COLUMN is_ayah_number INTEGER DEFAULT 0");
       logger.info("Column 'is_ayah_number' added to table '$table'.");
 
@@ -53,7 +54,7 @@ class QuranDBService {
         updatedCount++;
       }
 
-      logger.info("Marked $updatedCount words as ayah number symbols.");
+      logger.info("Done! Marked $updatedCount words as ayah number symbols.");
     } catch (e, st) {
       logger.error("Failed to add or populate is_ayah_number column: $e\n$st");
     }
