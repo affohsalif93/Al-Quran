@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:quran/core/extensions/context_extensions.dart';
 import 'package:quran/models/quran/ayah_model.dart';
 import 'package:quran/models/quran/word.dart' show Word;
 import 'package:quran/providers/global/global_controller.dart';
@@ -29,21 +30,18 @@ class NotesView extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final globalState = ref.watch(globalControllerProvider);
 
-    // render selectedAyah if available
-
     return Container(
-      decoration: BoxDecoration(color: Colors.grey),
-      padding: EdgeInsets.fromLTRB(10, 20, 5, 20),
+      decoration: BoxDecoration(color: context.colors.quranPageBackground),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // SelectedAyahWidget(selectedAyah: globalState.selectedAyah!),
           Container(
             padding: EdgeInsets.all(10),
             decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(8)),
             child: Text('Notes', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
           ),
           SizedBox(height: 10),
-          Expanded(child: Container(child: Text("No notes available yet."))),
         ],
       ),
     );

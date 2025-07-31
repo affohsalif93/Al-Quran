@@ -46,7 +46,7 @@ class PageViewMode extends ConsumerWidget {
         ),
       ),
       onValueChanged: (value) {
-        homeActions.setViewMode(value == 1 ? ViewerMode.double : ViewerMode.single);
+        homeActions.setViewMode(value == 1 ? ViewMode.double : ViewMode.single);
       },
     );
   }

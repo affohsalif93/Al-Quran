@@ -24,7 +24,7 @@ class QuranApp extends HookConsumerWidget {
     );
 
     return MaterialApp.router(
-      title: "Al Hafiz",
+      title: "Al Quran",
       routerConfig: router,
       locale: TranslationProvider.of(context).flutterLocale,
       supportedLocales: AppLocaleUtils.supportedLocales,

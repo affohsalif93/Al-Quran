@@ -7,7 +7,7 @@ import 'package:quran/providers/drawer/drawer_provider.dart';
 import 'package:quran/providers/global/global_controller.dart';
 import 'package:quran/views/footer/bottom_menu_bar.dart';
 import 'package:quran/views/header/top_menu_bar.dart';
-import 'package:quran/views/home/panes/main_view.dart';
+import 'package:quran/views/home/viewer/main_view.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -31,18 +31,7 @@ class HomeScreen extends ConsumerWidget {
       ),
       body: Scaffold(
         key: globalScaffoldKey,
-        body: Container(
-          decoration: BoxDecoration(
-            // color: Color(0xFFDEDEDE),
-            color: Colors.white,
-            // color: Color(0xFFFBF7DB)
-          ),
-          padding: EdgeInsets.symmetric(
-            horizontal: 10,
-            vertical: 5,
-          ),
-          child: MainView(),
-        ),
+        body: MainView(),
         drawer: Drawer(
           width: 350,
           shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
@@ -65,7 +54,7 @@ class HomeScreen extends ConsumerWidget {
         },
       ),
       bottomNavigationBar: BottomBar(),
-      backgroundColor: context.colors.quranPageBackground,
+      // backgroundColor: context.colors.quranPageBackground,
     );
   }
 }

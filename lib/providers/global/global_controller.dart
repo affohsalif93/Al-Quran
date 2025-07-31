@@ -3,8 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:quran/core/utils/logger.dart';
 import 'package:quran/models/quran/ayah_model.dart';
 import 'package:quran/providers/global/global_state.dart';
-import 'package:quran/repositories/quran/static_quran_data.dart';
 import 'package:quran/providers/shared_preferences_provider.dart';
+import 'package:quran/repositories/quran/static_quran_data.dart';
 
 final GlobalKey<ScaffoldState> globalScaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -62,15 +62,11 @@ class GlobalController extends StateNotifier<GlobalState> {
 
   void _switchTab(HomeTab tab) {
     if (tab == HomeTab.mushaf) {
-      state = state.copyWith(
-        currentTab: HomeTab.mushaf,
-        viewerMode: ViewerMode.double,
-      );
+      setViewMode(ViewMode.double);
+      state = state.copyWith(currentTab: HomeTab.mushaf);
     } else {
-      state = state.copyWith(
-        currentTab: tab,
-        viewerMode: ViewerMode.single,
-      );
+      setViewMode(ViewMode.single);
+      state = state.copyWith(currentTab: tab);
     }
   }
 
@@ -89,7 +85,7 @@ class GlobalController extends StateNotifier<GlobalState> {
   }
 
   void toTafsirTab() {
-    state = state.copyWith(currentTab: HomeTab.tafsir, viewerMode: ViewerMode.single);
+    state = state.copyWith(currentTab: HomeTab.tafsir, viewMode: ViewMode.single);
   }
 
   void toggleMenu() {
@@ -103,6 +99,8 @@ class GlobalController extends StateNotifier<GlobalState> {
     return "Page ${state.currentPage}";
   }
 
+  // PAGE NAVIGATION
+
   bool canGoToPreviousPage() {
     if (state.isBookView) {
       return state.currentPage > 2;
@@ -115,33 +113,6 @@ class GlobalController extends StateNotifier<GlobalState> {
       return state.currentPage < 603;
     }
     return state.currentPage < 604;
-  }
-
-  void setViewMode(ViewerMode viewMode) {
-    if (viewMode == ViewerMode.single) {
-      state = state.copyWith(viewerMode: viewMode);
-    } else if (viewMode == ViewerMode.double) {
-      final currentPage = state.currentPage - (state.currentPage.isEven ? 1 : 0);
-      state = state.copyWith(viewerMode: viewMode, currentPage: currentPage);
-      controllerJumpToPage(currentPage);
-    }
-  }
-
-  String getCurrentMushafName() {
-    return state.currentMushaf.englishName;
-  }
-
-  void setCurrentMushaf(String name) {
-    final mushaf = StaticQuranData.mushafs.firstWhere(
-      (mushaf) => mushaf.englishName == name,
-      orElse: () {
-        logger.error("Mushaf not found: $name");
-        return StaticQuranData.madinahMushafV1;
-      },
-    );
-
-    state = state.copyWith(currentMushaf: mushaf);
-    prefs.setCurrentMushaf(name);
   }
 
   void goToNextPage() {
@@ -186,6 +157,36 @@ class GlobalController extends StateNotifier<GlobalState> {
   void setCurrentPage(int page) {
     state = state.copyWith(currentPage: page);
     prefs.setPageNumber(state.currentPage);
+  }
+
+  void setViewMode(ViewMode viewMode) {
+    if (viewMode == state.viewMode) {
+      return;
+    }
+    if (viewMode == ViewMode.single) {
+      state = state.copyWith(viewMode: viewMode);
+    } else if (viewMode == ViewMode.double) {
+      final currentPage = state.currentPage - (state.currentPage.isEven ? 1 : 0);
+      state = state.copyWith(viewMode: viewMode, currentPage: currentPage);
+      controllerJumpToPage(currentPage);
+    }
+  }
+
+  String getCurrentMushafName() {
+    return state.currentMushaf.englishName;
+  }
+
+  void setCurrentMushaf(String name) {
+    final mushaf = StaticQuranData.mushafs.firstWhere(
+      (mushaf) => mushaf.englishName == name,
+      orElse: () {
+        logger.error("Mushaf not found: $name");
+        return StaticQuranData.madinahMushafV1;
+      },
+    );
+
+    state = state.copyWith(currentMushaf: mushaf);
+    prefs.setCurrentMushaf(name);
   }
 
   @override

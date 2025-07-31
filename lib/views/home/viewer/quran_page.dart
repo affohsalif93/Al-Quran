@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quran/core/extensions/context_extensions.dart';
 
 class QuranPage extends StatelessWidget {
   final Widget content;
@@ -23,9 +24,9 @@ class QuranPage extends StatelessWidget {
       width: width,
       height: height,
       alignment: Alignment.bottomCenter,
-      padding: const EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.only(bottom: 20),
       decoration: BoxDecoration(
-        color: const Color(0xFFF6F5EE),
+        color: context.colors.quranPageBackground,
         border: Border.all(color: Colors.grey.shade300),
         borderRadius:
             side == "left"
@@ -37,15 +38,8 @@ class QuranPage extends StatelessWidget {
                   topRight: Radius.circular(8),
                   bottomRight: Radius.circular(8),
                 ),
-        gradient: LinearGradient(
-          begin: side == "left" ? Alignment.centerRight : Alignment.centerLeft,
-          end: side == "left" ? Alignment.centerLeft : Alignment.centerRight,
-          colors: [const Color(0x33E1DCDC), const Color(0xFFF6F5EE)],
-          stops: const [0.0, 0.01],
-          tileMode: TileMode.clamp,
-        ),
       ),
-      child: content
+      child: content,
     );
   }
 }

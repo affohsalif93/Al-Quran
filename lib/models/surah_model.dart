@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:quran/core/enums/revelation_enum.dart';
 import 'package:quran/core/extensions/context_extensions.dart';
 import 'package:quran/i18n/strings.g.dart';
 import 'package:quran/models/quran_part_mixin.dart';
@@ -37,12 +36,8 @@ class SurahModel {
     }
   }
 
-  RevelationEnum get revelationEnum {
-    return RevelationEnum.fromArabicString(revelationType);
-  }
-
   String dataFormatted(BuildContext context) {
-    return '${context.t.page} $firstPage - ${revelationEnum.text(context)} - ${context.t.verseCount(n: numberOfAyahs)}';
+    return '${context.t.page} $firstPage - $revelationType - ${context.t.verseCount(n: numberOfAyahs)}';
   }
 
   factory SurahModel.fromJson(Map<String, dynamic> json) {

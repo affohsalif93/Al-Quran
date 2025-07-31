@@ -21,12 +21,14 @@ class WordClickContext {
   final int page;
   final bool isCtrlPressed;
   final bool isRightClick;
+  final bool isAltPressed;
 
   WordClickContext({
     required this.word,
     required this.page,
     this.isCtrlPressed = false,
     this.isRightClick = false,
+    this.isAltPressed = false,
   });
 }
 
@@ -56,15 +58,27 @@ final ayahHighlight = Highlight(
   label: "ayah",
   color: Colors.yellow.withValues(alpha: 0.3),
   zIndex: 1,
-  isFullHeight: false,
+);
+
+final partialHighlight = Highlight(
+  label: "partial",
+  color: Colors.green.withValues(alpha: 0.3),
+  zIndex: 5,
 );
 
 final wordHighlight = Highlight(
   label: "word",
   color: Colors.orange.withValues(alpha: 0.3),
   zIndex: 2,
-  isFullHeight: false,
 );
+
+enum HighlightAction {
+  highlightWord, // ctrl + left click + !isAyahNrSymbol
+  highlightAyah, // ctrl + left click + isAyahNrSymbol
+  selectAyah, // ctrl + left click
+  removeWordHighlight, // ctrl + right click !isAyahNrSymbol
+  removeAyahHighlight, // ctrl + right click + isAyahNrSymbol
+}
 
 class QuranPageController extends AutoDisposeFamilyNotifier<QuranPageState, int> {
   late final int pageNumber;
@@ -127,77 +141,88 @@ class QuranPageController extends AutoDisposeFamilyNotifier<QuranPageState, int>
 
     if (globalState.selectedAyah == null) {
       logger.fine("No ayah selected");
-      return;
+      // return;
     }
 
     final ayah = _getFirstAyahOfPage(data);
-    logger.fine("Auto-focusing on first ayah of page: ${ayah.surah}:${ayah.ayah}");
+    logger.fine("Auto-focusing on first ayah of page: ${ayah.pageNumber}");
     globalController.setSelectedAyah(ayah);
     focusOnAyah(ayah);
   }
 
   void focusOnAyah(Ayah ayah) {
-    final highlighter = ref.read(highlightControllerProvider.notifier);
-    final globalController = ref.read(globalControllerProvider.notifier);
-    final ayahWords = state.getWordsForAyah(ayah.surah, ayah.ayah);
-
-    final focusedWords = highlighter.getWordsForLabel(focusHighlight.label);
-
-    highlighter.clearAllForLabel(focusHighlight.label);
-
-    final firstWordOfHighlight = (ayah.pageNumber, "${ayah.surah}:${ayah.ayah}:1");
-
-    if (focusedWords.contains(firstWordOfHighlight)) {
-      globalController.clearSelectedAyah();
-      return;
-    }
-
-    final ayahWordLocations = ayahWords.map((w) => (pageNumber, w.location)).toList();
-
-    highlighter.highlightWords(highlight: focusHighlight, targets: ayahWordLocations);
-  }
-
-  void toggleAyahHighlight(int pageNumber, List<Word> words) {
-    final highlighter = ref.read(highlightControllerProvider.notifier);
-    final wordLocations = words.map((w) => (pageNumber, w.location)).toList();
-    highlighter.toggleWordsHighlight(highlight: ayahHighlight, targets: wordLocations);
-  }
-
-  void toggleWordHighlight(int pageNumber, List<Word> words) {
-    final highlighter = ref.read(highlightControllerProvider.notifier);
-    final wordLocations = words.map((w) => (pageNumber, w.location)).toList();
-    highlighter.toggleWordsHighlight(highlight: wordHighlight, targets: wordLocations);
+    // final highlighter = ref.read(highlightControllerProvider.notifier);
+    // final globalController = ref.read(globalControllerProvider.notifier);
+    // final ayahWords = state.getWordsForAyah(ayah.surah, ayah.ayah);
+    //
+    // final focusedWords = highlighter.getWordsForLabel(focusHighlight.label);
+    //
+    // highlighter.clearAllForLabel(focusHighlight.label);
+    //
+    // final firstWordOfHighlight = (ayah.pageNumber, "${ayah.surah}:${ayah.ayah}:1");
+    //
+    // if (focusedWords.contains(firstWordOfHighlight)) {
+    //   globalController.clearSelectedAyah();
+    //   return;
+    // }
+    //
+    // final ayahWordLocations = ayahWords.map((w) => (pageNumber, w.location)).toList();
+    //
+    // highlighter.highlightWords(highlight: focusHighlight, targets: ayahWordLocations);
   }
 
   void handleWordClick(WordClickContext ctx, WidgetRef ref) {
     final highlighterState = ref.read(highlightControllerProvider);
     final highlighterController = ref.read(highlightControllerProvider.notifier);
+    final action = getHighlightAction(ctx);
 
-    if (ctx.word.isAyahNrSymbol) {
-      logger.fine("Ayah number symbol clicked");
-    } else {
-      logger.fine("Word clicked: ${ctx.word.location}");
-    }
-
-    final isWordHighlight =
-        // highlighterState.mode == HighlightMode.highlight &&
-        !ctx.isRightClick && ctx.isCtrlPressed && !ctx.word.isAyahNrSymbol;
-
-    final isAyahHighlight =
-        !ctx.isRightClick &&
-        // highlighterState.mode == HighlightMode.highlight &&
-        ctx.isCtrlPressed &&
-        ctx.word.isAyahNrSymbol;
-
-    final isFocusHighlight = !ctx.isRightClick && !ctx.isCtrlPressed;
-    // highlighterState.mode == HighlightMode.focus;
-
-    if (isWordHighlight) {
-      toggleWordHighlight(ctx.page, [ctx.word]);
-    } else if (isAyahHighlight) {
-      toggleAyahHighlight(ctx.page, state.getWordsForAyah(ctx.word.surah, ctx.word.ayah));
-    } else if (isFocusHighlight) {
+    if (action case HighlightAction.highlightWord) {
+      highlighterController.highlightWords(
+        highlight: wordHighlight,
+        targets: [(ctx.page, ctx.word.location)],
+      );
+    } else if (action case HighlightAction.highlightAyah) {
+      final words = state.getWordsForAyah(ctx.word.surah, ctx.word.ayah);
+      final wordLocations = words.map((w) => (ctx.page, w.location)).toList();
+      highlighterController.highlightWords(highlight: ayahHighlight, targets: wordLocations);
+    } else if (action case HighlightAction.selectAyah) {
       focusOnAyah(Ayah(pageNumber: ctx.page, surah: ctx.word.surah, ayah: ctx.word.ayah, text: ""));
+    } else if (action case HighlightAction.removeWordHighlight) {
+      highlighterController.removeWordsHighlight(
+        highlight: wordHighlight,
+        targets: [(ctx.page, ctx.word.location)],
+      );
+    } else if (action case HighlightAction.removeAyahHighlight) {
+      highlighterController.removeWordsHighlight(
+        highlight: ayahHighlight,
+        targets:
+            state
+                .getWordsForAyah(ctx.word.surah, ctx.word.ayah)
+                .map((w) => (ctx.page, w.location))
+                .toList(),
+      );
     }
+  }
+
+  HighlightAction? getHighlightAction(WordClickContext ctx) {
+    final isLeftClick = !ctx.isRightClick;
+    final isRightClick = ctx.isRightClick;
+    final isCtrlPressed = ctx.isCtrlPressed;
+    final isAltPressed = ctx.isAltPressed;
+    final isWord = !ctx.word.isAyahNrSymbol;
+    final isAyah = ctx.word.isAyahNrSymbol;
+
+    if (isCtrlPressed && isLeftClick && isWord) {
+      return HighlightAction.highlightWord;
+    } else if (isCtrlPressed && isLeftClick && isAyah) {
+      return HighlightAction.highlightAyah;
+    } else if (isLeftClick && isAyah) {
+      return HighlightAction.selectAyah;
+    } else if (isCtrlPressed && isRightClick && isWord) {
+      return HighlightAction.removeWordHighlight;
+    } else if (isCtrlPressed && isRightClick && isAyah) {
+      return HighlightAction.removeAyahHighlight;
+    }
+    return null;
   }
 }

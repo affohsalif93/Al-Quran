@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 extension ColorExt on ColorScheme {
   bool get isLight => brightness == Brightness.light;
+
   bool get isDark => brightness == Brightness.dark;
 }
 
@@ -35,9 +36,9 @@ class AppColors {
     bg: Color.fromARGB(255, 255, 247, 228),
     error: Color(0xFFEA4335),
     success: Color(0xFF11CC43),
-    navBarBackground: Color(0xFF1D1E40),
+    navBarBackground: Color.fromARGB(206, 226, 220, 220),
     gradient: [Color(0xFFFFE4A1), Color(0xFFFFF3DF)],
-    quranPageBackground: Color(0xFFFFFFFF),
+    quranPageBackground: Color(0xFFF6F5EE),
   );
 
   static const dark = AppColors(
@@ -75,19 +76,30 @@ class AppColors {
   final Color blue = const Color(0xff2299DD);
   final Color purple = const Color(0xff8385E4);
   final Color scaffoldBackground = const Color(0xffF1E1BA);
+
   // gradient
   final List<Color> gradient;
 
   // grey shades
   Color get grey50 => Colors.grey.shade50;
+
   Color get grey100 => Colors.grey.shade100;
+
   Color get grey150 => const Color(0xFFF0F0F0);
+
   Color get grey200 => Colors.grey.shade200;
+
   Color get grey300 => Colors.grey.shade300;
+
   Color get grey400 => Colors.grey.shade400;
+
   Color get grey500 => Colors.grey.shade500;
+
   Color get grey600 => Colors.grey.shade600;
+
   Color get grey700 => Colors.grey.shade700;
+
   Color get grey800 => Colors.grey.shade800;
+
   Color get grey900 => Colors.grey.shade900;
 }

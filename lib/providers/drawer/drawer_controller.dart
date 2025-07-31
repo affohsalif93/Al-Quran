@@ -8,35 +8,60 @@ class DrawerController extends StateNotifier<DrawerState> {
   void toggleLeftDrawer(DrawerComponentKey key) {
     if (state.isLeftDrawerOpen && state.leftDrawerComponentKey == key) {
       closeLeftDrawer();
-      return;
+    } else {
+      openLeftDrawer(key);
     }
+  }
+
+  void openLeftDrawer(DrawerComponentKey key) {
     state = state.copyWith(
-      isLeftDrawerOpen: true,
+      openedDrawer: "left",
       leftDrawerComponent: drawerComponents[key],
       leftDrawerComponentKey: key,
     );
+    globalScaffoldKey.currentState?.openDrawer();
   }
 
   void closeLeftDrawer() {
-    state = state.copyWith(isLeftDrawerOpen: false, leftDrawerComponentKey: null, leftDrawerComponent: null);
+    state = state.copyWith(
+      openedDrawer: "",
+      leftDrawerComponentKey: null,
+      leftDrawerComponent: null,
+    );
     globalScaffoldKey.currentState?.closeDrawer();
   }
 
   void toggleRightDrawer(DrawerComponentKey key) {
     if (state.isRightDrawerOpen && state.rightDrawerComponentKey == key) {
       closeRightDrawer();
-      return;
+    } else {
+      openRightDrawer(key);
     }
+  }
+
+  void openRightDrawer(DrawerComponentKey key) {
     state = state.copyWith(
-      isRightDrawerOpen: true,
+      openedDrawer: "right",
       rightDrawerComponent: drawerComponents[key],
       rightDrawerComponentKey: key,
     );
+    globalScaffoldKey.currentState?.openEndDrawer();
+  }
+
+  void closeOpenDrawer() {
+    if (state.isLeftDrawerOpen) {
+      closeLeftDrawer();
+    } else if (state.isRightDrawerOpen) {
+      closeRightDrawer();
+    }
   }
 
   void closeRightDrawer() {
-    state =
-        state.copyWith(isRightDrawerOpen: false, rightDrawerComponentKey: null, rightDrawerComponent: null);
+    state = state.copyWith(
+      openedDrawer: "",
+      rightDrawerComponentKey: null,
+      rightDrawerComponent: null,
+    );
     globalScaffoldKey.currentState?.closeEndDrawer();
   }
 
@@ -45,7 +70,6 @@ class DrawerController extends StateNotifier<DrawerState> {
   }
 
   void selectRightDrawerComponent(DrawerComponentKey componentKey) {
-    state =
-        state.copyWith(rightDrawerComponent: drawerComponents[componentKey]);
+    state = state.copyWith(rightDrawerComponent: drawerComponents[componentKey]);
   }
 }

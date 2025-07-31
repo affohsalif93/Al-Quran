@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:quran/core/extensions/context_extensions.dart';
 
 import '../../../providers/global/global_controller.dart';
 import 'animated_show_hide.dart';
@@ -30,7 +31,7 @@ class MenuWrapper extends ConsumerWidget {
         padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 4.h),
         height: height,
         decoration: BoxDecoration(
-          color: const Color.fromARGB(206, 226, 220, 220),
+          color: context.colors.navBarBackground,
         ),
         child: child,
       ),

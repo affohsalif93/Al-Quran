@@ -14,17 +14,16 @@ class BottomBar extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return MenuWrapper(
-      height: 55,
+      height: 50,
       direction: AnimationDirection.appearFromBottom,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 30),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             PageViewMode(),
-            Expanded(
-              child: PageNavigation(),
-            ),
-            // SelectMushaf(),
+            PageNavigation(),
+            SelectMushaf(),
           ],
         ),
       ),

@@ -126,8 +126,6 @@ class StaticQuranDataLoader {
     final String content = await rubFile.readAsString();
     final Map<String, dynamic> jsonMap = jsonDecode(content);
 
-    logger.fine("Before assign");
-
     rubList =
         jsonMap.entries.map((entry) {
           final int rubNumber = int.parse(entry.key);
@@ -141,8 +139,6 @@ class StaticQuranDataLoader {
             verseMapping: Map<String, String>.from(rubData['verse_mapping'] as Map),
           );
         }).toList();
-
-    logger.fine("After assign");
   }
 
   static Future<void> loadAyahList() async {

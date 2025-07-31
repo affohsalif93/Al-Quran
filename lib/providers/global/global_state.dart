@@ -5,11 +5,10 @@ import 'package:quran/models/mushaf.dart';
 enum HomeTab {
   mushaf,
   tafsir,
-  hifz,
   notes,
 }
 
-enum ViewerMode {
+enum ViewMode {
   double,
   single,
   translation,
@@ -17,25 +16,25 @@ enum ViewerMode {
 
 class GlobalState extends Equatable {
   final int currentPage;
-  final ViewerMode viewerMode;
+  final ViewMode viewMode;
   final bool isShowMenu;
   final Mushaf currentMushaf;
   final HomeTab currentTab;
-  final Ayah? selectedAyah;
+  final Ayah selectedAyah;
 
   const GlobalState({
     this.currentPage = 1,
     this.isShowMenu = true,
-    this.viewerMode = ViewerMode.double,
+    this.viewMode = ViewMode.double,
     this.currentTab = HomeTab.mushaf,
-    this.selectedAyah,
+    this.selectedAyah = const Ayah(pageNumber: 1, surah: 1, ayah: 2, text: ''),
     required this.currentMushaf,
   });
 
   GlobalState copyWith({
     int? currentPage,
     bool? isShowMenu,
-    ViewerMode? viewerMode,
+    ViewMode? viewMode,
     Mushaf? currentMushaf,
     HomeTab? currentTab,
     Ayah? selectedAyah,
@@ -43,14 +42,14 @@ class GlobalState extends Equatable {
     return GlobalState(
       currentPage: currentPage ?? this.currentPage,
       isShowMenu: isShowMenu ?? this.isShowMenu,
-      viewerMode: viewerMode ?? this.viewerMode,
+      viewMode: viewMode ?? this.viewMode,
       currentMushaf: currentMushaf ?? this.currentMushaf,
       currentTab: currentTab ?? this.currentTab,
       selectedAyah: selectedAyah ?? this.selectedAyah,
     );
   }
 
-  get isBookView => viewerMode == ViewerMode.double;
+  get isBookView => viewMode == ViewMode.double;
 
   get isViewerToggleEnabled => currentTab == HomeTab.mushaf;
 
@@ -65,7 +64,7 @@ class GlobalState extends Equatable {
   @override
   List<Object?> get props => [
     currentPage,
-    viewerMode,
+    viewMode,
     isShowMenu,
     currentMushaf,
     currentTab,

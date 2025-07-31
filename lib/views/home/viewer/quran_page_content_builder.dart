@@ -10,10 +10,10 @@ import 'package:quran/providers/quran_page_provider.dart';
 import 'package:quran/repositories/quran/static_quran_data.dart';
 import 'package:quran/views/home/viewer/quran_word_widget.dart';
 
-class QuranPageBuilder {
+class QuranPageContentBuilder {
   final WidgetRef ref;
 
-  QuranPageBuilder(this.ref);
+  QuranPageContentBuilder(this.ref);
 
   Future<Widget> buildPageContent({
     required int pageNumber,
@@ -35,8 +35,6 @@ class QuranPageBuilder {
     final lineHeight = height / avgLines;
     final scalingFactor = lineHeight * 0.43;
     final ayahVerticalSpacing = lineHeight / 10;
-
-    logger.fine("lineHeight: $lineHeight");
 
     final List<Widget> lineWidgets = [];
 
@@ -82,7 +80,6 @@ class QuranPageBuilder {
         lineWidgets.add(
           SizedBox(
             height: lineHeight,
-            // padding: EdgeInsets.symmetric(vertical: ayahVerticalSpacing / 4),
             child: Wrap(textDirection: TextDirection.rtl, children: basmallahWords),
           ),
         );
@@ -115,8 +112,6 @@ class QuranPageBuilder {
       SizedBox(height: ayahVerticalSpacing),
       Text("$pageNumber", style: TextStyle(fontSize: 0.9 * scalingFactor, color: Colors.black54)),
     ]);
-
-    logger.fine("dims: $width x $height");
 
     return Container(
       width: width,

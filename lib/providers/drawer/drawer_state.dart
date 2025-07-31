@@ -22,32 +22,28 @@ final drawerComponents = <DrawerComponentKey, Widget>{
 
 class DrawerState extends Equatable {
   const DrawerState({
-    this.isLeftDrawerOpen = false,
-    this.isRightDrawerOpen = false,
+    this.openedDrawer = "",
     this.leftDrawerComponent,
     this.rightDrawerComponent,
     this.leftDrawerComponentKey,
     this.rightDrawerComponentKey,
   });
 
-  final bool isLeftDrawerOpen;
-  final bool isRightDrawerOpen;
+  final String openedDrawer;
   final DrawerComponentKey? leftDrawerComponentKey;
   final DrawerComponentKey? rightDrawerComponentKey;
   final Widget? leftDrawerComponent;
   final Widget? rightDrawerComponent;
 
   DrawerState copyWith({
-    bool? isLeftDrawerOpen,
-    bool? isRightDrawerOpen,
+    String? openedDrawer,
     Widget? leftDrawerComponent,
     Widget? rightDrawerComponent,
     DrawerComponentKey? leftDrawerComponentKey,
     DrawerComponentKey? rightDrawerComponentKey,
   }) {
     return DrawerState(
-      isLeftDrawerOpen: isLeftDrawerOpen ?? this.isLeftDrawerOpen,
-      isRightDrawerOpen: isRightDrawerOpen ?? this.isRightDrawerOpen,
+      openedDrawer: openedDrawer ?? this.openedDrawer,
       leftDrawerComponent: leftDrawerComponent ?? this.leftDrawerComponent,
       rightDrawerComponent: rightDrawerComponent ?? this.rightDrawerComponent,
       leftDrawerComponentKey:
@@ -57,10 +53,12 @@ class DrawerState extends Equatable {
     );
   }
 
+  get isLeftDrawerOpen => openedDrawer == "left";
+  get isRightDrawerOpen => openedDrawer == "right";
+
   @override
   List<Object?> get props => [
-    isLeftDrawerOpen,
-    isRightDrawerOpen,
+    openedDrawer,
     leftDrawerComponent,
     rightDrawerComponent,
     leftDrawerComponentKey,
