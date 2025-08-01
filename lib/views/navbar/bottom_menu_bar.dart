@@ -2,9 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:quran/views/drawers/select_mushaf/select_mushaf.dart';
-import 'package:quran/views/footer/page_navigation.dart';
-import 'package:quran/views/footer/page_view_mode.dart';
+import 'package:quran/views/navbar/page_navigation.dart';
+import 'package:quran/views/navbar/page_view_mode.dart';
+import 'package:quran/views/navbar/zoom_control.dart';
 import 'package:quran/views/widgets/animated_show_hide.dart';
 import 'package:quran/views/widgets/menu_wrapper.dart';
 
@@ -21,9 +21,15 @@ class BottomBar extends ConsumerWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            PageViewMode(),
+            Row(
+              children: [
+                PageViewMode(),
+                const SizedBox(width: 20),
+                ZoomControl(),
+              ],
+            ),
             PageNavigation(),
-            SelectMushaf(),
+            // SelectMushaf(),
           ],
         ),
       ),

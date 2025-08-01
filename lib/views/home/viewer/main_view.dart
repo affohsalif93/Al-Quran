@@ -24,17 +24,8 @@ class MainView extends ConsumerWidget {
                         Container(color: context.colors.navBarBackground, width: 10),
 
                 initialAreas: [
-                  Area(
-                    flex: 5,
-                    min: 4,
-                    builder:
-                        (context, area) => Scrollable(
-                          viewportBuilder: (BuildContext context, ViewportOffset position) {
-                            return QuranViewer();
-                          },
-                        ),
-                  ),
-                  Area(flex: 5, min: 4, builder: (context, area) => RightView()),
+                  Area(flex: 7, min: 6, builder: (context, area) => QuranViewer()),
+                  Area(flex: 3, min: 2, builder: (context, area) => RightView()),
                 ],
               )
               : QuranViewer(),

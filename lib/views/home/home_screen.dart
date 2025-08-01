@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:quran/core/extensions/context_extensions.dart';
 import 'package:quran/providers/drawer/drawer_provider.dart';
 import 'package:quran/providers/global/global_controller.dart';
-import 'package:quran/views/footer/bottom_menu_bar.dart';
-import 'package:quran/views/header/top_menu_bar.dart';
 import 'package:quran/views/home/viewer/main_view.dart';
+import 'package:quran/views/navbar/bottom_menu_bar.dart';
+import 'package:quran/views/navbar/top_menu_bar.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -25,13 +24,11 @@ class HomeScreen extends ConsumerWidget {
     }
 
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(45),
-        child: TopMenuBar(),
-      ),
+      appBar: PreferredSize(preferredSize: Size.fromHeight(45), child: TopMenuBar()),
       body: Scaffold(
         key: globalScaffoldKey,
         body: MainView(),
+        backgroundColor: Colors.white,
         drawer: Drawer(
           width: 350,
           shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),

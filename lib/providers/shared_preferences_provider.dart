@@ -20,6 +20,7 @@ enum PrefsEnum {
   mushafScript,
   riwayah,
   tafsirList,
+  zoomLevel,
 }
 
 final sharedPreferencesProvider = Provider<SharedPreferencesService>((ref) {
@@ -78,6 +79,15 @@ class SharedPreferencesService {
 
   void setPageNumber(int value) {
     _prefs.setInt(PrefsEnum.pageNumber.name, value);
+  }
+
+  // ZOOM LEVEL
+  double getZoomLevel() {
+    return _prefs.getDouble(PrefsEnum.zoomLevel.name) ?? 1.0;
+  }
+
+  void setZoomLevel(double value) {
+    _prefs.setDouble(PrefsEnum.zoomLevel.name, value);
   }
 
   // BOOKMARK

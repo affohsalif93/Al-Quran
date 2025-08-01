@@ -20,14 +20,16 @@ class GlobalState extends Equatable {
   final bool isShowMenu;
   final Mushaf currentMushaf;
   final HomeTab currentTab;
-  final Ayah selectedAyah;
+  final Ayah? selectedAyah;
+  final double zoomLevel;
 
   const GlobalState({
     this.currentPage = 1,
     this.isShowMenu = true,
     this.viewMode = ViewMode.double,
     this.currentTab = HomeTab.mushaf,
-    this.selectedAyah = const Ayah(pageNumber: 1, surah: 1, ayah: 2, text: ''),
+    this.selectedAyah,
+    this.zoomLevel = 1.0,
     required this.currentMushaf,
   });
 
@@ -38,6 +40,7 @@ class GlobalState extends Equatable {
     Mushaf? currentMushaf,
     HomeTab? currentTab,
     Ayah? selectedAyah,
+    double? zoomLevel,
   }) {
     return GlobalState(
       currentPage: currentPage ?? this.currentPage,
@@ -46,6 +49,7 @@ class GlobalState extends Equatable {
       currentMushaf: currentMushaf ?? this.currentMushaf,
       currentTab: currentTab ?? this.currentTab,
       selectedAyah: selectedAyah ?? this.selectedAyah,
+      zoomLevel: zoomLevel ?? this.zoomLevel,
     );
   }
 
@@ -69,5 +73,6 @@ class GlobalState extends Equatable {
     currentMushaf,
     currentTab,
     selectedAyah,
+    zoomLevel,
   ];
 }

@@ -46,8 +46,9 @@ class TopMenuBar extends ConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           TextButton.icon(
-            icon: Icon(Symbols.menu_book, size: 24.spMin, color: Colors.green),
-            label: const Text("Surahs", style: TextStyle(fontWeight: FontWeight.w500)),
+            icon: Icon(Symbols.menu_book, size: 24.spMin),
+            // label: const Text("Surahs", style: TextStyle(fontWeight: FontWeight.w500)),
+            label: const Text("Surahs"),
             onPressed: () {
               drawerActions.toggleLeftDrawer(DrawerComponentKey.surahs);
             },

@@ -29,11 +29,42 @@ class GlobalController extends StateNotifier<GlobalState> {
 
   static GlobalState _initialState(Ref ref) {
     final prefs = ref.read(sharedPreferencesProvider);
+    final savedZoom = prefs.getZoomLevel().clamp(0.5, 2.0);
     return GlobalState(
       currentPage: prefs.getPageNumber(),
       currentMushaf: StaticQuranData.madinahMushafV1,
+      zoomLevel: savedZoom,
     );
   }
+
+  // GETTERS AND UTILITY METHODS
+
+  SharedPreferencesService get prefs => ref.read(sharedPreferencesProvider);
+
+  int getMushafPageCount() {
+    return state.currentMushaf.numberOfPages;
+  }
+
+  int getCurrentTabIndex() {
+    return HomeTab.values.indexOf(state.currentTab) + 1;
+  }
+
+  String getCurrentPageText() {
+    if (state.isBookView) {
+      return "Pages ${state.currentPage + 1} - ${state.currentPage}";
+    }
+    return "Page ${state.currentPage}";
+  }
+
+  String getCurrentMushafName() {
+    return state.currentMushaf.englishName;
+  }
+
+  bool shouldFocusFirstAyahOfPage() {
+    return !state.isMushafTab && state.selectedAyah == null;
+  }
+
+  // AYAH SELECTION
 
   void setSelectedAyah(Ayah ayah) {
     state = state.copyWith(selectedAyah: ayah);
@@ -43,13 +74,7 @@ class GlobalController extends StateNotifier<GlobalState> {
     state = state.copyWith(selectedAyah: null);
   }
 
-  void controllerJumpToPage(int page) {
-    if (pageController.hasClients) {
-      pageController.jumpToPage(page - 1); // because 0 based index
-    } else {
-      logger.error("PageController has no clients");
-    }
-  }
+  // TAB MANAGEMENT
 
   void setCurrentTabByIndex(int index) {
     if (index < 1 || index > HomeTab.values.length) {
@@ -62,44 +87,59 @@ class GlobalController extends StateNotifier<GlobalState> {
 
   void _switchTab(HomeTab tab) {
     if (tab == HomeTab.mushaf) {
-      setViewMode(ViewMode.double);
       state = state.copyWith(currentTab: HomeTab.mushaf);
     } else {
-      setViewMode(ViewMode.single);
       state = state.copyWith(currentTab: tab);
     }
-  }
-
-  bool shouldFocusFirstAyahOfPage() {
-    return !state.isMushafTab && state.selectedAyah == null;
-  }
-
-  SharedPreferencesService get prefs => ref.read(sharedPreferencesProvider);
-
-  int getMushafPageCount() {
-    return state.currentMushaf.numberOfPages;
-  }
-
-  int getCurrentTabIndex() {
-    return HomeTab.values.indexOf(state.currentTab) + 1;
   }
 
   void toTafsirTab() {
     state = state.copyWith(currentTab: HomeTab.tafsir, viewMode: ViewMode.single);
   }
 
+  // UI CONTROLS
+
   void toggleMenu() {
     state = state.copyWith(isShowMenu: !state.isShowMenu);
   }
 
-  String getCurrentPageText() {
-    if (state.isBookView) {
-      return "Pages ${state.currentPage + 1} - ${state.currentPage}";
+  void setViewMode(ViewMode viewMode) {
+    if (viewMode == state.viewMode) {
+      return;
     }
-    return "Page ${state.currentPage}";
+    if (viewMode == ViewMode.single) {
+      state = state.copyWith(viewMode: viewMode);
+    } else if (viewMode == ViewMode.double) {
+      final currentPage = state.currentPage - (state.currentPage.isEven ? 1 : 0);
+      state = state.copyWith(viewMode: viewMode, currentPage: currentPage);
+      controllerJumpToPage(currentPage);
+    }
+  }
+
+  // MUSHAF MANAGEMENT
+
+  void setCurrentMushaf(String name) {
+    final mushaf = StaticQuranData.mushafs.firstWhere(
+      (mushaf) => mushaf.englishName == name,
+      orElse: () {
+        logger.error("Mushaf not found: $name");
+        return StaticQuranData.madinahMushafV1;
+      },
+    );
+
+    state = state.copyWith(currentMushaf: mushaf);
+    prefs.setCurrentMushaf(name);
   }
 
   // PAGE NAVIGATION
+
+  void controllerJumpToPage(int page) {
+    if (pageController.hasClients) {
+      pageController.jumpToPage(page - 1); // because 0 based index
+    } else {
+      logger.error("PageController has no clients");
+    }
+  }
 
   bool canGoToPreviousPage() {
     if (state.isBookView) {
@@ -159,34 +199,29 @@ class GlobalController extends StateNotifier<GlobalState> {
     prefs.setPageNumber(state.currentPage);
   }
 
-  void setViewMode(ViewMode viewMode) {
-    if (viewMode == state.viewMode) {
+  // ZOOM FUNCTIONALITY
+
+  void setZoomLevel(double zoomLevel) {
+    if (zoomLevel < 0.5 || zoomLevel > 2.0) {
+      logger.error("Invalid zoom level: $zoomLevel. Must be between 0.5 and 2.0");
       return;
     }
-    if (viewMode == ViewMode.single) {
-      state = state.copyWith(viewMode: viewMode);
-    } else if (viewMode == ViewMode.double) {
-      final currentPage = state.currentPage - (state.currentPage.isEven ? 1 : 0);
-      state = state.copyWith(viewMode: viewMode, currentPage: currentPage);
-      controllerJumpToPage(currentPage);
-    }
+    state = state.copyWith(zoomLevel: zoomLevel);
+    prefs.setZoomLevel(zoomLevel);
   }
 
-  String getCurrentMushafName() {
-    return state.currentMushaf.englishName;
+  void resetZoom() {
+    setZoomLevel(1.0);
   }
 
-  void setCurrentMushaf(String name) {
-    final mushaf = StaticQuranData.mushafs.firstWhere(
-      (mushaf) => mushaf.englishName == name,
-      orElse: () {
-        logger.error("Mushaf not found: $name");
-        return StaticQuranData.madinahMushafV1;
-      },
-    );
+  void zoomIn() {
+    final newZoom = (state.zoomLevel + 0.05).clamp(0.5, 1.0);
+    setZoomLevel(newZoom);
+  }
 
-    state = state.copyWith(currentMushaf: mushaf);
-    prefs.setCurrentMushaf(name);
+  void zoomOut() {
+    final newZoom = (state.zoomLevel - 0.05).clamp(0.5, 1.0);
+    setZoomLevel(newZoom);
   }
 
   @override
