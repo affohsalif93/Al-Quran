@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:quran/core/utils/logger.dart';
@@ -8,7 +6,6 @@ import 'package:quran/models/quran/basmallah_line.dart';
 import 'package:quran/models/quran/page_data.dart';
 import 'package:quran/models/quran/surah_name_line.dart';
 import 'package:quran/models/quran/word.dart';
-import 'package:quran/providers/global/global_controller.dart';
 import 'package:quran/providers/quran/quran_page_provider.dart';
 import 'package:quran/repositories/quran/static_quran_data.dart';
 import 'package:quran/views/home/viewer/quran_word_widget.dart';
@@ -27,7 +24,7 @@ class QuranPageContentBuilder {
     final dualPageController = ref.read(quranDualPageProvider.notifier);
 
     final pageData = dualPageState.getPageData(page);
-    
+
     if (pageData == null) {
       dualPageController.loadPage(page);
       return Center(child: CircularProgressIndicator());

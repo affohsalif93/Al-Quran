@@ -23,7 +23,7 @@ class TabItem extends StatelessWidget {
       child: Row(
         spacing: 5,
         children: [
-          Icon(icon, size: 20, color: Colors.green),
+          Icon(icon, size: 20),
           Text(text, style: TextStyle(fontSize: 15)),
         ],
       ),
@@ -52,7 +52,6 @@ class TopMenuBar extends ConsumerWidget {
             onPressed: () {
               drawerActions.toggleLeftDrawer(DrawerComponentKey.surahs);
             },
-            style: TextButton.styleFrom(foregroundColor: Colors.green),
           ),
           Expanded(
             child: Container(
@@ -70,9 +69,9 @@ class TopMenuBar extends ConsumerWidget {
                 ),
                 padding: 20,
                 thumbDecoration: BoxDecoration(
-                  color: Colors.lightGreen,
                   borderRadius: BorderRadius.circular(4),
                   border: Border.all(color: Colors.green, width: 2),
+                  color: Colors.lightGreen,
                 ),
                 duration: Duration(milliseconds: 100),
                 curve: Curves.easeInToLinear,

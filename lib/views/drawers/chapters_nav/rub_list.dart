@@ -31,8 +31,7 @@ class RubCard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final ayahKey = "${rub.firstSurah}:${rub.firstAyah}";
     final firstAyahText = StaticQuranData.ayahMap[ayahKey]?.text ?? "";
-    final subtitle =
-        "${StaticQuranData.surahMap[rub.firstSurah]?.englishName} ${rub.firstAyahKey}";
+    final subtitle = "${StaticQuranData.surahMap[rub.firstSurah]?.englishName} ${rub.firstAyahKey}";
 
     void onSelectedRub() {
       context.pop();
@@ -44,20 +43,7 @@ class RubCard extends ConsumerWidget {
       title: "Rub ${rub.rubNumber}",
       subtitle: subtitle,
       onTap: onSelectedRub,
-      trailing: SizedBox(
-        width: 150,
-        child: Text(
-          firstAyahText,
-          textDirection: TextDirection.rtl,
-          overflow: TextOverflow.ellipsis,
-          maxLines: 1,
-          style: TextStyle(
-            fontSize: 15.spMin,
-            color: Colors.black,
-            fontFamily: FontFamily.digitalKhatt,
-          ),
-        ),
-      ),
+      trailingText: firstAyahText,
     );
   }
 }

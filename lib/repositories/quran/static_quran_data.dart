@@ -185,4 +185,8 @@ abstract class StaticQuranData {
     }
     return -1;
   }
+
+  static SurahModel getSurah(int surahNumber) {
+    return surahs.firstWhere((surah) => surah.surahNumber == surahNumber);
+  }
 }

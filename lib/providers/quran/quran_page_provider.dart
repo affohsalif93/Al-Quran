@@ -2,113 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:quran/core/utils/logger.dart';
 import 'package:quran/models/quran/ayah_model.dart';
-import 'package:quran/models/quran/ayah_line.dart';
 import 'package:quran/models/quran/page_data.dart';
-import 'package:quran/models/quran/page_line.dart';
-import 'package:quran/models/quran/word.dart';
-import 'package:quran/providers/global/global_provider.dart';
-import 'package:quran/providers/global/global_state.dart';
 import 'package:quran/providers/highlighter/highlighter_provider.dart';
-import 'package:quran/providers/highlighter/highlighter_state.dart';
 import 'package:quran/providers/global/global_controller.dart';
+import 'package:quran/providers/quran/quran_page_state.dart';
 import 'package:quran/repositories/quran/quran_repository.dart';
 
-// final quranPageControllerProvider = NotifierProvider.family
-//     .autoDispose<QuranPageController, QuranPageState, int>(() => QuranPageController());
-//
-final quranDualPageProvider = NotifierProvider<QuranDualPageController, QuranDualPageState>(
-  () => QuranDualPageController(),
+
+final quranDualPageProvider = NotifierProvider<QuranPageController, QuranPageState>(
+  () => QuranPageController(),
 );
 
-class WordClickContext {
-  final Word word;
-  final int page;
-  final bool isCtrlPressed;
-  final bool isRightClick;
-  final bool isAltPressed;
 
-  WordClickContext({
-    required this.word,
-    required this.page,
-    this.isCtrlPressed = false,
-    this.isRightClick = false,
-    this.isAltPressed = false,
-  });
-}
-
-final focusHighlight = Highlight(
-  label: "focus",
-  color: Colors.grey.withValues(alpha: 0.3),
-  zIndex: 0,
-  isFullHeight: true,
-);
-
-final ayahHighlight = Highlight(
-  label: "ayah",
-  color: Colors.yellow.withValues(alpha: 0.3),
-  zIndex: 1,
-);
-
-final partialHighlight = Highlight(
-  label: "partial",
-  color: Colors.green.withValues(alpha: 0.3),
-  zIndex: 5,
-);
-
-final wordHighlight = Highlight(
-  label: "word",
-  color: Colors.orange.withValues(alpha: 0.3),
-  zIndex: 2,
-);
-
-enum HighlightAction {
-  highlightWord, // ctrl + left click + !isAyahNrSymbol
-  highlightAyah, // ctrl + left click + isAyahNrSymbol
-  selectAyah, // ctrl + left click
-  removeWordHighlight, // ctrl + right click !isAyahNrSymbol
-  removeAyahHighlight, // ctrl + right click + isAyahNrSymbol
-}
-
-class QuranDualPageState {
-  final Map<int, QuranPageData> pages;
-
-  QuranDualPageState({required this.pages});
-
-  factory QuranDualPageState.initial() {
-    return QuranDualPageState(pages: {});
-  }
-
-  QuranDualPageState copyWith({Map<int, QuranPageData>? pages}) {
-    return QuranDualPageState(pages: pages ?? this.pages);
-  }
-
-  QuranPageData? getPageData(int pageNumber) {
-    final pageData = pages[pageNumber];
-    return (pageData != null && !pageData.isEmpty) ? pageData : null;
-  }
-
-  List<Word> getWordsForAyah(int pageNumber, int surah, int ayah) {
-    final data = getPageData(pageNumber);
-    return data?.words.where((word) => word.surah == surah && word.ayah == ayah).toList() ?? [];
-  }
-
-  Ayah getAyahForWord(int pageNumber, Word word) {
-    final ayahWords = getWordsForAyah(pageNumber, word.surah, word.ayah);
-    final ayahText = ayahWords.map((w) => w.text).join(" ");
-    return Ayah(page: pageNumber, surah: word.surah, ayah: word.ayah, text: ayahText);
-  }
-}
-
-class QuranDualPageController extends Notifier<QuranDualPageState> {
+class QuranPageController extends Notifier<QuranPageState> {
   @override
-  QuranDualPageState build() {
+  QuranPageState build() {
     ref.listen(globalControllerProvider.select((state) => state.currentPage), (previous, next) {
       if (previous != next) {
         focusOnFirstAyahOfPage(next);
       }
     });
 
-    return QuranDualPageState.initial();
+    return QuranPageState.initial();
   }
 
   Future<void> loadPage(int pageNumber) async {
@@ -152,10 +67,11 @@ class QuranDualPageController extends Notifier<QuranDualPageState> {
     highlighter.clearAllForLabel(focusHighlight.label);
     final ayahWordLocations = ayahWords.map((w) => (pageNumber, w.location)).toList();
     highlighter.highlightWords(highlight: focusHighlight, targets: ayahWordLocations);
+
+    ref.read(globalControllerProvider.notifier).setSelectedAyah(ayah);
   }
 
   void handleWordClick(WordClickContext ctx, WidgetRef ref) {
-    final highlighterState = ref.read(highlightControllerProvider);
     final highlighterController = ref.read(highlightControllerProvider.notifier);
     final action = getHighlightAction(ctx);
 

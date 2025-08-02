@@ -117,7 +117,7 @@ class AzkarSlider extends HookWidget {
           style: context.textTheme.titleLarge?.copyWith(
             color: context.colors.textPrimary,
             fontWeight: FontWeight.w400,
-            fontFamily: FontFamily.digitalKhatt,
+            fontFamily: FontFamily.uthmanTN,
             fontSize: 36.spMin,
           ),
           textAlign: TextAlign.center,

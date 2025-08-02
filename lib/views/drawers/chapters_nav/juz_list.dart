@@ -44,20 +44,7 @@ class JuzCard extends ConsumerWidget {
       title: "Juz ${juz.juzNumber}",
       subtitle: subtitle,
       onTap: onSelectedJuz,
-      trailing: SizedBox(
-        width: 150,
-        child: Text(
-          firstAyahText,
-          textDirection: TextDirection.rtl,
-          overflow: TextOverflow.ellipsis,
-          maxLines: 1,
-          style: TextStyle(
-            fontSize: 15.spMin,
-            color: Colors.black,
-            fontFamily: FontFamily.digitalKhatt,
-          ),
-        ),
-      ),
+      trailingText: firstAyahText
     );
   }
 }

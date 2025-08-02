@@ -42,8 +42,8 @@ class RightView extends ConsumerWidget {
     final globalController = ref.read(globalControllerProvider.notifier);
 
     return Container(
-      decoration: BoxDecoration(color: Colors.white),
-      padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+      decoration: BoxDecoration(color: context.colors.quranPageBackground),
+      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       child: NotesView(),
     );
   }

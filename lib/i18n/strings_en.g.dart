@@ -88,10 +88,6 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 	String get ayah => 'Ayah';
 	String get verse => 'Ayah';
 	String get verses => 'Ayahs';
-	String verseCount({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(n,
-		one: '1 Ayah',
-		other: '${n} Ayahs',
-	);
 	String get word => 'Word';
 	String get retry => 'Retry';
 	String get downloadWaitingMessage => 'Invest waiting minutes in Dhikr and Istighfar';

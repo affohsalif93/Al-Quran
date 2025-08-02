@@ -6,6 +6,7 @@ import 'package:quran/models/quran/word.dart';
 import 'package:quran/providers/highlighter/highlighter_provider.dart';
 import 'package:quran/providers/highlighter/highlighter_state.dart';
 import 'package:quran/providers/quran/quran_page_provider.dart';
+import 'package:quran/providers/quran/quran_page_state.dart';
 
 class QuranWordWidget extends ConsumerStatefulWidget {
   final Word word;

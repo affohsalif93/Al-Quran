@@ -2,17 +2,9 @@ import 'package:equatable/equatable.dart';
 import 'package:quran/models/quran/ayah_model.dart';
 import 'package:quran/models/mushaf.dart';
 
-enum HomeTab {
-  mushaf,
-  tafsir,
-  notes,
-}
+enum HomeTab { mushaf, tafsir, notes }
 
-enum ViewMode {
-  double,
-  single,
-  translation,
-}
+enum ViewMode { double, single, translation }
 
 class GlobalState extends Equatable {
   final int currentPage;
@@ -20,7 +12,7 @@ class GlobalState extends Equatable {
   final bool isShowMenu;
   final Mushaf currentMushaf;
   final HomeTab currentTab;
-  final Ayah selectedAyah;
+  final Ayah? selectedAyah;
   final double zoomLevel;
 
   const GlobalState({
@@ -28,9 +20,9 @@ class GlobalState extends Equatable {
     this.isShowMenu = true,
     this.viewMode = ViewMode.double,
     this.currentTab = HomeTab.mushaf,
-    this.selectedAyah = const Ayah(page: 1, surah: 1, ayah: 1, text: ""),
-    this.zoomLevel = 1.0,
     required this.currentMushaf,
+    this.selectedAyah,
+    this.zoomLevel = 1.0,
   });
 
   GlobalState copyWith({

@@ -39,7 +39,7 @@ class SurahCard extends ConsumerWidget {
       index: surah.id,
       title: surah.name(context),
       subtitle: surah.dataFormatted(context),
-      trailing: Text(
+      trailingWidget: Text(
         StaticQuranData.namesLigatures.getShortName(surah.id),
         style: TextStyle(
           fontSize: 30.spMin,

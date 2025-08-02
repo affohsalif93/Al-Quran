@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:quran/core/extensions/context_extensions.dart';
 import 'package:quran/i18n/strings.g.dart';
-import 'package:quran/models/quran_part_mixin.dart';
 
 class SurahModel {
   final int id;
@@ -9,7 +8,7 @@ class SurahModel {
   final String arabicName;
   final String englishNameTranslation;
   final int numberOfAyahs;
-  final String revelationType;
+  final String revelationPlace;
   final List<int> pages;
   final int revelationOrder;
   final int surahNumber;
@@ -20,7 +19,7 @@ class SurahModel {
     required this.arabicName,
     required this.englishNameTranslation,
     required this.numberOfAyahs,
-    required this.revelationType,
+    required this.revelationPlace,
     required this.pages,
     required this.revelationOrder,
     required this.surahNumber,
@@ -37,7 +36,7 @@ class SurahModel {
   }
 
   String dataFormatted(BuildContext context) {
-    return '${context.t.page} $firstPage - $revelationType - ${context.t.verseCount(n: numberOfAyahs)}';
+    return '${context.t.page} $firstPage - $revelationPlace - Ayah $numberOfAyahs';
   }
 
   factory SurahModel.fromJson(Map<String, dynamic> json) {
@@ -47,7 +46,7 @@ class SurahModel {
       arabicName: json['name_arabic'],
       englishNameTranslation: json['translated_name']['name'],
       numberOfAyahs: json['verses_count'],
-      revelationType: json['revelation_place'],
+      revelationPlace: json['revelation_place'],
       pages: List<int>.from(json['pages'] as List),
       revelationOrder: json['revelation_order'],
       surahNumber: json['surah_number'],
