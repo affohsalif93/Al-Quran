@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:quran/models/quran/word.dart';
 import 'package:quran/providers/highlighter/highlighter_provider.dart';
 import 'package:quran/providers/highlighter/highlighter_state.dart';
-import 'package:quran/providers/quran_page_provider.dart';
+import 'package:quran/providers/quran/quran_page_provider.dart';
 
 class QuranWordWidget extends ConsumerStatefulWidget {
   final Word word;
@@ -51,7 +51,7 @@ class _QuranWordWidgetState extends ConsumerState<QuranWordWidget> {
   Widget build(BuildContext context) {
     final highlighterState = ref.watch(highlightControllerProvider);
     final highlighterController = ref.watch(highlightControllerProvider.notifier);
-    final quranPageController = ref.watch(quranPageControllerProvider(widget.pageNumber).notifier);
+    final quranDualPageController = ref.watch(quranDualPageProvider.notifier);
 
     final wordHighlights =
         highlighterState.labels.values
@@ -98,7 +98,7 @@ class _QuranWordWidgetState extends ConsumerState<QuranWordWidget> {
             isAltPressed: isAltPressed,
           );
 
-          quranPageController.handleWordClick(ctx, ref);
+          quranDualPageController.handleWordClick(ctx, ref);
         }
       },
       onPointerMove: (event) {
@@ -122,7 +122,7 @@ class _QuranWordWidgetState extends ConsumerState<QuranWordWidget> {
               decoration: BoxDecoration(color: wordHeightHighlightColor),
               child: Text(
                 key: _textKey,
-                widget.word.glyphCode,
+                widget.word.glyph,
                 style: TextStyle(
                   fontSize: widget.fontSize,
                   fontFamily: widget.fontFamily,

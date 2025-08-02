@@ -19,12 +19,12 @@ class StaticQuranDataLoader {
   static late final List<AyahModel> ayahList;
 
   static Future<void> loadLigatures() async {
-    final String headerLigaturePath = IO.joinFromSupportFolder(
+    final String headerLigaturePath = IO.fromSupportFolder(
       "ligatures",
       "surah_header_name_ligatures.json",
     );
 
-    final String shortNameLigaturePath = IO.joinFromSupportFolder(
+    final String shortNameLigaturePath = IO.fromSupportFolder(
       "ligatures",
       "surah_short_name_ligatures.json",
     );
@@ -50,7 +50,7 @@ class StaticQuranDataLoader {
   }
 
   static Future<void> loadSurahList() async {
-    final String surahListPath = IO.joinFromMetadataFolder("quran-metadata-surah.json");
+    final String surahListPath = IO.fromMetadataFolder("quran-metadata-surah.json");
     final File surahFile = File(surahListPath);
 
     if (!await surahFile.exists()) {
@@ -64,7 +64,7 @@ class StaticQuranDataLoader {
   }
 
   static Future<void> loadJuzList() async {
-    final String juzListPath = IO.joinFromMetadataFolder("quran-metadata-juz.json");
+    final String juzListPath = IO.fromMetadataFolder("quran-metadata-juz.json");
     final File juzFile = File(juzListPath);
 
     if (!await juzFile.exists()) {
@@ -90,7 +90,7 @@ class StaticQuranDataLoader {
   }
 
   static Future<void> loadHizbList() async {
-    final String hizbListPath = IO.joinFromMetadataFolder("quran-metadata-hizb.json");
+    final String hizbListPath = IO.fromMetadataFolder("quran-metadata-hizb.json");
     final File hizbFile = File(hizbListPath);
 
     if (!await hizbFile.exists()) {
@@ -116,7 +116,7 @@ class StaticQuranDataLoader {
   }
 
   static Future<void> loadRubList() async {
-    final String rubListPath = IO.joinFromMetadataFolder("quran-metadata-rub.json");
+    final String rubListPath = IO.fromMetadataFolder("quran-metadata-rub.json");
     final File rubFile = File(rubListPath);
 
     if (!await rubFile.exists()) {
@@ -142,7 +142,7 @@ class StaticQuranDataLoader {
   }
 
   static Future<void> loadAyahList() async {
-    final String ayahListPath = IO.joinFromMetadataFolder("quran-metadata-ayah.json");
+    final String ayahListPath = IO.fromMetadataFolder("quran-metadata-ayah.json");
     final File ayahFile = File(ayahListPath);
 
     if (!await ayahFile.exists()) {

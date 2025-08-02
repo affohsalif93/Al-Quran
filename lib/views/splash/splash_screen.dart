@@ -32,16 +32,9 @@ class SplashScreen extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 88.h),
         children: [
           const Spacer(),
-          SvgIcon(
-            Assets.icons.quranText.path,
-            size: 170.r,
-            color: context.colorScheme.onSurface,
-          ),
+          SvgIcon(Assets.icons.quranText.path, size: 170.r, color: context.colorScheme.onSurface),
           const Spacer(),
-          Align(
-            alignment: AlignmentDirectional.center,
-            child: const AzkarSlider()
-          ),
+          Align(alignment: AlignmentDirectional.center, child: const AzkarSlider()),
           const Spacer(),
           ConstrainedBox(
             constraints: BoxConstraints(maxWidth: 600),
@@ -49,30 +42,21 @@ class SplashScreen extends StatelessWidget {
               children: [
                 ListTile(
                   leading: const Icon(Symbols.dark_mode),
-                  onTap:
-                      () =>
-                          context.customWidgetDialog(const ChooseThemeDialog()),
+                  onTap: () => context.customWidgetDialog(const ChooseThemeDialog()),
                   title: Text(context.t.themeMode),
                   trailing: Text(context.themeAsText),
                   contentPadding: EdgeInsets.symmetric(horizontal: 4.w),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                 ),
                 // language selection
                 ListTile(
                   leading: const Icon(Symbols.language),
-                  onTap:
-                      () => context.customWidgetDialog(
-                        const ChooseLocaleDialog(),
-                      ),
+                  onTap: () => context.customWidgetDialog(const ChooseLocaleDialog()),
                   title: Text(context.t.language),
                   subtitle: Text(context.t.languageOtherLanguage),
                   trailing: Text(context.languageAsText),
                   contentPadding: EdgeInsets.symmetric(horizontal: 4.w),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                 ),
                 12.gapH,
                 CustomButton(

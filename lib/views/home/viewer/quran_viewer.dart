@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -5,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:quran/core/extensions/context_extensions.dart';
 import 'package:quran/core/utils/logger.dart';
 import 'package:quran/providers/global/global_controller.dart';
+import 'package:quran/providers/quran/quran_page_provider.dart';
 import 'package:quran/views/home/viewer/quran_page.dart';
 import 'package:quran/views/home/viewer/quran_page_content_builder.dart';
 
@@ -43,19 +46,9 @@ class _QuranViewerState extends ConsumerState<QuranViewer> {
         onKeyEvent: (event) {
           if (event is KeyDownEvent) {
             if (event.logicalKey == LogicalKeyboardKey.arrowLeft) {
-              logger.fine("Arrow left: going to previous page");
-              if (context.isLtr) {
-                globalController.goToPreviousPage();
-              } else {
-                globalController.goToNextPage();
-              }
+              globalController.goToNextPage();
             } else if (event.logicalKey == LogicalKeyboardKey.arrowRight) {
-              logger.fine("Arrow right: going to next page");
-              if (context.isLtr) {
-                globalController.goToNextPage();
-              } else {
-                globalController.goToPreviousPage();
-              }
+              globalController.goToPreviousPage();
             }
           }
         },
@@ -120,12 +113,12 @@ class PageViewer extends ConsumerWidget {
         return FutureBuilder<List<Widget>>(
           future: Future.wait([
             pageContentBuilder.buildPageContent(
-              pageNumber: index,
+              page: index,
               width: dims.contentWidth,
               height: dims.contentHeight,
             ),
             pageContentBuilder.buildPageContent(
-              pageNumber: index + 1,
+              page: index + 1,
               width: dims.contentWidth,
               height: dims.contentHeight,
             ),

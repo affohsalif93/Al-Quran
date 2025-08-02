@@ -44,11 +44,15 @@ abstract class IO {
     logger.fine("data.zip deleted from $supportDir");
   }
 
-  static String joinFromSupportFolder(String a, [String? b, String? c, ]) {
+  static String fromSupportFolder(String a, [String? b, String? c, ]) {
     return join(supportFolderPath, a, b, c);
   }
 
-  static String joinFromMetadataFolder(String a, [String? b, String? c, ]) {
+  static String fromDbsFolder(String a, [String? b, String? c, ]) {
+    return join(supportFolderPath, "data", "dbs", a, b, c);
+  }
+
+  static String fromMetadataFolder(String a, [String? b, String? c, ]) {
     return join(supportFolderPath, "data", "metadata", a, b, c);
   }
 

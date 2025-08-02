@@ -5,7 +5,8 @@ class Word extends Equatable {
   final String location;
   final int surah;
   final int ayah;
-  final String glyphCode;
+  final String glyph;
+  final String text;
   final bool isAyahNrSymbol;
 
   const Word({
@@ -13,7 +14,8 @@ class Word extends Equatable {
     required this.location,
     required this.surah,
     required this.ayah,
-    required this.glyphCode,
+    required this.text,
+    required this.glyph,
     this.isAyahNrSymbol = false,
   });
 
@@ -27,7 +29,8 @@ class Word extends Equatable {
       location: json['location'],
       surah: json['surah'] as int,
       ayah: json['ayah'] as int,
-      glyphCode: json['glyphCode'],
+      text: json['text'] as String,
+      glyph: json['glyph'],
     );
   }
 
@@ -37,7 +40,8 @@ class Word extends Equatable {
       'location': location,
       'surah': surah,
       'ayah': ayah,
-      'glyphCode': glyphCode,
+      'text': text,
+      'glyph': glyph,
     };
   }
 
@@ -47,6 +51,7 @@ class Word extends Equatable {
     location,
     surah,
     ayah,
-    glyphCode,
+    text,
+    glyph,
   ];
 }

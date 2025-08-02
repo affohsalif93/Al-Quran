@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:quran/core/utils/logger.dart';
 import 'package:quran/models/quran/ayah_model.dart';
 import 'package:quran/providers/global/global_state.dart';
+import 'package:quran/providers/highlighter/highlighter_provider.dart';
+import 'package:quran/providers/quran/quran_page_provider.dart';
 import 'package:quran/providers/shared_preferences_provider.dart';
 import 'package:quran/repositories/quran/static_quran_data.dart';
 
@@ -60,18 +62,10 @@ class GlobalController extends StateNotifier<GlobalState> {
     return state.currentMushaf.englishName;
   }
 
-  bool shouldFocusFirstAyahOfPage() {
-    return !state.isMushafTab && state.selectedAyah == null;
-  }
-
   // AYAH SELECTION
 
   void setSelectedAyah(Ayah ayah) {
     state = state.copyWith(selectedAyah: ayah);
-  }
-
-  void clearSelectedAyah() {
-    state = state.copyWith(selectedAyah: null);
   }
 
   // TAB MANAGEMENT

@@ -18,7 +18,6 @@ class PageViewMode extends ConsumerWidget {
     return CustomSlidingSegmentedControl<int>(
       initialValue: globalState.isBookView ? 1 : 2,
       isShowDivider: true,
-      isDisabled: !globalState.isViewerToggleEnabled,
       children: {
         1: Icon(
           CupertinoIcons.book_fill,

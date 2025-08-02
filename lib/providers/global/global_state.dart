@@ -20,7 +20,7 @@ class GlobalState extends Equatable {
   final bool isShowMenu;
   final Mushaf currentMushaf;
   final HomeTab currentTab;
-  final Ayah? selectedAyah;
+  final Ayah selectedAyah;
   final double zoomLevel;
 
   const GlobalState({
@@ -28,7 +28,7 @@ class GlobalState extends Equatable {
     this.isShowMenu = true,
     this.viewMode = ViewMode.double,
     this.currentTab = HomeTab.mushaf,
-    this.selectedAyah,
+    this.selectedAyah = const Ayah(page: 1, surah: 1, ayah: 1, text: ""),
     this.zoomLevel = 1.0,
     required this.currentMushaf,
   });
@@ -54,8 +54,6 @@ class GlobalState extends Equatable {
   }
 
   get isBookView => viewMode == ViewMode.double;
-
-  get isViewerToggleEnabled => currentTab == HomeTab.mushaf;
 
   get isSplitViewer => currentTab != HomeTab.mushaf;
 

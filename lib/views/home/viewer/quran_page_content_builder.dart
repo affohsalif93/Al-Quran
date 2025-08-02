@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:quran/core/utils/logger.dart';
@@ -6,7 +8,7 @@ import 'package:quran/models/quran/basmallah_line.dart';
 import 'package:quran/models/quran/page_data.dart';
 import 'package:quran/models/quran/surah_name_line.dart';
 import 'package:quran/models/quran/word.dart';
-import 'package:quran/providers/quran_page_provider.dart';
+import 'package:quran/providers/quran/quran_page_provider.dart';
 import 'package:quran/repositories/quran/static_quran_data.dart';
 import 'package:quran/views/home/viewer/quran_word_widget.dart';
 
@@ -16,21 +18,24 @@ class QuranPageContentBuilder {
   QuranPageContentBuilder(this.ref);
 
   Future<Widget> buildPageContent({
-    required int pageNumber,
+    required int page,
     required double width,
     required double height,
   }) async {
-    final state = ref.watch(quranPageControllerProvider(pageNumber));
+    final dualPageState = ref.watch(quranDualPageProvider);
+    final dualPageController = ref.read(quranDualPageProvider.notifier);
 
-    if (state.data.isEmpty) {
-      ref.read(quranPageControllerProvider(pageNumber).notifier).loadPage();
+    final pageData = dualPageState.getPageData(page);
+    
+    if (pageData == null) {
+      dualPageController.loadPage(page);
       return Center(child: CircularProgressIndicator());
     }
 
-    return _buildFromData(state.data, pageNumber, width, height);
+    return _buildFromData(pageData, page, width, height);
   }
 
-  Widget _buildFromData(QuranPageData pageData, int pageNumber, double width, double height) {
+  Widget _buildFromData(QuranPageData pageData, int page, double width, double height) {
     const avgLines = 16;
     final lineHeight = height / avgLines;
     final scalingFactor = lineHeight * 0.43;
@@ -68,7 +73,7 @@ class QuranPageContentBuilder {
         final basmallahWords =
             line.words.map((word) {
               return QuranWordWidget.withFont(
-                pageNumber: pageNumber,
+                pageNumber: page,
                 word: word,
                 fontSize: 1.7 * scalingFactor,
                 fontFamily: Word.fontFamilyForPage(1),
@@ -87,7 +92,7 @@ class QuranPageContentBuilder {
         final wordWidgets =
             line.words.map((word) {
               return QuranWordWidget(
-                pageNumber: pageNumber,
+                pageNumber: page,
                 word: word,
                 fontSize: 1.3 * scalingFactor,
                 paddingVertical: ayahVerticalSpacing,
@@ -110,7 +115,7 @@ class QuranPageContentBuilder {
 
     lineWidgets.addAll([
       SizedBox(height: ayahVerticalSpacing),
-      Text("$pageNumber", style: TextStyle(fontSize: 0.9 * scalingFactor, color: Colors.black54)),
+      Text("$page", style: TextStyle(fontSize: 0.9 * scalingFactor, color: Colors.black54)),
     ]);
 
     return Container(

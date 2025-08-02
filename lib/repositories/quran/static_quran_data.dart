@@ -36,7 +36,7 @@ abstract class StaticQuranData {
     englishName: 'Hafs Al-Madina 1441',
     arabicName: 'مصحف المدينة المنورة',
     version: 'V1',
-    coverImage: IO.joinFromSupportFolder("data", "cover_images", "madinahV1.png"),
+    coverImage: IO.fromSupportFolder("data", "cover_images", "madinahV1.png"),
     yearHijri: 1441,
     yearGregorian: 2020,
   );
@@ -46,7 +46,7 @@ abstract class StaticQuranData {
     englishName: 'Hafs Al-Madina 1444',
     arabicName: 'مصحف المدينة المنورة',
     version: 'V2',
-    coverImage: IO.joinFromSupportFolder("data", "cover_images", "madinahV2.png"),
+    coverImage: IO.fromSupportFolder("data", "cover_images", "madinahV2.png"),
   );
 
   static final List<Mushaf> mushafs = [madinahMushafV1, madinahMushafV2];

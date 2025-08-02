@@ -24,7 +24,7 @@ class MainView extends ConsumerWidget {
                         Container(color: context.colors.navBarBackground, width: 10),
 
                 initialAreas: [
-                  Area(flex: 7, min: 6, builder: (context, area) => QuranViewer()),
+                  Area(flex: 7, min: 5, builder: (context, area) => QuranViewer()),
                   Area(flex: 3, min: 2, builder: (context, area) => RightView()),
                 ],
               )

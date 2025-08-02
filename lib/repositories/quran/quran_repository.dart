@@ -18,10 +18,10 @@ final quranRepositoryProvider = Provider<QuranRepository>((ref) {
 });
 
 class QuranRepository {
-  final Database ayahDb = QuranDBService.getAyahDb();
-  final Database wordDb = QuranDBService.getWordGlyphDb();
-  final Database linesDb = QuranDBService.getPageLinesDb();
-  // final Database tafsirDb = QuranDBService.getTasfirDb();
+  Database get ayahDb => QuranDBService.getAyahDb();
+  Database get wordDb => QuranDBService.getWordGlyphDb();
+  Database get linesDb => QuranDBService.getPageLinesDb();
+  // Database get tafsirDb => QuranDBService.getTasfirDb();
 
   QuranRepository();
 
@@ -49,7 +49,8 @@ class QuranRepository {
         location: row['location'],
         surah: row['surah'] as int,
         ayah: row['ayah'] as int,
-        glyphCode: row['text'],
+        glyph: row['glyph'],
+        text: row['word_text'],
         isAyahNrSymbol: (row['is_ayah_number'] as int) == 1,
       );
     }).toList();
@@ -87,7 +88,8 @@ class QuranRepository {
           location: row['location'],
           surah: row['surah'] as int,
           ayah: row['ayah'] as int,
-          glyphCode: row['text'],
+          glyph: row['glyph'],
+          text: row['word_text'],
           isAyahNrSymbol: (row['is_ayah_number'] as int) == 1,
         )).toList();
 
@@ -169,6 +171,7 @@ class QuranRepository {
       }
 
       return QuranPageData(
+        pageNumber: pageNumber,
         lines: lines,
         words: pageWords,
         ayahToWordsMap: ayahGroups,
@@ -194,7 +197,8 @@ class QuranRepository {
         location: row['location'],
         surah: row['surah'] as int,
         ayah: row['ayah'] as int,
-        glyphCode: row['text'],
+        glyph: row['glyph'],
+        text: row['word_text'],
         isAyahNrSymbol: (row['is_ayah_number'] as int) == 1,
       );
     }).toList();

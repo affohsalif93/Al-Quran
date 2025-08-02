@@ -16,7 +16,7 @@ class SelectedAyahWidget extends StatelessWidget {
       selectedAyah.text,
       style: TextStyle(
         fontSize: 16,
-        fontFamily: Word.fontFamilyForPage(selectedAyah.pageNumber),
+        fontFamily: Word.fontFamilyForPage(selectedAyah.page),
         color: Colors.black,
       ),
     );

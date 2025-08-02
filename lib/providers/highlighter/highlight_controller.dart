@@ -2,15 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:quran/core/utils/logger.dart';
 import 'package:quran/providers/highlighter/highlighter_state.dart';
-import 'package:quran/repositories/quran/quran_repository.dart';
 
 class HighlightController extends StateNotifier<HighlighterState> {
   final Ref ref;
-  late final QuranRepository repo;
 
-  HighlightController(this.ref) : super(HighlighterState.initial()) {
-    repo = ref.read(quranRepositoryProvider);
-  }
+  HighlightController(this.ref) : super(HighlighterState.initial()) {}
 
   void highlightWords({
     required Highlight highlight,
