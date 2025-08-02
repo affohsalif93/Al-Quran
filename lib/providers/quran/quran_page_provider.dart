@@ -36,27 +36,6 @@ class WordClickContext {
   });
 }
 
-class QuranPageState {
-  final QuranPageData data;
-  final int currentPage;
-
-  QuranPageState({required this.data, required this.currentPage});
-
-  QuranPageState copyWith({QuranPageData? data, int? currentPage}) {
-    return QuranPageState(data: data ?? this.data, currentPage: currentPage ?? this.currentPage);
-  }
-
-  List<Word> getWordsForAyah(int surah, int ayah) {
-    return data.words.where((word) => word.surah == surah && word.ayah == ayah).toList();
-  }
-
-  Ayah getAyahForWord(Word word) {
-    final ayahWords = getWordsForAyah(word.surah, word.ayah);
-    final ayahText = ayahWords.map((w) => w.text).join(" ");
-    return Ayah(page: currentPage, surah: word.surah, ayah: word.ayah, text: ayahText);
-  }
-}
-
 final focusHighlight = Highlight(
   label: "focus",
   color: Colors.grey.withValues(alpha: 0.3),
@@ -90,121 +69,17 @@ enum HighlightAction {
   removeAyahHighlight, // ctrl + right click + isAyahNrSymbol
 }
 
-class QuranPageController extends AutoDisposeFamilyNotifier<QuranPageState, int> {
-  late final int page;
-  late final QuranPageData data;
-
-  @override
-  QuranPageState build(int page) {
-    this.page = page;
-    this.data = QuranPageData.empty();
-    return QuranPageState(data: QuranPageData.empty(), currentPage: page);
-  }
-
-  Future<void> loadPage() async {
-    final repo = ref.read(quranRepositoryProvider);
-    data = await repo.getPageData(page);
-    state = QuranPageState(data: data, currentPage: page);
-  }
-
-  void focusOnFirstAyahOfPage() {
-    final globalState = ref.read(globalControllerProvider);
-    final globalController = ref.read(globalControllerProvider.notifier);
-
-    if ((globalState.isBookView && (page % 2 == 1)) ||
-        (!globalState.isBookView && page == globalState.currentPage)) {
-      final ayah = data.firstAyahOfPage;
-      logger.fine("Auto-focusing on first ayah of page: ${ayah.page}");
-      globalController.setSelectedAyah(ayah);
-      focusHighlightAyah(ayah);
-    }
-  }
-
-  void focusHighlightAyah(Ayah ayah) {
-    final highlighter = ref.read(highlightControllerProvider.notifier);
-    final ayahWords = state.getWordsForAyah(ayah.surah, ayah.ayah);
-
-    highlighter.clearAllForLabel(focusHighlight.label);
-    final ayahWordLocations = ayahWords.map((w) => (page, w.location)).toList();
-    highlighter.highlightWords(highlight: focusHighlight, targets: ayahWordLocations);
-  }
-
-  void handleWordClick(WordClickContext ctx, WidgetRef ref) {
-    final highlighterState = ref.read(highlightControllerProvider);
-    final highlighterController = ref.read(highlightControllerProvider.notifier);
-    final action = getHighlightAction(ctx);
-
-    if (action case HighlightAction.highlightWord) {
-      highlighterController.highlightWords(
-        highlight: wordHighlight,
-        targets: [(ctx.page, ctx.word.location)],
-      );
-    } else if (action case HighlightAction.highlightAyah) {
-      final words = state.getWordsForAyah(ctx.word.surah, ctx.word.ayah);
-      final wordLocations = words.map((w) => (ctx.page, w.location)).toList();
-      highlighterController.highlightWords(highlight: ayahHighlight, targets: wordLocations);
-    } else if (action case HighlightAction.selectAyah) {
-      final ayah = state.getAyahForWord(ctx.word);
-      focusHighlightAyah(ayah);
-    } else if (action case HighlightAction.removeWordHighlight) {
-      highlighterController.removeWordsHighlight(
-        highlight: wordHighlight,
-        targets: [(ctx.page, ctx.word.location)],
-      );
-    } else if (action case HighlightAction.removeAyahHighlight) {
-      highlighterController.removeWordsHighlight(
-        highlight: ayahHighlight,
-        targets:
-            state
-                .getWordsForAyah(ctx.word.surah, ctx.word.ayah)
-                .map((w) => (ctx.page, w.location))
-                .toList(),
-      );
-    }
-  }
-
-  HighlightAction? getHighlightAction(WordClickContext ctx) {
-    final isLeftClick = !ctx.isRightClick;
-    final isRightClick = ctx.isRightClick;
-    final isCtrlPressed = ctx.isCtrlPressed;
-    final isAltPressed = ctx.isAltPressed;
-    final isWord = !ctx.word.isAyahNrSymbol;
-    final isAyah = ctx.word.isAyahNrSymbol;
-
-    if (isCtrlPressed && isLeftClick && isWord) {
-      return HighlightAction.highlightWord;
-    } else if (isCtrlPressed && isLeftClick && isAyah) {
-      return HighlightAction.highlightAyah;
-    } else if (isLeftClick && isAyah) {
-      return HighlightAction.selectAyah;
-    } else if (isCtrlPressed && isRightClick && isWord) {
-      return HighlightAction.removeWordHighlight;
-    } else if (isCtrlPressed && isRightClick && isAyah) {
-      return HighlightAction.removeAyahHighlight;
-    }
-    return null;
-  }
-}
-
 class QuranDualPageState {
   final Map<int, QuranPageData> pages;
 
-  QuranDualPageState({
-    required this.pages,
-  });
+  QuranDualPageState({required this.pages});
 
   factory QuranDualPageState.initial() {
-    return QuranDualPageState(
-      pages: {},
-    );
+    return QuranDualPageState(pages: {});
   }
 
-  QuranDualPageState copyWith({
-    Map<int, QuranPageData>? pages,
-  }) {
-    return QuranDualPageState(
-      pages: pages ?? this.pages,
-    );
+  QuranDualPageState copyWith({Map<int, QuranPageData>? pages}) {
+    return QuranDualPageState(pages: pages ?? this.pages);
   }
 
   QuranPageData? getPageData(int pageNumber) {
@@ -227,6 +102,12 @@ class QuranDualPageState {
 class QuranDualPageController extends Notifier<QuranDualPageState> {
   @override
   QuranDualPageState build() {
+    ref.listen(globalControllerProvider.select((state) => state.currentPage), (previous, next) {
+      if (previous != next) {
+        focusOnFirstAyahOfPage(next);
+      }
+    });
+
     return QuranDualPageState.initial();
   }
 
@@ -242,18 +123,11 @@ class QuranDualPageController extends Notifier<QuranDualPageState> {
       final newPages = Map<int, QuranPageData>.from(state.pages)..[pageNumber] = pageData;
       state = state.copyWith(pages: newPages);
 
-      focusOnFirstAyahOfPage(pageNumber);
+      // focusOnFirstAyahOfPage(pageNumber);
     } catch (e, st) {
       logger.error("Failed to load page $pageNumber: $e");
       logger.error("Stack trace: $st");
     }
-  }
-
-  Future<void> loadPages(int firstPageNumber) async {
-    await Future.wait([
-      loadPage(firstPageNumber),
-      loadPage(firstPageNumber + 1),
-    ]);
   }
 
   void focusOnFirstAyahOfPage(int pageNumber) {
@@ -266,7 +140,6 @@ class QuranDualPageController extends Notifier<QuranDualPageState> {
     if ((globalState.isBookView && (pageNumber % 2 == 1)) ||
         (!globalState.isBookView && pageNumber == globalState.currentPage)) {
       final ayah = data.firstAyahOfPage;
-      logger.fine("Auto-focusing on first ayah of page: ${ayah.page}");
       globalController.setSelectedAyah(ayah);
       focusHighlightAyah(pageNumber, ayah);
     }

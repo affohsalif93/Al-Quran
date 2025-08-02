@@ -5,3 +5,7 @@ import 'package:quran/providers/global/global_controller.dart';
 final selectedAyahProvider = Provider<Ayah>((ref) {
   return ref.watch(globalControllerProvider).selectedAyah;
 });
+
+final currentPageProvider = Provider<int>((ref) {
+  return ref.watch(globalControllerProvider).currentPage;
+});

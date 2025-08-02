@@ -77,7 +77,7 @@ class _QuranViewerState extends ConsumerState<QuranViewer> {
                 return Container(
                   padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
                   decoration: BoxDecoration(color: Colors.white),
-                  child: Center(child: PageViewer(index: index + 1)),
+                  child: Center(child: PageViewer(page: index + 1)),
                 );
               },
             ),
@@ -89,14 +89,21 @@ class _QuranViewerState extends ConsumerState<QuranViewer> {
 }
 
 class PageViewer extends ConsumerWidget {
-  final int index;
+  final int page;
 
-  const PageViewer({super.key, required this.index});
+  const PageViewer({super.key, required this.page});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final globalState = ref.watch(globalControllerProvider);
     final pageContentBuilder = QuranPageContentBuilder(ref);
+
+    final stateCurrentPage = ref.watch(currentPageProvider);
+
+    if (stateCurrentPage == page) {
+
+
+    }
 
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -113,12 +120,12 @@ class PageViewer extends ConsumerWidget {
         return FutureBuilder<List<Widget>>(
           future: Future.wait([
             pageContentBuilder.buildPageContent(
-              page: index,
+              page: page,
               width: dims.contentWidth,
               height: dims.contentHeight,
             ),
             pageContentBuilder.buildPageContent(
-              page: index + 1,
+              page: page + 1,
               width: dims.contentWidth,
               height: dims.contentHeight,
             ),
@@ -139,13 +146,13 @@ class PageViewer extends ConsumerWidget {
                     content: contents[1],
                     width: dims.pageWidth,
                     height: dims.pageHeight,
-                    pageNumber: index + 1,
+                    pageNumber: page + 1,
                   ),
                   QuranPage(
                     content: contents[0],
                     width: dims.pageWidth,
                     height: dims.pageHeight,
-                    pageNumber: index,
+                    pageNumber: page,
                   ),
                 ],
               );
@@ -154,7 +161,7 @@ class PageViewer extends ConsumerWidget {
                 content: contents[0],
                 width: dims.pageWidth,
                 height: dims.pageHeight,
-                pageNumber: index,
+                pageNumber: page,
               );
             }
 
