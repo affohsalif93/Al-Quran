@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:quran/core/utils/helper_functions.dart';
 import 'package:quran/core/utils/logger.dart';
-import 'package:quran/repositories/quran/static_quran_data.dart';
+import 'package:quran/repositories/quran/quran_data.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:quran/i18n/strings.g.dart';
@@ -63,11 +63,11 @@ class SharedPreferencesService {
   Mushaf getCurrentMushaf({String? defaultMushafName}) {
     final mushafName = _prefs.getString(PrefsEnum.mushafScript.name);
     if (mushafName == null) {
-      return StaticQuranData.defaultMushaf;
+      return QuranData.defaultMushaf;
     }
-    final mushaf = StaticQuranData.mushafs.firstWhere(
+    final mushaf = QuranData.mushafs.firstWhere(
       (element) => element.name == mushafName,
-      orElse: () => StaticQuranData.defaultMushaf,
+      orElse: () => QuranData.defaultMushaf,
     );
     return mushaf;
   }

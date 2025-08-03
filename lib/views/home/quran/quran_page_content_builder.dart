@@ -7,7 +7,7 @@ import 'package:quran/models/quran/page_data.dart';
 import 'package:quran/models/quran/surah_name_line.dart';
 import 'package:quran/models/quran/word.dart';
 import 'package:quran/providers/quran/quran_page_provider.dart';
-import 'package:quran/repositories/quran/static_quran_data.dart';
+import 'package:quran/repositories/quran/quran_data.dart';
 import 'package:quran/views/home/quran/quran_word_widget.dart';
 
 class QuranPageContentBuilder {
@@ -54,10 +54,10 @@ class QuranPageContentBuilder {
                 alignment: Alignment.center,
                 transform: Matrix4.diagonal3Values(1.35, 1.0, 1.0),
                 child: Text(
-                  StaticQuranData.namesLigatures.getHeaderSymbol(line.surahNumber),
+                  QuranData.namesLigatures.getHeaderSymbol(line.surahNumber),
                   style: TextStyle(
                     fontSize: scalingFactor * 4.7,
-                    fontFamily: StaticQuranData.namesLigatures.headerFontFamily,
+                    fontFamily: QuranData.namesLigatures.headerFontFamily,
                     color: Colors.black,
                     height: 0.33,
                   ),

@@ -60,11 +60,9 @@ class NotesController extends StateNotifier<NotesState> {
     }
 
     try {
-      final uniqueId = NotesRepository.generateNoteId(surah, ayah);
       final note = Note.create(
         surah: surah,
         ayah: ayah,
-        uniqueId: uniqueId,
         content: content.trim(),
       );
 

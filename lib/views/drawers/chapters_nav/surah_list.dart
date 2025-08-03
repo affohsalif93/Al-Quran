@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:quran/repositories/quran/static_quran_data.dart';
+import 'package:quran/repositories/quran/quran_data.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -15,9 +15,9 @@ class SurahList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemCount: StaticQuranData.surahs.length,
+      itemCount: QuranData.surahs.length,
       itemBuilder: (BuildContext context, int index) {
-        return SurahCard(StaticQuranData.surahs[index]);
+        return SurahCard(QuranData.surahs[index]);
       },
     );
   }
@@ -40,10 +40,10 @@ class SurahCard extends ConsumerWidget {
       title: surah.name(context),
       subtitle: surah.dataFormatted(context),
       trailingWidget: Text(
-        StaticQuranData.namesLigatures.getShortName(surah.id),
+        QuranData.namesLigatures.getShortName(surah.id),
         style: TextStyle(
           fontSize: 30.spMin,
-          fontFamily: StaticQuranData.namesLigatures.shortNameFontFamily,
+          fontFamily: QuranData.namesLigatures.shortNameFontFamily,
           color: Colors.black,
         ),
       ),

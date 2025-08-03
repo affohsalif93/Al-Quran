@@ -53,12 +53,11 @@ class Note extends Equatable {
   factory Note.create({
     required int surah,
     required int ayah,
-    required String uniqueId,
     required String content,
   }) {
     final now = DateTime.now();
     return Note(
-      id: '${surah}_${ayah}_$uniqueId',
+      id: "${surah}_${ayah}_${DateTime.now().millisecondsSinceEpoch}",
       content: content,
       surah: surah,
       ayah: ayah,

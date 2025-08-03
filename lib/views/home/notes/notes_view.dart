@@ -13,7 +13,6 @@ import 'package:quran/views/home/notes/widgets/notes_editor_widget.dart';
 import 'package:quran/views/home/notes/widgets/notes_action_bar.dart';
 import 'package:quran/views/home/notes/widgets/notes_search_widget.dart';
 
-
 class NotesView extends StatefulWidget {
   const NotesView({super.key});
 
@@ -122,7 +121,6 @@ class _NotesViewState extends State<NotesView> {
   }
 
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -133,10 +131,13 @@ class _NotesViewState extends State<NotesView> {
 
           if (selectedAyah == null) {
             return Center(
-              child: Text(
-                'No ayah selected. Click on an ayah number to start taking notes.',
-                style: TextStyle(fontSize: 16, color: Colors.grey[600]),
-                textAlign: TextAlign.center,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Text(
+                  'No ayah selected. Click on an ayah number to start taking notes.',
+                  style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+                  textAlign: TextAlign.center,
+                ),
               ),
             );
           }
@@ -292,7 +293,6 @@ class _NotesViewState extends State<NotesView> {
     );
   }
 
-
   Widget _buildNotesList(WidgetRef ref, NotesState notesState) {
     return ListView.builder(
       padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -307,6 +307,4 @@ class _NotesViewState extends State<NotesView> {
       },
     );
   }
-
-
 }

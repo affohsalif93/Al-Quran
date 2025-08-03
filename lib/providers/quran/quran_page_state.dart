@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quran/core/utils/logger.dart';
 import 'package:quran/models/quran/ayah.dart';
 import 'package:quran/models/quran/page_data.dart';
 import 'package:quran/models/quran/word.dart';
@@ -77,7 +78,7 @@ class QuranPageState {
   }
 
   Ayah getAyah(int pageNumber, int surah, int ayah) {
-    final pageData = getPageData(pageNumber)!;
-    return pageData.getAyah(surah, ayah);
+    final pageData = getPageData(pageNumber);
+    return pageData!.getAyah(surah, ayah);
   }
 }

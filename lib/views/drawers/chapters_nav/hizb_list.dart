@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:quran/assets/fonts.gen.dart';
 import 'package:quran/models/hizb.dart';
 import 'package:quran/providers/global/global_controller.dart';
-import 'package:quran/repositories/quran/static_quran_data.dart';
+import 'package:quran/repositories/quran/quran_data.dart';
 import 'package:quran/views/drawers/chapters_nav/nav_card.dart';
 
 class HizbList extends StatelessWidget {
@@ -14,9 +14,9 @@ class HizbList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemCount: StaticQuranData.hizbs.length,
+      itemCount: QuranData.hizbs.length,
       itemBuilder: (BuildContext context, int index) {
-        return HizbCard(StaticQuranData.hizbs[index]);
+        return HizbCard(QuranData.hizbs[index]);
       },
     );
   }
@@ -29,10 +29,10 @@ class HizbCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final firstAyahText = StaticQuranData.ayahMap[hizb.firstAyahKey]?.text ?? "";
+    final firstAyahText = QuranData.ayahMap[hizb.firstAyahKey]?.text ?? "";
 
     final subtitle =
-        "${StaticQuranData.surahMap[hizb.firstSurah]?.englishName ?? ""} ${hizb.firstAyahKey}";
+        "${QuranData.surahMap[hizb.firstSurah]?.englishName ?? ""} ${hizb.firstAyahKey}";
 
     void onSelectedHizb() {
       context.pop();

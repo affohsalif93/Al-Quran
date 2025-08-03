@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:quran/assets/fonts.gen.dart';
 import 'package:quran/core/extensions/context_extensions.dart';
 import 'package:quran/models/quran/ayah.dart';
-import 'package:quran/repositories/quran/static_quran_data.dart';
+import 'package:quran/repositories/quran/quran_data.dart';
 
 class SelectedAyahWidget extends StatelessWidget {
   final Ayah ayah;
@@ -12,7 +12,7 @@ class SelectedAyahWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ayahReference =
-        'Surah ${StaticQuranData.getSurah(ayah.surah).englishName}, Ayah ${ayah.ayah}';
+        'Surah ${QuranData.getSurah(ayah.surah).englishName}, Ayah ${ayah.ayah}';
 
     return Container(
       padding: EdgeInsets.symmetric(vertical: 20, horizontal: 15),

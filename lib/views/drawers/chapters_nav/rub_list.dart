@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:quran/assets/fonts.gen.dart';
 import 'package:quran/models/rub.dart';
 import 'package:quran/providers/global/global_controller.dart';
-import 'package:quran/repositories/quran/static_quran_data.dart';
+import 'package:quran/repositories/quran/quran_data.dart';
 import 'package:quran/views/drawers/chapters_nav/nav_card.dart';
 
 class RubList extends StatelessWidget {
@@ -14,9 +14,9 @@ class RubList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemCount: StaticQuranData.rubs.length,
+      itemCount: QuranData.rubs.length,
       itemBuilder: (BuildContext context, int index) {
-        return RubCard(StaticQuranData.rubs[index]);
+        return RubCard(QuranData.rubs[index]);
       },
     );
   }
@@ -30,8 +30,8 @@ class RubCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final ayahKey = "${rub.firstSurah}:${rub.firstAyah}";
-    final firstAyahText = StaticQuranData.ayahMap[ayahKey]?.text ?? "";
-    final subtitle = "${StaticQuranData.surahMap[rub.firstSurah]?.englishName} ${rub.firstAyahKey}";
+    final firstAyahText = QuranData.ayahMap[ayahKey]?.text ?? "";
+    final subtitle = "${QuranData.surahMap[rub.firstSurah]?.englishName} ${rub.firstAyahKey}";
 
     void onSelectedRub() {
       context.pop();

@@ -11,6 +11,7 @@ import 'package:riverpod/riverpod.dart';
 
 import 'package:quran/models/quran/ayah.dart';
 import 'package:quran/models/quran/page_line.dart';
+import 'package:quran/repositories/quran/quran_data.dart';
 import 'package:sqflite/sqflite.dart';
 
 final quranRepositoryProvider = Provider<QuranRepository>((ref) {
@@ -170,11 +171,15 @@ class QuranRepository {
         }
       }
 
+      // Get ayahs for this page from static data
+      final List<Ayah> pageAyahs = QuranData.pageAyahMap[pageNumber] ?? [];
+
       return QuranPageData(
         pageNumber: pageNumber,
         lines: lines,
         words: pageWords,
         ayahToWordsMap: ayahGroups,
+        ayahs: pageAyahs,
       );
     } catch (e, st) {
       logger.fine('Error loading page data: $e');

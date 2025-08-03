@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:quran/assets/fonts.gen.dart';
 import 'package:quran/models/juz.dart';
 import 'package:quran/providers/global/global_controller.dart';
-import 'package:quran/repositories/quran/static_quran_data.dart';
+import 'package:quran/repositories/quran/quran_data.dart';
 import 'package:quran/views/drawers/chapters_nav/nav_card.dart';
 
 class JuzList extends StatelessWidget {
@@ -14,9 +14,9 @@ class JuzList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemCount: StaticQuranData.juzs.length,
+      itemCount: QuranData.juzs.length,
       itemBuilder: (BuildContext context, int index) {
-        return JuzCard(StaticQuranData.juzs[index]);
+        return JuzCard(QuranData.juzs[index]);
       },
     );
   }
@@ -29,10 +29,10 @@ class JuzCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final firstAyahText = StaticQuranData.ayahMap["${juz.firstSurah}:${juz.firstAyah}"]?.text ?? "";
+    final firstAyahText = QuranData.ayahMap["${juz.firstSurah}:${juz.firstAyah}"]?.text ?? "";
 
     final subtitle =
-        "${StaticQuranData.surahMap[juz.firstSurah]?.englishName} ${juz.firstAyahKey}";
+        "${QuranData.surahMap[juz.firstSurah]?.englishName} ${juz.firstAyahKey}";
 
     void onSelectedJuz() {
       context.pop();

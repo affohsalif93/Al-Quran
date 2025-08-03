@@ -133,6 +133,8 @@ class _QuranWordWidgetState extends ConsumerState<QuranWordWidget> {
               ),
             ),
             ...partialHighlights.map((highlight) => _buildPartialHighlight(highlight)),
+            if (_isDragging && _dragStartLocalX != null)
+              _buildDragPreview(),
           ],
         ),
       ),
@@ -146,6 +148,41 @@ class _QuranWordWidgetState extends ConsumerState<QuranWordWidget> {
           startPercentage: highlight.startPercentage ?? 0.0,
           endPercentage: highlight.endPercentage ?? 1.0,
           color: highlight.color,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDragPreview() {
+    final RenderBox? renderBox = _textKey.currentContext?.findRenderObject() as RenderBox?;
+    if (renderBox == null || _dragStartLocalX == null) {
+      return const SizedBox.shrink();
+    }
+
+    final textWidth = renderBox.size.width;
+    final startX = _dragStartLocalX!;
+    final endX = _dragEndLocalX ?? startX; // Use start position if no end position yet
+
+    double startPercentage = (startX / textWidth).clamp(0.0, 1.0);
+    double endPercentage = (endX / textWidth).clamp(0.0, 1.0);
+
+    if (startPercentage > endPercentage) {
+      final temp = startPercentage;
+      startPercentage = endPercentage;
+      endPercentage = temp;
+    }
+
+    // Ensure minimum width for visibility
+    if (endPercentage - startPercentage < 0.02) {
+      endPercentage = (startPercentage + 0.02).clamp(0.0, 1.0);
+    }
+
+    return Positioned.fill(
+      child: CustomPaint(
+        painter: PartialHighlightPainter(
+          startPercentage: startPercentage,
+          endPercentage: endPercentage,
+          color: Colors.blue.withOpacity(0.3), // Preview color
         ),
       ),
     );

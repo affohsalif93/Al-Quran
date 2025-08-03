@@ -9,7 +9,7 @@ import 'package:quran/models/quran/ayah.dart';
 import 'package:quran/models/rub.dart';
 import 'package:quran/models/surah.dart';
 
-class StaticQuranDataLoader {
+class QuranDataLoader {
   static late final Map<String, String> headersLigature;
   static late final Map<String, String> shortNamesLigature;
   static late final List<Surah> surahList;
@@ -160,17 +160,11 @@ class StaticQuranDataLoader {
       
       final int surahNumber = ayahData['surah_number'] as int;
       final int ayahNumber = ayahData['ayah_number'] as int;
-      final String verseKey = ayahData['verse_key'] as String;
       final int wordsCount = ayahData['words_count'] as int;
       final String text = ayahData['text'] as String;
       
-      // Calculate page number using existing logic
       final int pageNumber = _getPageNumber(surahNumber, ayahNumber);
-      
-      // Calculate juz number
       final int juzNumber = _getJuzNumber(surahNumber, ayahNumber);
-      
-      // Calculate rub number
       final int rubNumber = _getRubNumber(surahNumber, ayahNumber);
       
       return Ayah(

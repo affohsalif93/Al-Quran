@@ -28,7 +28,7 @@ class QuranPageData {
   }
 
   Ayah getAyah(int surah, int ayah) {
-    return ayahs.firstWhere((ayah) => ayah.surah == surah && ayah.ayah == ayah);
+    return ayahs.firstWhere((a) => a.surah == surah && a.ayah == ayah);
   }
 
   get isEmpty {

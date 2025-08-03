@@ -6,7 +6,7 @@ import 'package:quran/providers/global/global_state.dart';
 import 'package:quran/providers/highlighter/highlighter_provider.dart';
 import 'package:quran/providers/quran/quran_page_provider.dart';
 import 'package:quran/providers/shared_preferences_provider.dart';
-import 'package:quran/repositories/quran/static_quran_data.dart';
+import 'package:quran/repositories/quran/quran_data.dart';
 
 final GlobalKey<ScaffoldState> globalScaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -34,7 +34,7 @@ class GlobalController extends StateNotifier<GlobalState> {
     final savedZoom = prefs.getZoomLevel().clamp(0.5, 2.0);
     return GlobalState(
       currentPage: prefs.getPageNumber(),
-      currentMushaf: StaticQuranData.madinahMushafV1,
+      currentMushaf: QuranData.madinahMushafV1,
       zoomLevel: savedZoom,
     );
   }
@@ -113,11 +113,11 @@ class GlobalController extends StateNotifier<GlobalState> {
   // MUSHAF MANAGEMENT
 
   void setCurrentMushaf(String name) {
-    final mushaf = StaticQuranData.mushafs.firstWhere(
+    final mushaf = QuranData.mushafs.firstWhere(
       (mushaf) => mushaf.englishName == name,
       orElse: () {
         logger.error("Mushaf not found: $name");
-        return StaticQuranData.madinahMushafV1;
+        return QuranData.madinahMushafV1;
       },
     );
 
@@ -180,7 +180,7 @@ class GlobalController extends StateNotifier<GlobalState> {
   }
 
   void goToAyah(int surah, int ayah) {
-    final page = StaticQuranData.getPageNumber(surah, ayah);
+    final page = QuranData.getPageNumber(surah, ayah);
     if (page > 0) {
       goToPage(page);
     } else {

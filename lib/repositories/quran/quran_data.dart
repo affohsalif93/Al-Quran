@@ -6,27 +6,32 @@ import 'package:quran/models/quran/surah_name_ligature.dart';
 import 'package:quran/models/rub.dart';
 import 'package:quran/models/surah.dart';
 import 'package:quran/models/mushaf.dart';
-import 'package:quran/services/static_quran_data_loader.dart';
+import 'package:quran/services/quran_data_loader.dart';
 
-abstract class StaticQuranData {
-  static final List<Surah> surahs = StaticQuranDataLoader.surahList;
+abstract class QuranData {
+  static final List<Surah> surahs = QuranDataLoader.surahList;
   static final Map<int, Surah> surahMap = {for (var surah in surahs) surah.id: surah};
 
-  static final List<Juz> juzs = StaticQuranDataLoader.juzList;
+  static final List<Juz> juzs = QuranDataLoader.juzList;
   static final Map<int, Juz> juzMap = {for (var juz in juzs) juz.juzNumber: juz};
 
-  static final List<Hizb> hizbs = StaticQuranDataLoader.hizbList;
+  static final List<Hizb> hizbs = QuranDataLoader.hizbList;
   static final Map<int, Hizb> hizbMap = {for (var hizb in hizbs) hizb.hizbNumber: hizb};
 
-  static final List<Rub> rubs = StaticQuranDataLoader.rubList;
+  static final List<Rub> rubs = QuranDataLoader.rubList;
   static final Map<int, Rub> rubMap = {for (var rub in rubs) rub.rubNumber: rub};
 
-  static final List<Ayah> ayahs = StaticQuranDataLoader.ayahList;
-  static final Map<String, Ayah> ayahMap = {for (var ayah in ayahs) "${ayah.surah}:${ayah.ayah}": ayah};
+  static final List<Ayah> ayahs = QuranDataLoader.ayahList;
+  static final Map<String, Ayah> ayahMap = {
+    for (var ayah in ayahs) "${ayah.surah}:${ayah.ayah}": ayah,
+  };
+  static final Map<int, List<Ayah>> pageAyahMap = {
+    for (var page = 1; page <= 604; page++) page: ayahs.where((ayah) => ayah.page == page).toList(),
+  };
 
   static final namesLigatures = SurahNameLigature(
-    names: StaticQuranDataLoader.shortNamesLigature,
-    headers: StaticQuranDataLoader.headersLigature,
+    names: QuranDataLoader.shortNamesLigature,
+    headers: QuranDataLoader.headersLigature,
   );
 
   static final defaultMushaf = madinahMushafV1;
