@@ -60,7 +60,7 @@ class TopMenuBar extends ConsumerWidget {
                 initialValue: globalController.getCurrentTabIndex(),
                 children: {
                   1: TabItem(icon: CupertinoIcons.book_fill, text: 'Mushaf'),
-                  2: TabItem(icon: Symbols.lightbulb, text: 'Meaning'),
+                  2: TabItem(icon: Symbols.lightbulb, text: 'Tafsir'),
                   3: TabItem(icon: Symbols.note_add, text: 'Notes'),
                 },
                 decoration: BoxDecoration(

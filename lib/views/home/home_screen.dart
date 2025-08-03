@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:quran/providers/drawer/drawer_provider.dart';
 import 'package:quran/providers/global/global_controller.dart';
-import 'package:quran/views/home/viewer/main_view.dart';
+import 'package:quran/views/home/main_view.dart';
 import 'package:quran/views/navbar/bottom_menu_bar.dart';
 import 'package:quran/views/navbar/top_menu_bar.dart';
 

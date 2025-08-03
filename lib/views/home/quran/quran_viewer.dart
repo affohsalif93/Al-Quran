@@ -7,9 +7,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:quran/core/extensions/context_extensions.dart';
 import 'package:quran/core/utils/logger.dart';
 import 'package:quran/providers/global/global_controller.dart';
-import 'package:quran/providers/quran/quran_page_provider.dart';
-import 'package:quran/views/home/viewer/quran_page.dart';
-import 'package:quran/views/home/viewer/quran_page_content_builder.dart';
+import 'package:quran/views/home/quran/quran_page.dart';
+import 'package:quran/views/home/quran/quran_page_content_builder.dart';
 
 class QuranViewer extends ConsumerStatefulWidget {
   const QuranViewer({super.key});

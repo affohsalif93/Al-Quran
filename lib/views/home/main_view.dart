@@ -4,8 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:multi_split_view/multi_split_view.dart';
 import 'package:quran/core/extensions/context_extensions.dart';
 import 'package:quran/providers/global/global_controller.dart';
-import 'package:quran/views/home/viewer/notes_view.dart';
-import 'package:quran/views/home/viewer/quran_viewer.dart';
+import 'package:quran/views/home/notes/notes_view.dart';
+import 'package:quran/views/home/quran/quran_viewer.dart';
 
 class MainView extends ConsumerWidget {
   const MainView({super.key});
@@ -43,7 +43,7 @@ class RightView extends ConsumerWidget {
 
     return Container(
       decoration: BoxDecoration(color: context.colors.quranPageBackground),
-      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      // padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       child: NotesView(),
     );
   }

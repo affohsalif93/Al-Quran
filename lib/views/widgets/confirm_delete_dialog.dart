@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:go_router/go_router.dart';
-import 'package:material_symbols_icons/symbols.dart';
 
-import 'package:quran/core/extensions/context_extensions.dart';
 import 'package:quran/i18n/strings.g.dart';
-import 'package:quran/views/widgets/custom_button.dart';
 
 class ConfirmDeleteDialog extends StatelessWidget {
   final VoidCallback onConfirm;
@@ -18,39 +15,21 @@ class ConfirmDeleteDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Expanded(
-            child: Text(
-              context.t.confirmDelete,
-            ),
-          ),
-          IconButton(
-            onPressed: context.pop,
-            visualDensity: VisualDensity.compact,
-            icon: Icon(Symbols.close),
-          ),
-        ],
-      ),
+      title: Text(context.t.confirmDelete),
       content: Text(
         context.t.confirmDeleteMessage,
       ),
       actions: [
-        CustomButton(
+        TextButton(
           onPressed: context.pop,
-          text: context.t.cancel,
-          backgroundColor: context.colors.white,
-          foregroundColor: context.colors.grey800,
-          strokeColor: context.colors.grey300,
+          child: Text(context.t.cancel),
         ),
-        CustomButton(
+        FilledButton(
           onPressed: () {
             onConfirm();
             context.pop();
           },
-          text: context.t.confirmDelete,
-          backgroundColor: context.colors.error,
+          child: Text(context.t.confirmDelete),
         ),
       ],
     );

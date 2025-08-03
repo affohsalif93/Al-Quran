@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:quran/providers/shared_preferences_provider.dart';
-import '../../providers/global/global_controller.dart';
+import '../global/global_controller.dart';
 
 final bookmarkControllerProvider =
     StateNotifierProvider<BookmarkController, int?>((ref) {

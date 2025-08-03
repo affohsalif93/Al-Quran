@@ -14,6 +14,7 @@ import 'package:quran/i18n/strings.g.dart';
 import 'package:quran/providers/shared_preferences_provider.dart';
 import 'package:quran/services/quran_db_service.dart';
 import 'package:quran/services/static_quran_data_loader.dart';
+import 'package:quran/repositories/notes/notes_repository.dart';
 // ignore:depend_on_referenced_packages
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
@@ -32,6 +33,9 @@ Future<void> main() async {
 
   // // * Initialize db
   await QuranDBService.init();
+
+  // * Initialize Notes Repository
+  await NotesRepository.init();
 
   // * Initialize Surah Name Ligature Service
   await StaticQuranDataLoader.load();

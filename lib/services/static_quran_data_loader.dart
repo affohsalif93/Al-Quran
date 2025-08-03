@@ -20,11 +20,13 @@ class StaticQuranDataLoader {
 
   static Future<void> loadLigatures() async {
     final String headerLigaturePath = IO.fromSupportFolder(
+      "data",
       "ligatures",
       "surah_header_name_ligatures.json",
     );
 
     final String shortNameLigaturePath = IO.fromSupportFolder(
+      "data",
       "ligatures",
       "surah_short_name_ligatures.json",
     );
