@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:quran/models/quran/ayah_model.dart';
+import 'package:quran/models/quran/ayah.dart';
 import 'package:quran/models/mushaf.dart';
 
 enum HomeTab { mushaf, tafsir, notes }

@@ -9,7 +9,7 @@ import 'package:quran/repositories/quran/static_quran_data.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:quran/i18n/strings.g.dart';
-import 'package:quran/models/tafsir_model.dart';
+import 'package:quran/models/tafsir.dart';
 import '../models/mushaf.dart';
 
 enum PrefsEnum {
@@ -127,7 +127,7 @@ class SharedPreferencesService {
   }
 
   // TAFSIR
-  static List<TafsirModel> getTafsirList() {
+  static List<Tafsir> getTafsirList() {
     final jsonList = _prefs.getStringList(PrefsEnum.tafsirList.name) ?? [];
     if (jsonList.isEmpty) return [];
     logger.fine('here');
@@ -135,18 +135,18 @@ class SharedPreferencesService {
     return jsonList
         .map(HelperFunctions.jsonDecodeSafe)
         .where((e) => e.isNotEmpty)
-        .map((e) => TafsirModel.fromJson(e))
+        .map((e) => Tafsir.fromJson(e))
         .toList();
   }
 
-  static void setTafsirList(List<TafsirModel> value) {
+  static void setTafsirList(List<Tafsir> value) {
     _prefs.setStringList(
       PrefsEnum.tafsirList.name,
       value.map((e) => jsonEncode(e.toJson())).toList(),
     );
   }
 
-  static void addTafsir(TafsirModel value) {
+  static void addTafsir(Tafsir value) {
     final tafsirList = getTafsirList();
     if (tafsirList.any((element) => element.fileName == value.fileName)) return;
     tafsirList.add(value);

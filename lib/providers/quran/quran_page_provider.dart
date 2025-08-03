@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:quran/core/utils/logger.dart';
-import 'package:quran/models/quran/ayah_model.dart';
+import 'package:quran/models/quran/ayah.dart';
 import 'package:quran/models/quran/page_data.dart';
 import 'package:quran/providers/highlighter/highlighter_provider.dart';
 import 'package:quran/providers/global/global_controller.dart';
@@ -85,7 +85,7 @@ class QuranPageController extends Notifier<QuranPageState> {
       final wordLocations = words.map((w) => (ctx.page, w.location)).toList();
       highlighterController.highlightWords(highlight: ayahHighlight, targets: wordLocations);
     } else if (action case HighlightAction.selectAyah) {
-      final ayah = state.getAyahForWord(ctx.page, ctx.word);
+      final ayah = state.getAyah(ctx.page, ctx.word.surah, ctx.word.ayah);
       focusHighlightAyah(ctx.page, ayah);
     } else if (action case HighlightAction.removeWordHighlight) {
       highlighterController.removeWordsHighlight(

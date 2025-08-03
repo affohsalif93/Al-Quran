@@ -1,7 +1,7 @@
 mixin QuranPartMixin {
   String get firstAyahKey;
   String get lastAyahKey;
-  Map<String, String> get verseMapping;
+  Map<String, String> get ayahMapping;
 
   int get firstSurah => int.parse(firstAyahKey.split(':')[0]);
   int get firstAyah => int.parse(firstAyahKey.split(':')[1]);

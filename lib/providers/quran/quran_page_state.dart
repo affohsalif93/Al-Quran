@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:quran/models/quran/ayah_model.dart';
+import 'package:quran/models/quran/ayah.dart';
 import 'package:quran/models/quran/page_data.dart';
 import 'package:quran/models/quran/word.dart';
 import 'package:quran/providers/highlighter/highlighter_state.dart';
@@ -76,9 +76,8 @@ class QuranPageState {
     return data?.words.where((word) => word.surah == surah && word.ayah == ayah).toList() ?? [];
   }
 
-  Ayah getAyahForWord(int pageNumber, Word word) {
-    final ayahWords = getWordsForAyah(pageNumber, word.surah, word.ayah);
-    final ayahText = ayahWords.map((w) => w.text).join(" ");
-    return Ayah(page: pageNumber, surah: word.surah, ayah: word.ayah, text: ayahText);
+  Ayah getAyah(int pageNumber, int surah, int ayah) {
+    final pageData = getPageData(pageNumber)!;
+    return pageData.getAyah(surah, ayah);
   }
 }

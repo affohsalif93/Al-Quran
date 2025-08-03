@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:quran/core/utils/logger.dart';
-import 'package:quran/models/quran/ayah_model.dart';
+import 'package:quran/models/quran/ayah.dart';
 import 'package:quran/providers/global/global_state.dart';
 import 'package:quran/providers/highlighter/highlighter_provider.dart';
 import 'package:quran/providers/quran/quran_page_provider.dart';

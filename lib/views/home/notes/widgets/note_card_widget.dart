@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:quran/core/extensions/context_extensions.dart';
-import 'package:quran/models/note_model.dart';
+import 'package:quran/models/note.dart';
 import 'package:quran/providers/quran/quran_notes_provider.dart';
 import 'package:quran/views/widgets/confirm_delete_dialog.dart';
 

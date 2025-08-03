@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:quran/assets/fonts.gen.dart';
-import 'package:quran/models/rub_model.dart';
+import 'package:quran/models/rub.dart';
 import 'package:quran/providers/global/global_controller.dart';
 import 'package:quran/repositories/quran/static_quran_data.dart';
 import 'package:quran/views/drawers/chapters_nav/nav_card.dart';
@@ -25,7 +25,7 @@ class RubList extends StatelessWidget {
 class RubCard extends ConsumerWidget {
   const RubCard(this.rub, {super.key});
 
-  final RubModel rub;
+  final Rub rub;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

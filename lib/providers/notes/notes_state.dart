@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:quran/models/note_model.dart';
+import 'package:quran/models/note.dart';
 
 class NotesState extends Equatable {
   final List<Note> notes;

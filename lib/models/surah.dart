@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:quran/core/extensions/context_extensions.dart';
 import 'package:quran/i18n/strings.g.dart';
 
-class SurahModel {
+class Surah {
   final int id;
   final String englishName;
   final String arabicName;
@@ -13,7 +13,7 @@ class SurahModel {
   final int revelationOrder;
   final int surahNumber;
 
-  SurahModel({
+  Surah({
     required this.id,
     required this.englishName,
     required this.arabicName,
@@ -39,8 +39,8 @@ class SurahModel {
     return '${context.t.page} $firstPage - $revelationPlace - Ayah $numberOfAyahs';
   }
 
-  factory SurahModel.fromJson(Map<String, dynamic> json) {
-    return SurahModel(
+  factory Surah.fromJson(Map<String, dynamic> json) {
+    return Surah(
       id: json['id'],
       englishName: json['name_complex'],
       arabicName: json['name_arabic'],

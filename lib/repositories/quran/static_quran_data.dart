@@ -1,28 +1,28 @@
 import 'package:quran/core/utils/io.dart';
-import 'package:quran/models/_ayah_model.dart';
-import 'package:quran/models/hizb_model.dart';
-import 'package:quran/models/juz_model.dart';
+import 'package:quran/models/hizb.dart';
+import 'package:quran/models/juz.dart';
+import 'package:quran/models/quran/ayah.dart';
 import 'package:quran/models/quran/surah_name_ligature.dart';
-import 'package:quran/models/rub_model.dart';
-import 'package:quran/models/surah_model.dart';
+import 'package:quran/models/rub.dart';
+import 'package:quran/models/surah.dart';
 import 'package:quran/models/mushaf.dart';
 import 'package:quran/services/static_quran_data_loader.dart';
 
 abstract class StaticQuranData {
-  static final List<SurahModel> surahs = StaticQuranDataLoader.surahList;
-  static final Map<int, SurahModel> surahMap = {for (var surah in surahs) (surah).id: surah};
+  static final List<Surah> surahs = StaticQuranDataLoader.surahList;
+  static final Map<int, Surah> surahMap = {for (var surah in surahs) surah.id: surah};
 
-  static final List<JuzModel> juzs = StaticQuranDataLoader.juzList;
-  static final Map<int, JuzModel> juzMap = {for (var juz in juzs) (juz).juzNumber: juz};
+  static final List<Juz> juzs = StaticQuranDataLoader.juzList;
+  static final Map<int, Juz> juzMap = {for (var juz in juzs) juz.juzNumber: juz};
 
-  static final List<HizbModel> hizbs = StaticQuranDataLoader.hizbList;
-  static final Map<int, HizbModel> hizbMap = {for (var hizb in hizbs) (hizb).hizbNumber: hizb};
+  static final List<Hizb> hizbs = StaticQuranDataLoader.hizbList;
+  static final Map<int, Hizb> hizbMap = {for (var hizb in hizbs) hizb.hizbNumber: hizb};
 
-  static final List<RubModel> rubs = StaticQuranDataLoader.rubList;
-  static final Map<int, RubModel> rubMap = {for (var rub in rubs) (rub).rubNumber: rub};
+  static final List<Rub> rubs = StaticQuranDataLoader.rubList;
+  static final Map<int, Rub> rubMap = {for (var rub in rubs) rub.rubNumber: rub};
 
-  static final List<AyahModel> ayahs = StaticQuranDataLoader.ayahList;
-  static final Map<String, AyahModel> ayahMap = {for (var ayah in ayahs) (ayah).ayahKey: ayah};
+  static final List<Ayah> ayahs = StaticQuranDataLoader.ayahList;
+  static final Map<String, Ayah> ayahMap = {for (var ayah in ayahs) "${ayah.surah}:${ayah.ayah}": ayah};
 
   static final namesLigatures = SurahNameLigature(
     names: StaticQuranDataLoader.shortNamesLigature,
@@ -186,7 +186,7 @@ abstract class StaticQuranData {
     return -1;
   }
 
-  static SurahModel getSurah(int surahNumber) {
+  static Surah getSurah(int surahNumber) {
     return surahs.firstWhere((surah) => surah.surahNumber == surahNumber);
   }
 }

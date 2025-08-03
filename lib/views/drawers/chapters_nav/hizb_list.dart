@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:quran/assets/fonts.gen.dart';
-import 'package:quran/models/hizb_model.dart';
+import 'package:quran/models/hizb.dart';
 import 'package:quran/providers/global/global_controller.dart';
 import 'package:quran/repositories/quran/static_quran_data.dart';
 import 'package:quran/views/drawers/chapters_nav/nav_card.dart';
@@ -25,7 +25,7 @@ class HizbList extends StatelessWidget {
 class HizbCard extends ConsumerWidget {
   const HizbCard(this.hizb, {super.key});
 
-  final HizbModel hizb;
+  final Hizb hizb;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

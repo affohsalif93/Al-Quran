@@ -3,7 +3,7 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:quran/core/utils/io.dart';
 import 'package:quran/core/utils/logger.dart';
-import 'package:quran/models/note_model.dart';
+import 'package:quran/models/note.dart';
 
 class NotesRepository {
   static Database? _database;

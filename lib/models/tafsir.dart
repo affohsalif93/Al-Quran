@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 
 import 'multi_language_model.dart';
 
-class TafsirModel extends Equatable {
+class Tafsir extends Equatable {
   final String url;
   final MultiLanguageModel name;
   final MultiLanguageModel description;
@@ -10,7 +10,7 @@ class TafsirModel extends Equatable {
   final double size;
   final String tafsir;
 
-  const TafsirModel({
+  const Tafsir({
     required this.url,
     required this.name,
     required this.description,
@@ -24,8 +24,8 @@ class TafsirModel extends Equatable {
   @override
   List<Object?> get props => [fileName];
 
-  factory TafsirModel.fromJson(Map<String, dynamic> json) {
-    return TafsirModel(
+  factory Tafsir.fromJson(Map<String, dynamic> json) {
+    return Tafsir(
       url: json['url'] as String? ?? '',
       name: MultiLanguageModel.fromJson(json['name'] ?? {}),
       description: MultiLanguageModel.fromJson(json['description'] ?? {}),
@@ -44,7 +44,7 @@ class TafsirModel extends Equatable {
     };
   }
 
-  TafsirModel copyWith({
+  Tafsir copyWith({
     String? url,
     MultiLanguageModel? name,
     MultiLanguageModel? description,
@@ -52,7 +52,7 @@ class TafsirModel extends Equatable {
     double? size,
     String? tafsir,
   }) {
-    return TafsirModel(
+    return Tafsir(
       url: url ?? this.url,
       name: name ?? this.name,
       description: description ?? this.description,

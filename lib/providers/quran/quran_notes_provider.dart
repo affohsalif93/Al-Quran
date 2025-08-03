@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:quran/models/note_model.dart';
+import 'package:quran/models/note.dart';
 import 'package:quran/providers/notes/notes_controller.dart';
 import 'package:quran/providers/notes/notes_state.dart';
 

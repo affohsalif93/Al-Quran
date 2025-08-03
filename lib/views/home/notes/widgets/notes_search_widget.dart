@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:quran/models/note_model.dart';
+import 'package:quran/models/note.dart';
 import 'package:quran/providers/notes/notes_state.dart';
 import 'package:quran/providers/quran/quran_notes_provider.dart' show notesControllerProvider;
 import 'package:quran/views/home/notes/widgets/note_card_widget.dart';

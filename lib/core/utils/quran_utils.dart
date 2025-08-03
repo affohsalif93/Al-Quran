@@ -1,5 +1,5 @@
 
-import 'package:quran/models/quran/ayah_model.dart';
+import 'package:quran/models/quran/ayah.dart';
 import 'package:quran/models/quran/ayah_line.dart';
 import 'package:quran/models/quran/basmallah_line.dart';
 import 'package:quran/models/quran/page_line.dart';
