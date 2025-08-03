@@ -6,15 +6,49 @@ import 'package:go_router/go_router.dart';
 
 import 'package:quran/models/surah.dart';
 import 'package:quran/providers/global/global_controller.dart';
+import 'package:quran/providers/navigation/navigation_scroll_provider.dart';
 import 'package:quran/views/drawers/chapters_nav/nav_card.dart';
 
 
-class SurahList extends StatelessWidget {
+class SurahList extends ConsumerStatefulWidget {
   const SurahList({super.key});
 
   @override
+  ConsumerState<SurahList> createState() => _SurahListState();
+}
+
+class _SurahListState extends ConsumerState<SurahList> {
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _scrollToCurrentPage();
+    });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _scrollToCurrentPage() {
+    final scrollHelper = ref.read(navigationScrollProvider(NavigationType.surah));
+    scrollHelper.scrollToCurrentPage(_scrollController);
+  }
+
+  @override
   Widget build(BuildContext context) {
+    ref.listen<int>(currentPageProvider, (previous, next) {
+      if (previous != next) {
+        _scrollToCurrentPage();
+      }
+    });
+
     return ListView.builder(
+      controller: _scrollController,
       itemCount: QuranData.surahs.length,
       itemBuilder: (BuildContext context, int index) {
         return SurahCard(QuranData.surahs[index]);

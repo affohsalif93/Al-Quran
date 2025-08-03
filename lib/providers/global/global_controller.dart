@@ -3,8 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:quran/core/utils/logger.dart';
 import 'package:quran/models/quran/ayah.dart';
 import 'package:quran/providers/global/global_state.dart';
-import 'package:quran/providers/highlighter/highlighter_provider.dart';
-import 'package:quran/providers/quran/quran_page_provider.dart';
 import 'package:quran/providers/shared_preferences_provider.dart';
 import 'package:quran/repositories/quran/quran_data.dart';
 

@@ -24,7 +24,7 @@ class NavCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 4),
+      height: 70,
       decoration: BoxDecoration(
         border: Border(
           bottom: BorderSide(color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.3)),
