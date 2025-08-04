@@ -1,9 +1,55 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:quran/core/utils/logger.dart';
 import 'package:quran/models/quran/ayah.dart';
 import 'package:quran/models/quran/page_data.dart';
 import 'package:quran/models/quran/word.dart';
-import 'package:quran/providers/highlighter/highlighter_state.dart';
+import 'package:quran/providers/color_picker/color_picker_provider.dart';
+
+// Old Highlight template class (kept for zIndex and other properties)
+class Highlight {
+  final String label;
+  final Color color;
+  final int zIndex;
+  final bool isFullHeight;
+  final bool isPartial;
+  final double? startPercentage;
+  final double? endPercentage;
+  final String? id;
+
+  Highlight({
+    required this.label,
+    required this.color,
+    required this.zIndex,
+    this.isFullHeight = false,
+    this.isPartial = false,
+    this.startPercentage,
+    this.endPercentage,
+    this.id,
+  });
+
+  Highlight copyWith({
+    String? label,
+    Color? color,
+    int? zIndex,
+    bool? isFullHeight,
+    bool? isPartial,
+    double? startPercentage,
+    double? endPercentage,
+    String? id,
+  }) {
+    return Highlight(
+      label: label ?? this.label,
+      color: color ?? this.color,
+      zIndex: zIndex ?? this.zIndex,
+      isFullHeight: isFullHeight ?? this.isFullHeight,
+      isPartial: isPartial ?? this.isPartial,
+      startPercentage: startPercentage ?? this.startPercentage,
+      endPercentage: endPercentage ?? this.endPercentage,
+      id: id ?? this.id,
+    );
+  }
+}
 
 class WordClickContext {
   final Word word;
@@ -40,11 +86,22 @@ final partialHighlight = Highlight(
   zIndex: 5,
 );
 
+// This will be replaced by a provider-based highlight
 final wordHighlight = Highlight(
   label: "word",
   color: Colors.orange.withValues(alpha: 0.3),
   zIndex: 2,
 );
+
+// Provider for dynamic word highlight based on selected color
+final wordHighlightProvider = Provider<Highlight>((ref) {
+  final selectedColor = ref.watch(selectedColorProvider);
+  return Highlight(
+    label: "word",
+    color: selectedColor ?? Colors.orange.withValues(alpha: 0.3),
+    zIndex: 2,
+  );
+});
 
 enum HighlightAction {
   highlightWord, // ctrl + left click + !isAyahNrSymbol

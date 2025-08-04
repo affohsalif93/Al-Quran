@@ -61,46 +61,70 @@ class QuranPageController extends Notifier<QuranPageState> {
   }
 
   void focusHighlightAyah(int pageNumber, Ayah ayah) {
-    final highlighter = ref.read(highlightControllerProvider.notifier);
+    // Use a temporary highlight color for focus highlighting
+    final persistentHighlightController = ref.read(highlightControllerProvider.notifier);
     final ayahWords = state.getWordsForAyah(pageNumber, ayah.surah, ayah.ayah);
 
-    highlighter.clearAllForLabel(focusHighlight.label);
-    final ayahWordLocations = ayahWords.map((w) => (pageNumber, w.location)).toList();
-    highlighter.highlightWords(highlight: focusHighlight, targets: ayahWordLocations);
+    // Clear previous focus highlights (temporary highlights with specific color)
+    clearFocusHighlights(pageNumber);
+    
+    // Create temporary focus highlights using consistent color
+    final locations = ayahWords.map((word) => (pageNumber, word.location)).toList();
+    final focusColor = Colors.grey.withValues(alpha: 0.3);
+    
+    persistentHighlightController.createHighlights(
+      locations: locations,
+      color: focusColor,
+    );
 
     ref.read(globalControllerProvider.notifier).setSelectedAyah(ayah);
   }
 
+  void clearFocusHighlights(int pageNumber) {
+    // Clear all focus highlights across all pages, not just current page
+    final persistentHighlightController = ref.read(highlightControllerProvider.notifier);
+    final allHighlights = persistentHighlightController.state.highlightById.values;
+    
+    // Define focus color explicitly to ensure consistent comparison
+    final focusColor = Colors.grey.withValues(alpha: 0.3);
+    
+    // Find all highlights with focus color using color value comparison
+    final focusHighlights = allHighlights.where((h) => h.color.value == focusColor.value).toList();
+    
+    // Get all highlight IDs and delete them all at once (no animation)
+    final highlightIds = focusHighlights.map((h) => h.id).toList();
+    
+    if (highlightIds.isNotEmpty) {
+      persistentHighlightController.deleteHighlightsByIds(highlightIds);
+    }
+  }
+
   void handleWordClick(WordClickContext ctx, WidgetRef ref) {
-    final highlighterController = ref.read(highlightControllerProvider.notifier);
+    final persistentHighlightController = ref.read(highlightControllerProvider.notifier);
     final action = getHighlightAction(ctx);
 
     if (action case HighlightAction.highlightWord) {
-      highlighterController.highlightWords(
-        highlight: wordHighlight,
-        targets: [(ctx.page, ctx.word.location)],
+      // Create a new persistent highlight
+      persistentHighlightController.createHighlight(
+        page: ctx.page,
+        location: ctx.word.location,
       );
     } else if (action case HighlightAction.highlightAyah) {
+      // Highlight all words in the ayah at once (no animation)
       final words = state.getWordsForAyah(ctx.page, ctx.word.surah, ctx.word.ayah);
-      final wordLocations = words.map((w) => (ctx.page, w.location)).toList();
-      highlighterController.highlightWords(highlight: ayahHighlight, targets: wordLocations);
+      final locations = words.map((word) => (ctx.page, word.location)).toList();
+      persistentHighlightController.createHighlights(locations: locations);
     } else if (action case HighlightAction.selectAyah) {
       final ayah = state.getAyah(ctx.page, ctx.word.surah, ctx.word.ayah);
       focusHighlightAyah(ctx.page, ayah);
     } else if (action case HighlightAction.removeWordHighlight) {
-      highlighterController.removeWordsHighlight(
-        highlight: wordHighlight,
-        targets: [(ctx.page, ctx.word.location)],
-      );
+      // Remove all highlights at this location
+      persistentHighlightController.deleteHighlightsAtLocation(ctx.page, ctx.word.location);
     } else if (action case HighlightAction.removeAyahHighlight) {
-      highlighterController.removeWordsHighlight(
-        highlight: ayahHighlight,
-        targets:
-            state
-                .getWordsForAyah(ctx.page, ctx.word.surah, ctx.word.ayah)
-                .map((w) => (ctx.page, w.location))
-                .toList(),
-      );
+      // Remove highlights for all words in the ayah at once (no animation)
+      final words = state.getWordsForAyah(ctx.page, ctx.word.surah, ctx.word.ayah);
+      final locations = words.map((word) => (ctx.page, word.location)).toList();
+      persistentHighlightController.deleteHighlightsAtLocations(locations);
     }
   }
 

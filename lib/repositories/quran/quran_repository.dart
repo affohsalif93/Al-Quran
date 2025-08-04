@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:quran/core/utils/logger.dart';
+import 'package:quran/models/highlight/saved_highlight.dart';
 import 'package:quran/models/quran/ayah_line.dart';
 import 'package:quran/models/quran/basmallah_line.dart';
 import 'package:quran/models/quran/page_data.dart';
@@ -12,6 +13,7 @@ import 'package:riverpod/riverpod.dart';
 import 'package:quran/models/quran/ayah.dart';
 import 'package:quran/models/quran/page_line.dart';
 import 'package:quran/repositories/quran/quran_data.dart';
+import 'package:quran/repositories/highlights/highlights_repository.dart';
 import 'package:sqflite/sqflite.dart';
 
 final quranRepositoryProvider = Provider<QuranRepository>((ref) {
@@ -174,6 +176,9 @@ class QuranRepository {
       // Get ayahs for this page from static data
       final List<Ayah> pageAyahs = QuranData.pageAyahMap[pageNumber] ?? [];
 
+      // Preload highlights for this page (fire-and-forget)
+      _preloadHighlightsForPage(pageNumber);
+
       return QuranPageData(
         pageNumber: pageNumber,
         lines: lines,
@@ -207,5 +212,14 @@ class QuranRepository {
         isAyahNrSymbol: (row['is_ayah_number'] as int) == 1,
       );
     }).toList();
+  }
+
+  // Preload highlights for a page (fire-and-forget)
+  void _preloadHighlightsForPage(int pageNumber) {
+    // This runs asynchronously and doesn't block page loading
+    HighlightsRepository.getHighlightsForPage(pageNumber).catchError((e) {
+      logger.fine('Failed to preload highlights for page $pageNumber: $e');
+      return <SavedHighlight>[];
+    });
   }
 }

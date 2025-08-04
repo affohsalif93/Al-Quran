@@ -77,6 +77,10 @@ class GlobalController extends StateNotifier<GlobalState> {
     _switchTab(tabValue);
   }
 
+  void setCurrentTab(HomeTab tab) {
+    _switchTab(tab);
+  }
+
   void _switchTab(HomeTab tab) {
     if (tab == HomeTab.mushaf) {
       state = state.copyWith(currentTab: HomeTab.mushaf);

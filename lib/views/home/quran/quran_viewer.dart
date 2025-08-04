@@ -62,23 +62,25 @@ class _QuranViewerState extends ConsumerState<QuranViewer> {
               }
             }
           },
-          child: Transform.scale(
-            scale: globalState.zoomLevel,
-            alignment: Alignment.center,
-            child: PageView.builder(
-              controller: globalController.pageController,
-              reverse: context.isLtr,
-              itemCount: globalController.getMushafPageCount(),
-              onPageChanged: (index) {
-                // globalController.setCurrentPage(index + 1);
-              },
-              itemBuilder: (context, index) {
-                return Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                  decoration: BoxDecoration(color: Colors.white),
-                  child: Center(child: PageViewer(page: index + 1)),
-                );
-              },
+          child: ClipRect(
+            child: Transform.scale(
+              scale: globalState.zoomLevel,
+              alignment: Alignment.center,
+              child: PageView.builder(
+                controller: globalController.pageController,
+                reverse: context.isLtr,
+                itemCount: globalController.getMushafPageCount(),
+                onPageChanged: (index) {
+                  // globalController.setCurrentPage(index + 1);
+                },
+                itemBuilder: (context, index) {
+                  return Container(
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                    decoration: BoxDecoration(color: Colors.white),
+                    child: Center(child: PageViewer(page: index + 1)),
+                  );
+                },
+              ),
             ),
           ),
         ),

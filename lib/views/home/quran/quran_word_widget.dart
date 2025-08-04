@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:quran/models/quran/word.dart';
+import 'package:quran/providers/color_picker/color_picker_provider.dart';
 import 'package:quran/providers/highlighter/highlighter_provider.dart';
-import 'package:quran/providers/highlighter/highlighter_state.dart';
 import 'package:quran/providers/quran/quran_page_provider.dart';
 import 'package:quran/providers/quran/quran_page_state.dart';
 
@@ -50,33 +50,23 @@ class _QuranWordWidgetState extends ConsumerState<QuranWordWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final highlighterState = ref.watch(highlightControllerProvider);
-    final highlighterController = ref.watch(highlightControllerProvider.notifier);
     final quranDualPageController = ref.watch(quranDualPageProvider.notifier);
-
-    final wordHighlights =
-        highlighterState.labels.values
-            .where(
-              (source) => source.highlights.contains((widget.pageNumber, widget.word.location)),
-            )
-            .toList();
-
-    final partialHighlights = highlighterController.getPartialHighlights(
-      widget.pageNumber,
-      widget.word.location,
+    
+    // Get persistent highlights for this location
+    final persistentHighlights = ref.watch(
+      highlightsForLocationProvider((widget.pageNumber, widget.word.location))
     );
 
-    final fullHeightHighlights = wordHighlights.where((source) => source.isFullHeight).toList();
-    fullHeightHighlights.sort((a, b) => a.zIndex.compareTo(b.zIndex));
+    // Separate full and partial highlights
+    final fullHighlights = persistentHighlights.where((h) => !h.isPartial).toList();
+    final partialHighlights = persistentHighlights.where((h) => h.isPartial).toList();
 
-    final wordHeightHighlights = wordHighlights.where((source) => !source.isFullHeight).toList();
-    wordHeightHighlights.sort((a, b) => a.zIndex.compareTo(b.zIndex));
-
-    final fullHeightHighlight = fullHeightHighlights.isNotEmpty ? fullHeightHighlights.last : null;
-    final wordHeightHighlight = wordHeightHighlights.isNotEmpty ? wordHeightHighlights.last : null;
-
-    final fullHeightHighlightColor = fullHeightHighlight?.color ?? Colors.transparent;
-    final wordHeightHighlightColor = wordHeightHighlight?.color ?? Colors.transparent;
+    // Get the most recent full highlight (if any) for background color
+    final mostRecentFullHighlight = fullHighlights.isNotEmpty 
+        ? fullHighlights.reduce((a, b) => a.createdAt.isAfter(b.createdAt) ? a : b)
+        : null;
+    
+    final backgroundColor = mostRecentFullHighlight?.color ?? Colors.transparent;
 
     return Listener(
       behavior: HitTestBehavior.translucent,
@@ -115,33 +105,33 @@ class _QuranWordWidgetState extends ConsumerState<QuranWordWidget> {
       child: Container(
         padding: EdgeInsets.symmetric(vertical: widget.paddingVertical, horizontal: 0),
         height: widget.lineHeight,
-        decoration: BoxDecoration(color: fullHeightHighlightColor),
+        decoration: BoxDecoration(color: backgroundColor),
         child: Stack(
           children: [
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 0),
-              decoration: BoxDecoration(color: wordHeightHighlightColor),
-              child: Text(
-                key: _textKey,
-                widget.word.glyph,
-                style: TextStyle(
-                  fontSize: widget.fontSize,
-                  fontFamily: widget.fontFamily,
-                  color: Colors.black,
-                ),
-                textDirection: TextDirection.rtl,
-              ),
-            ),
-            ...partialHighlights.map((highlight) => _buildPartialHighlight(highlight)),
+            // Partial highlights go first (bottom layer)
+            ...partialHighlights.map((highlight) => _buildPersistentPartialHighlight(highlight)),
+            // Drag preview goes second
             if (_isDragging && _dragStartLocalX != null)
               _buildDragPreview(),
+            // Text goes last (top layer - always visible above highlights)
+            Text(
+              key: _textKey,
+              widget.word.glyph,
+              style: TextStyle(
+                fontSize: widget.fontSize,
+                fontFamily: widget.fontFamily,
+                color: Colors.black,
+              ),
+              textDirection: TextDirection.rtl,
+            ),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildPartialHighlight(Highlight highlight) {
+
+  Widget _buildPersistentPartialHighlight(dynamic highlight) {
     return Positioned.fill(
       child: CustomPaint(
         painter: PartialHighlightPainter(
@@ -177,12 +167,15 @@ class _QuranWordWidgetState extends ConsumerState<QuranWordWidget> {
       endPercentage = (startPercentage + 0.02).clamp(0.0, 1.0);
     }
 
+    final selectedColor = ref.read(selectedColorProvider);
+    final previewColor = selectedColor?.withOpacity(0.5) ?? Colors.blue.withOpacity(0.3);
+    
     return Positioned.fill(
       child: CustomPaint(
         painter: PartialHighlightPainter(
           startPercentage: startPercentage,
           endPercentage: endPercentage,
-          color: Colors.blue.withOpacity(0.3), // Preview color
+          color: previewColor,
         ),
       ),
     );
@@ -226,13 +219,14 @@ class _QuranWordWidgetState extends ConsumerState<QuranWordWidget> {
       }
 
       if (endPercentage - startPercentage > 0.05) {
-        final highlighterController = ref.read(highlightControllerProvider.notifier);
-        highlighterController.addPartialHighlight(
-          highlight: partialHighlight,
+        final persistentHighlightController = ref.read(highlightControllerProvider.notifier);
+        final selectedColor = ref.read(selectedColorProvider);
+        persistentHighlightController.addPartialHighlight(
           page: widget.pageNumber,
           location: widget.word.location,
           startPercentage: startPercentage,
           endPercentage: endPercentage,
+          color: selectedColor,
         );
       }
     }
@@ -249,12 +243,23 @@ class _QuranWordWidgetState extends ConsumerState<QuranWordWidget> {
       final textWidth = renderBox.size.width;
       final clickPercentage = (localPosition.dx / textWidth).clamp(0.0, 1.0);
 
-      final highlighterController = ref.read(highlightControllerProvider.notifier);
-      highlighterController.removePartialHighlightAt(
-        widget.pageNumber,
-        widget.word.location,
-        clickPercentage,
+      // Find partial highlights at this location and remove the one that contains the click point
+      final persistentHighlights = ref.read(
+        highlightsForLocationProvider((widget.pageNumber, widget.word.location))
       );
+      
+      final partialHighlights = persistentHighlights.where((h) => h.isPartial).toList();
+      
+      for (final highlight in partialHighlights) {
+        final startPercentage = highlight.startPercentage ?? 0.0;
+        final endPercentage = highlight.endPercentage ?? 1.0;
+        
+        if (clickPercentage >= startPercentage && clickPercentage <= endPercentage) {
+          final persistentHighlightController = ref.read(highlightControllerProvider.notifier);
+          persistentHighlightController.deleteHighlight(highlight.id);
+          break;
+        }
+      }
     }
   }
 }

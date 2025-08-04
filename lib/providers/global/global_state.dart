@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:quran/models/quran/ayah.dart';
 import 'package:quran/models/mushaf.dart';
 
-enum HomeTab { mushaf, tafsir, notes }
+enum HomeTab { mushaf, tafsir, notes, highlights }
 
 enum ViewMode { double, single, translation }
 
