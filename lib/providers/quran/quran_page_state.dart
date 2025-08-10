@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:quran/core/utils/logger.dart';
 import 'package:quran/models/quran/ayah.dart';
 import 'package:quran/models/quran/page_data.dart';
 import 'package:quran/models/quran/word.dart';
 import 'package:quran/providers/color_picker/color_picker_provider.dart';
+import 'package:quran/providers/global/global_controller.dart';
+import 'package:quran/providers/global/global_state.dart';
+import 'package:quran/providers/tafsir/tafsir_provider.dart';
 
 // Old Highlight template class (kept for zIndex and other properties)
 class Highlight {
@@ -70,9 +72,13 @@ class WordClickContext {
 final focusHighlight = Highlight(
   label: "focus",
   color: Colors.grey.withValues(alpha: 0.3),
-  zIndex: 0,
+  zIndex: -1,
   isFullHeight: true,
 );
+
+tafsirFocusHighlight(String bookName) {
+  return Highlight(label: "tafsir_focus", color: Colors.blue.withValues(alpha: 0.3), zIndex: 0);
+}
 
 final ayahHighlight = Highlight(
   label: "ayah",
@@ -101,6 +107,34 @@ final wordHighlightProvider = Provider<Highlight>((ref) {
     color: selectedColor ?? Colors.orange.withValues(alpha: 0.3),
     zIndex: 2,
   );
+});
+
+// Provider to check if a word is in the current tafsir range
+final tafsirRangeHighlightProvider = Provider.family<Highlight?, (int surah, int ayah)>((
+  ref,
+  params,
+) {
+  final (surah, ayah) = params;
+
+  // Only show tafsir highlights when in tafsir tab
+  final globalState = ref.watch(globalControllerProvider);
+  if (globalState.currentTab != HomeTab.tafsir) {
+    return null;
+  }
+
+  final tafsirState = ref.watch(tafsirProvider);
+  if (tafsirState.currentSelectedTafsir == null) return null;
+
+  final currentTafsir = tafsirState.currentSelectedTafsir!;
+
+  // Check if this ayah is within the tafsir range
+  if (currentTafsir.surah == surah &&
+      ayah >= currentTafsir.fromAyah &&
+      ayah <= currentTafsir.toAyah) {
+    return tafsirFocusHighlight("current");
+  }
+
+  return null;
 });
 
 enum HighlightAction {

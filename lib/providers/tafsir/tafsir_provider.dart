@@ -1,8 +1,11 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:quran/core/utils/logger.dart';
+import 'package:quran/models/quran/ayah.dart';
+import 'package:quran/models/surah.dart';
 import 'package:quran/models/tafsir/tafsir.dart';
 import 'package:quran/providers/tafsir/tafsir_state.dart';
-import 'package:quran/repositories/tafsir/tafsir_repository.dart';
+import 'package:quran/repositories/quran_data.dart';
+import 'package:quran/repositories/tafsir_repository.dart';
 
 final tafsirProvider = StateNotifierProvider<TafsirController, TafsirState>((ref) {
   return TafsirController();
@@ -25,16 +28,10 @@ class TafsirController extends StateNotifier<TafsirState> {
   void setSelectedBook(String bookName) {
     final book = TafsirRepository.getTafsirBook(bookName);
     if (book != null) {
-      state = state.copyWith(
-        selectedBookName: bookName,
-        selectedBook: book,
-        error: null,
-      );
+      state = state.copyWith(selectedBookName: bookName, selectedBook: book, error: null);
       logger.info('Selected tafsir book: $bookName');
     } else {
-      state = state.copyWith(
-        error: 'Tafsir book not found: $bookName',
-      );
+      state = state.copyWith(error: 'Tafsir book not found: $bookName');
     }
   }
 
@@ -49,7 +46,7 @@ class TafsirController extends StateNotifier<TafsirState> {
     final cached = state.getCachedTafsirForAyah(state.selectedBookName!, surah, ayah);
     if (cached != null && state.isCurrentSelection(surah, ayah)) {
       state = state.copyWith(
-        currentTafsir: cached,
+        currentSelectedTafsir: cached,
         currentSurah: surah,
         currentAyah: ayah,
         error: null,
@@ -59,169 +56,168 @@ class TafsirController extends StateNotifier<TafsirState> {
 
     try {
       state = state.copyWith(isLoading: true, error: null);
+      Tafsir? selectedTafsir;
 
-      final tafsir = await TafsirRepository.getTafsirForAyah(
+      selectedTafsir = await TafsirRepository.getTafsirForAyah(
         state.selectedBookName!,
         surah,
         ayah,
       );
 
+      if (selectedTafsir != null && selectedTafsir.text.trim().isNotEmpty) {
+        logger.info('Found range tafsir covering $surah:$ayah: ${selectedTafsir.groupAyahKey}');
+      } else if (selectedTafsir != null && selectedTafsir.text.trim().isEmpty) {
+        // Range tafsir found but text is empty, treat as no tafsir found
+        selectedTafsir = null;
+        logger.info('Range tafsir found for $surah:$ayah but text is empty');
+      }
+
       // Update cache and current state
       state = state
-          .withCachedTafsirForAyah(state.selectedBookName!, surah, ayah, tafsir)
+          .withCachedTafsirForAyah(state.selectedBookName!, surah, ayah, selectedTafsir)
           .copyWith(
-            currentTafsir: tafsir,
+            currentSelectedTafsir: selectedTafsir,
             currentSurah: surah,
             currentAyah: ayah,
             isLoading: false,
           );
 
-      logger.info('Loaded ${tafsir.length} tafsir entries for ayah $surah:$ayah');
+      if (selectedTafsir != null) {
+        logger.info('Loaded tafsir for ayah $surah:$ayah');
+      } else {
+        logger.warning('No tafsir found for ayah $surah:$ayah');
+      }
     } catch (e, st) {
       logger.error('Failed to load tafsir for ayah $surah:$ayah: $e\n$st');
-      state = state.copyWith(
-        isLoading: false,
-        error: 'Failed to load tafsir: $e',
-      );
+      state = state.copyWith(isLoading: false, error: 'Failed to load tafsir: $e');
     }
   }
 
-  // Get tafsir for a range of ayahs
-  Future<List<Tafsir>> getTafsirForAyahRange(int surah, int fromAyah, int toAyah) async {
-    if (state.selectedBookName == null) {
-      state = state.copyWith(error: 'No tafsir book selected');
-      return [];
-    }
+  // Find previous ayah with tafsir content
+  Future<Tafsir?> findNextTafsirRange() async {
+    if (state.selectedBookName == null || state.currentSelectedTafsir == null) return null;
 
-    try {
-      state = state.copyWith(isLoading: true, error: null);
+    int searchSurah = state.currentSelectedTafsir!.surah;
+    int searchAyah = state.currentSelectedTafsir!.toAyah + 1;
 
-      final tafsir = await TafsirRepository.getTafsirForAyahRange(
-        state.selectedBookName!,
-        surah,
-        fromAyah,
-        toAyah,
-      );
+    Ayah? ayah = _findNextValidAyah(searchSurah, searchAyah);
 
-      state = state.copyWith(isLoading: false);
-      logger.info('Loaded ${tafsir.length} tafsir entries for ayahs $surah:$fromAyah-$toAyah');
-      
-      return tafsir;
-    } catch (e, st) {
-      logger.error('Failed to load tafsir for ayah range $surah:$fromAyah-$toAyah: $e\n$st');
-      state = state.copyWith(
-        isLoading: false,
-        error: 'Failed to load tafsir: $e',
-      );
-      return [];
-    }
-  }
-
-  // Get tafsir for complete surah
-  Future<void> loadTafsirForSurah(int surah) async {
-    if (state.selectedBookName == null) {
-      state = state.copyWith(error: 'No tafsir book selected');
-      return;
-    }
-
-    // Check cache first
-    final cached = state.getCachedTafsirForSurah(state.selectedBookName!, surah);
-    if (cached != null) {
-      state = state.copyWith(
-        currentTafsir: cached,
-        currentSurah: surah,
-        currentAyah: null,
-        error: null,
-      );
-      return;
-    }
-
-    try {
-      state = state.copyWith(isLoading: true, error: null);
-
-      final tafsir = await TafsirRepository.getTafsirForSurah(
-        state.selectedBookName!,
-        surah,
-      );
-
-      // Update cache and current state
-      state = state
-          .withCachedTafsirForSurah(state.selectedBookName!, surah, tafsir)
-          .copyWith(
-            currentTafsir: tafsir,
-            currentSurah: surah,
-            currentAyah: null,
-            isLoading: false,
-          );
-
-      logger.info('Loaded ${tafsir.length} tafsir entries for surah $surah');
-    } catch (e, st) {
-      logger.error('Failed to load tafsir for surah $surah: $e\n$st');
-      state = state.copyWith(
-        isLoading: false,
-        error: 'Failed to load tafsir: $e',
-      );
-    }
-  }
-
-  // Search tafsir by text
-  Future<List<Tafsir>> searchTafsir(String query) async {
-    if (state.selectedBookName == null) {
-      state = state.copyWith(error: 'No tafsir book selected');
-      return [];
-    }
-
-    if (query.trim().isEmpty) {
-      return [];
-    }
-
-    try {
-      state = state.copyWith(isLoading: true, error: null);
-
-      final results = await TafsirRepository.searchTafsir(
-        state.selectedBookName!,
-        query,
-      );
-
-      state = state.copyWith(isLoading: false);
-      logger.info('Found ${results.length} tafsir entries for query: $query');
-      
-      return results;
-    } catch (e, st) {
-      logger.error('Failed to search tafsir: $e\n$st');
-      state = state.copyWith(
-        isLoading: false,
-        error: 'Failed to search tafsir: $e',
-      );
-      return [];
-    }
-  }
-
-  // Get tafsir by group ayah key
-  Future<Tafsir?> getTafsirByGroupAyahKey(String groupAyahKey) async {
-    if (state.selectedBookName == null) {
-      state = state.copyWith(error: 'No tafsir book selected');
+    if (ayah == null) {
+      logger.debug("No valid surah found for next tafsir search");
       return null;
     }
 
     try {
-      final tafsir = await TafsirRepository.getTafsirByGroupAyahKey(
+      final tafsir = await TafsirRepository.getTafsirForAyah(
         state.selectedBookName!,
-        groupAyahKey,
+        ayah.surah,
+        ayah.ayah,
       );
 
-      return tafsir;
+      if (tafsir != null) {
+        state = state.copyWith(currentSelectedTafsir: tafsir);
+        return tafsir;
+      }
+
+      return null;
     } catch (e, st) {
-      logger.error('Failed to get tafsir by group ayah key $groupAyahKey: $e\n$st');
-      state = state.copyWith(error: 'Failed to load tafsir: $e');
+      logger.error('Failed to find previous ayah with tafsir:$e\n$st');
       return null;
     }
+  }
+
+  // Find previous ayah with tafsir content
+  Future<Tafsir?> findPreviousTafsirRange() async {
+    if (state.selectedBookName == null || state.currentSelectedTafsir == null) return null;
+
+    int searchSurah = state.currentSelectedTafsir!.surah;
+    int searchAyah = state.currentSelectedTafsir!.fromAyah - 1;
+
+    if (searchAyah == 0) {
+      logger.debug("Ayah greater than number of ayahs in surah");
+      return null;
+    }
+
+    try {
+      final tafsir = await TafsirRepository.getTafsirForAyah(
+        state.selectedBookName!,
+        searchSurah,
+        searchAyah,
+      );
+
+      if (tafsir != null) {
+        state = state.copyWith(currentSelectedTafsir: tafsir);
+        return tafsir;
+      }
+
+      return null;
+    } catch (e, st) {
+      logger.error('Failed to find previous ayah with tafsir:$e\n$st');
+      return null;
+    }
+  }
+
+  // Find next valid ayah starting from given surah and ayah
+  Ayah? _findNextValidAyah(int startSurah, int startAyah) {
+    try {
+      // If the starting ayah is valid within the current surah, return that ayah
+      final currentSurah = QuranData.surahs.firstWhere((s) => s.surahNumber == startSurah);
+      if (startAyah <= currentSurah.numberOfAyahs) {
+        final ayahKey = '$startSurah:$startAyah';
+        return QuranData.ayahMap[ayahKey];
+      }
+    } catch (e) {
+      // Current surah not found, continue to search next surahs
+    }
+    
+    // If startAyah exceeds the current surah, move to next surah
+    for (int surahNumber = startSurah + 1; surahNumber <= 114; surahNumber++) {
+      try {
+        final surah = QuranData.surahs.firstWhere((s) => s.surahNumber == surahNumber);
+        // Return first ayah of the next surah
+        final ayahKey = '$surahNumber:1';
+        return QuranData.ayahMap[ayahKey];
+      } catch (e) {
+        // Surah not found, continue to next
+        continue;
+      }
+    }
+    
+    // No valid ayah found
+    return null;
+  }
+
+  // Find next valid surah starting from given surah and ayah
+  Surah? _findNextValidSurah(int startSurah, int startAyah) {
+    try {
+      // If the starting ayah is valid within the current surah, return that surah
+      final currentSurah = QuranData.surahs.firstWhere((s) => s.surahNumber == startSurah);
+      if (startAyah <= currentSurah.numberOfAyahs) {
+        return currentSurah;
+      }
+    } catch (e) {
+      // Current surah not found, continue to search next surahs
+    }
+    
+    // If startAyah exceeds the current surah, move to next surah
+    for (int surahNumber = startSurah + 1; surahNumber <= 114; surahNumber++) {
+      try {
+        final surah = QuranData.surahs.firstWhere((s) => s.surahNumber == surahNumber);
+        return surah;
+      } catch (e) {
+        // Surah not found, continue to next
+        continue;
+      }
+    }
+    
+    // No valid surah found
+    return null;
   }
 
   // Clear current selection
   void clearCurrentSelection() {
     state = state.copyWith(
-      currentTafsir: [],
+      currentSelectedTafsir: null,
       currentSurah: null,
       currentAyah: null,
       error: null,
@@ -245,24 +241,14 @@ class TafsirController extends StateNotifier<TafsirState> {
 
   // Refresh current selection
   Future<void> refreshCurrentSelection() async {
-    if (state.currentSurah != null) {
-      if (state.currentAyah != null) {
-        // Clear cache for this ayah and reload
-        final key = '${state.selectedBookName}:${state.currentSurah}:${state.currentAyah}';
-        final updatedCache = Map<String, List<Tafsir>>.from(state.tafsirCache);
-        updatedCache.remove(key);
-        state = state.copyWith(tafsirCache: updatedCache);
-        
-        await loadTafsirForAyah(state.currentSurah!, state.currentAyah!);
-      } else {
-        // Clear cache for this surah and reload
-        final key = '${state.selectedBookName}:${state.currentSurah}';
-        final updatedCache = Map<String, List<Tafsir>>.from(state.surahTafsirCache);
-        updatedCache.remove(key);
-        state = state.copyWith(surahTafsirCache: updatedCache);
-        
-        await loadTafsirForSurah(state.currentSurah!);
-      }
+    if (state.currentSurah != null && state.currentAyah != null) {
+      // Clear cache for this ayah and reload
+      final key = '${state.selectedBookName}:${state.currentSurah}:${state.currentAyah}';
+      final updatedCache = Map<String, Tafsir>.from(state.tafsirCache);
+      updatedCache.remove(key);
+      state = state.copyWith(tafsirCache: updatedCache);
+
+      await loadTafsirForAyah(state.currentSurah!, state.currentAyah!);
     }
   }
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:quran/views/widgets/custom_scaffold.dart';
-import 'package:quran/repositories/quran/quran_data.dart';
+import 'package:quran/repositories/quran_data.dart';
 import 'package:quran/views/drawers/select_mushaf/mushaf_card.dart';
 
 class MushafList extends StatelessWidget {

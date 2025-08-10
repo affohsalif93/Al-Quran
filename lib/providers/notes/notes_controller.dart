@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:quran/core/utils/logger.dart';
 import 'package:quran/models/note.dart';
 import 'package:quran/providers/notes/notes_state.dart';
-import 'package:quran/repositories/notes/notes_repository.dart';
+import 'package:quran/repositories/notes_repository.dart';
 
 class NotesController extends StateNotifier<NotesState> {
   final Ref ref;

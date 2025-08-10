@@ -40,7 +40,7 @@ class PageViewMode extends ConsumerWidget {
         color: Colors.lightGreen,
         borderRadius: BorderRadius.circular(4),
         border: Border.all(
-          color: Colors.green,
+          color: Theme.of(context).primaryColor,
           width: 1.5,
         ),
       ),

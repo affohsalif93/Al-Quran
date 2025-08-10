@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:multi_split_view/multi_split_view.dart';
 import 'package:quran/core/extensions/context_extensions.dart';
@@ -8,6 +7,7 @@ import 'package:quran/providers/global/global_state.dart';
 import 'package:quran/views/home/highlights/color_picker_view.dart';
 import 'package:quran/views/home/notes/notes_view.dart';
 import 'package:quran/views/home/quran/quran_viewer.dart';
+import 'package:quran/views/home/tafsir/tafsir_view.dart';
 
 class MainView extends ConsumerWidget {
   const MainView({super.key});
@@ -28,7 +28,7 @@ class MainView extends ConsumerWidget {
                     (axis, index, resizable, dragging, highlighted, themeData) =>
                         Container(color: context.colors.navBarBackground, width: 10),
                 initialAreas: [
-                  Area(flex: 8, min: 7, builder: (context, area) => quranViewer),
+                  Area(flex: 10, min: 8, max: 13, builder: (context, area) => quranViewer),
                   if (globalState.currentTab != HomeTab.mushaf)
                     _getAreasForTab(globalState.currentTab, quranViewer),
                 ],
@@ -41,8 +41,8 @@ class MainView extends ConsumerWidget {
     switch (currentTab) {
       case HomeTab.notes:
         return Area(
-          flex: 2,
-          min: 3,
+          flex: 10,
+          min: 6,
           builder: (context, area) => Container(
             decoration: BoxDecoration(color: context.colors.quranPageBackground),
             child: const NotesView(),
@@ -51,8 +51,8 @@ class MainView extends ConsumerWidget {
 
       case HomeTab.highlights:
         return Area(
-          flex: 1,
-          min: 1.5,
+          flex: 2,
+          min: 2,
           max: 2,
           builder: (context, area) => Container(
             decoration: BoxDecoration(color: context.colors.quranPageBackground),
@@ -62,11 +62,11 @@ class MainView extends ConsumerWidget {
 
       case HomeTab.tafsir:
         return Area(
-          flex: 2,
-          min: 3,
+          flex: 10,
+          min: 5,
           builder: (context, area) => Container(
             decoration: BoxDecoration(color: context.colors.quranPageBackground),
-            child: const Center(child: Text('Tafsir View Coming Soon')),
+            child: const TafsirView(),
           ),
         );
 

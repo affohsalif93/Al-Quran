@@ -51,10 +51,10 @@ class _QuranWordWidgetState extends ConsumerState<QuranWordWidget> {
   @override
   Widget build(BuildContext context) {
     final quranDualPageController = ref.watch(quranDualPageProvider.notifier);
-    
+
     // Get persistent highlights for this location
     final persistentHighlights = ref.watch(
-      highlightsForLocationProvider((widget.pageNumber, widget.word.location))
+      highlightsForLocationProvider((widget.pageNumber, widget.word.location)),
     );
 
     // Separate full and partial highlights
@@ -62,11 +62,19 @@ class _QuranWordWidgetState extends ConsumerState<QuranWordWidget> {
     final partialHighlights = persistentHighlights.where((h) => h.isPartial).toList();
 
     // Get the most recent full highlight (if any) for background color
-    final mostRecentFullHighlight = fullHighlights.isNotEmpty 
-        ? fullHighlights.reduce((a, b) => a.createdAt.isAfter(b.createdAt) ? a : b)
-        : null;
-    
-    final backgroundColor = mostRecentFullHighlight?.color ?? Colors.transparent;
+    final mostRecentFullHighlight =
+        fullHighlights.isNotEmpty
+            ? fullHighlights.reduce((a, b) => a.createdAt.isAfter(b.createdAt) ? a : b)
+            : null;
+
+    // Check for tafsir range highlight
+    final tafsirHighlight = ref.watch(
+      tafsirRangeHighlightProvider((widget.word.surah, widget.word.ayah)),
+    );
+
+    // Priority: persistent highlights > tafsir highlight > transparent
+    final backgroundColor =
+        tafsirHighlight?.color ?? mostRecentFullHighlight?.color ?? Colors.transparent;
 
     return Listener(
       behavior: HitTestBehavior.translucent,
@@ -104,15 +112,13 @@ class _QuranWordWidgetState extends ConsumerState<QuranWordWidget> {
       },
       child: Container(
         padding: EdgeInsets.symmetric(vertical: widget.paddingVertical, horizontal: 0),
-        height: widget.lineHeight,
         decoration: BoxDecoration(color: backgroundColor),
         child: Stack(
           children: [
             // Partial highlights go first (bottom layer)
             ...partialHighlights.map((highlight) => _buildPersistentPartialHighlight(highlight)),
             // Drag preview goes second
-            if (_isDragging && _dragStartLocalX != null)
-              _buildDragPreview(),
+            if (_isDragging && _dragStartLocalX != null) _buildDragPreview(),
             // Text goes last (top layer - always visible above highlights)
             Text(
               key: _textKey,
@@ -129,7 +135,6 @@ class _QuranWordWidgetState extends ConsumerState<QuranWordWidget> {
       ),
     );
   }
-
 
   Widget _buildPersistentPartialHighlight(dynamic highlight) {
     return Positioned.fill(
@@ -169,7 +174,7 @@ class _QuranWordWidgetState extends ConsumerState<QuranWordWidget> {
 
     final selectedColor = ref.read(selectedColorProvider);
     final previewColor = selectedColor?.withOpacity(0.5) ?? Colors.blue.withOpacity(0.3);
-    
+
     return Positioned.fill(
       child: CustomPaint(
         painter: PartialHighlightPainter(
@@ -245,15 +250,15 @@ class _QuranWordWidgetState extends ConsumerState<QuranWordWidget> {
 
       // Find partial highlights at this location and remove the one that contains the click point
       final persistentHighlights = ref.read(
-        highlightsForLocationProvider((widget.pageNumber, widget.word.location))
+        highlightsForLocationProvider((widget.pageNumber, widget.word.location)),
       );
-      
+
       final partialHighlights = persistentHighlights.where((h) => h.isPartial).toList();
-      
+
       for (final highlight in partialHighlights) {
         final startPercentage = highlight.startPercentage ?? 0.0;
         final endPercentage = highlight.endPercentage ?? 1.0;
-        
+
         if (clickPercentage >= startPercentage && clickPercentage <= endPercentage) {
           final persistentHighlightController = ref.read(highlightControllerProvider.notifier);
           persistentHighlightController.deleteHighlight(highlight.id);
@@ -286,7 +291,9 @@ class PartialHighlightPainter extends CustomPainter {
     left = size.width * startPercentage;
     right = size.width * endPercentage;
 
-    final rect = Rect.fromLTRB(left, 0, right, size.height);
+    // Make highlight not full height - leave some margin
+    final verticalMargin = size.height * 0.1;
+    final rect = Rect.fromLTRB(left, verticalMargin, right, size.height - verticalMargin);
     canvas.drawRect(rect, paint);
   }
 

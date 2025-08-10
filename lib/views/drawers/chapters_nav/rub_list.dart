@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:quran/models/rub.dart';
 import 'package:quran/providers/global/global_controller.dart';
 import 'package:quran/providers/navigation/navigation_scroll_provider.dart';
-import 'package:quran/repositories/quran/quran_data.dart';
+import 'package:quran/repositories/quran_data.dart';
 import 'package:quran/views/drawers/chapters_nav/nav_card.dart';
 
 class RubList extends ConsumerStatefulWidget {

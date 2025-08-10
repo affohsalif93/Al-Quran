@@ -2,26 +2,24 @@ import 'package:equatable/equatable.dart';
 import 'package:quran/models/tafsir/tafsir.dart';
 
 class TafsirState extends Equatable {
-  final Map<String, List<Tafsir>> tafsirCache; // Cache by key: "bookName:surah:ayah"
-  final Map<String, List<Tafsir>> surahTafsirCache; // Cache by key: "bookName:surah"
+  final Map<String, Tafsir> tafsirCache; // Cache by key: "bookName:surah:ayah"
   final String? selectedBookName;
   final TafsirBook? selectedBook;
   final bool isLoading;
   final String? error;
   final int? currentSurah;
   final int? currentAyah;
-  final List<Tafsir> currentTafsir;
+  final Tafsir? currentSelectedTafsir;
 
   const TafsirState({
     this.tafsirCache = const {},
-    this.surahTafsirCache = const {},
     this.selectedBookName,
     this.selectedBook,
     this.isLoading = false,
     this.error,
     this.currentSurah,
     this.currentAyah,
-    this.currentTafsir = const [],
+    this.currentSelectedTafsir,
   });
 
   factory TafsirState.initial() {
@@ -29,26 +27,24 @@ class TafsirState extends Equatable {
   }
 
   TafsirState copyWith({
-    Map<String, List<Tafsir>>? tafsirCache,
-    Map<String, List<Tafsir>>? surahTafsirCache,
+    Map<String, Tafsir>? tafsirCache,
     String? selectedBookName,
     TafsirBook? selectedBook,
     bool? isLoading,
     String? error,
     int? currentSurah,
     int? currentAyah,
-    List<Tafsir>? currentTafsir,
+    Tafsir? currentSelectedTafsir,
   }) {
     return TafsirState(
       tafsirCache: tafsirCache ?? this.tafsirCache,
-      surahTafsirCache: surahTafsirCache ?? this.surahTafsirCache,
       selectedBookName: selectedBookName ?? this.selectedBookName,
       selectedBook: selectedBook ?? this.selectedBook,
       isLoading: isLoading ?? this.isLoading,
       error: error,
       currentSurah: currentSurah ?? this.currentSurah,
       currentAyah: currentAyah ?? this.currentAyah,
-      currentTafsir: currentTafsir ?? this.currentTafsir,
+      currentSelectedTafsir: currentSelectedTafsir ?? this.currentSelectedTafsir,
     );
   }
 
@@ -57,21 +53,10 @@ class TafsirState extends Equatable {
     return '$bookName:$surah:$ayah';
   }
 
-  // Get cache key for surah tafsir
-  String _getSurahCacheKey(String bookName, int surah) {
-    return '$bookName:$surah';
-  }
-
   // Get cached tafsir for ayah
-  List<Tafsir>? getCachedTafsirForAyah(String bookName, int surah, int ayah) {
+  Tafsir? getCachedTafsirForAyah(String bookName, int surah, int ayah) {
     final key = _getAyahCacheKey(bookName, surah, ayah);
     return tafsirCache[key];
-  }
-
-  // Get cached tafsir for surah
-  List<Tafsir>? getCachedTafsirForSurah(String bookName, int surah) {
-    final key = _getSurahCacheKey(bookName, surah);
-    return surahTafsirCache[key];
   }
 
   // Check if ayah tafsir is cached
@@ -80,34 +65,21 @@ class TafsirState extends Equatable {
     return tafsirCache.containsKey(key);
   }
 
-  // Check if surah tafsir is cached
-  bool isSurahTafsirCached(String bookName, int surah) {
-    final key = _getSurahCacheKey(bookName, surah);
-    return surahTafsirCache.containsKey(key);
-  }
-
   // Add tafsir to cache
-  TafsirState withCachedTafsirForAyah(String bookName, int surah, int ayah, List<Tafsir> tafsir) {
+  TafsirState withCachedTafsirForAyah(String bookName, int surah, int ayah, Tafsir? tafsir) {
     final key = _getAyahCacheKey(bookName, surah, ayah);
-    final updatedCache = Map<String, List<Tafsir>>.from(tafsirCache);
-    updatedCache[key] = tafsir;
+    final updatedCache = Map<String, Tafsir>.from(tafsirCache);
+    if (tafsir != null) {
+      updatedCache[key] = tafsir;
+    } else {
+      updatedCache.remove(key);
+    }
     return copyWith(tafsirCache: updatedCache);
-  }
-
-  // Add surah tafsir to cache
-  TafsirState withCachedTafsirForSurah(String bookName, int surah, List<Tafsir> tafsir) {
-    final key = _getSurahCacheKey(bookName, surah);
-    final updatedCache = Map<String, List<Tafsir>>.from(surahTafsirCache);
-    updatedCache[key] = tafsir;
-    return copyWith(surahTafsirCache: updatedCache);
   }
 
   // Clear cache
   TafsirState withClearedCache() {
-    return copyWith(
-      tafsirCache: {},
-      surahTafsirCache: {},
-    );
+    return copyWith(tafsirCache: {});
   }
 
   // Check if current selection matches
@@ -118,13 +90,12 @@ class TafsirState extends Equatable {
   @override
   List<Object?> get props => [
     tafsirCache,
-    surahTafsirCache,
     selectedBookName,
     selectedBook,
     isLoading,
     error,
     currentSurah,
     currentAyah,
-    currentTafsir,
+    currentSelectedTafsir,
   ];
 }

@@ -4,7 +4,7 @@ import 'package:quran/core/utils/logger.dart';
 import 'package:quran/models/quran/ayah.dart';
 import 'package:quran/providers/global/global_state.dart';
 import 'package:quran/providers/shared_preferences_provider.dart';
-import 'package:quran/repositories/quran/quran_data.dart';
+import 'package:quran/repositories/quran_data.dart';
 
 final GlobalKey<ScaffoldState> globalScaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -34,6 +34,16 @@ class GlobalController extends StateNotifier<GlobalState> {
       currentPage: prefs.getPageNumber(),
       currentMushaf: QuranData.madinahMushafV1,
       zoomLevel: savedZoom,
+      selectedAyah: Ayah(
+        id: 1,
+        page: 1,
+        surah: 1,
+        ayah: 1,
+        juz: 1,
+        rub: 1,
+        wordsCount: 5,
+        text: ' بِسْمِ اللَّهِ الرَّحْمَـٰنِ الرَّحِيمِ',
+      ),
     );
   }
 

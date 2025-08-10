@@ -99,22 +99,17 @@ class PageViewer extends ConsumerWidget {
     final globalState = ref.watch(globalControllerProvider);
     final pageContentBuilder = QuranPageContentBuilder(ref);
 
-    final stateCurrentPage = ref.watch(currentPageProvider);
-
-    if (stateCurrentPage == page) {
-
-
-    }
-
     return LayoutBuilder(
       builder: (context, constraints) {
-        final availableWidth = constraints.maxWidth;
-        final availableHeight = constraints.maxHeight;
+        // Use the actual bounded constraints instead of maxWidth/maxHeight
+        // This ensures we work within the actual container area
+        final availableWidth = constraints.hasBoundedWidth ? constraints.maxWidth : constraints.biggest.width;
+        final availableHeight = constraints.hasBoundedHeight ? constraints.maxHeight : constraints.biggest.height;
 
         final dims = getPageDimensions(
           availableHeight: availableHeight,
           availableWidth: availableWidth,
-          pageAspectRatio: 0.9 / 1.41,
+          pageAspectRatio: 0.95 / 1.41,
           contentAspectRatio: 1 / 1.41,
         );
 
@@ -166,7 +161,15 @@ class PageViewer extends ConsumerWidget {
               );
             }
 
-            return pageContent;
+            // Wrap in a sized container to prevent overflow
+            return SizedBox(
+              width: availableWidth,
+              height: availableHeight,
+              child: FittedBox(
+                fit: BoxFit.contain,
+                child: pageContent,
+              ),
+            );
           },
         );
       },
@@ -194,21 +197,30 @@ PageDimensions getPageDimensions({
   required double pageAspectRatio,
   required double contentAspectRatio,
 }) {
+  // Add some padding to prevent overflow
+  const double padding = 20.0;
+  final constrainedWidth = max(0.0, availableWidth - padding);
+  final constrainedHeight = max(0.0, availableHeight - padding);
+  
   // First fit the page within available space preserving page aspect ratio
-  double pageWidth = availableWidth;
+  double pageWidth = constrainedWidth;
   double pageHeight = pageWidth / pageAspectRatio;
 
-  if (pageHeight > availableHeight) {
-    pageHeight = availableHeight;
+  if (pageHeight > constrainedHeight) {
+    pageHeight = constrainedHeight;
     pageWidth = pageHeight * pageAspectRatio;
   }
 
+  // Ensure we don't exceed the available space
+  pageWidth = min(pageWidth, constrainedWidth);
+  pageHeight = min(pageHeight, constrainedHeight);
+
   // Now fit the content inside the page preserving content aspect ratio
-  double contentWidth = pageWidth;
+  double contentWidth = pageWidth * 0.95; // Leave some margin inside page
   double contentHeight = contentWidth / contentAspectRatio;
 
-  if (contentHeight > pageHeight) {
-    contentHeight = pageHeight;
+  if (contentHeight > pageHeight * 0.95) {
+    contentHeight = pageHeight * 0.95;
     contentWidth = contentHeight * contentAspectRatio;
   }
 

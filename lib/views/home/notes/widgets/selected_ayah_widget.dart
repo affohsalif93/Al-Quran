@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:quran/assets/fonts.gen.dart';
 import 'package:quran/core/extensions/context_extensions.dart';
 import 'package:quran/models/quran/ayah.dart';
-import 'package:quran/repositories/quran/quran_data.dart';
+import 'package:quran/repositories/quran_data.dart';
 
 class SelectedAyahWidget extends StatelessWidget {
   final Ayah ayah;

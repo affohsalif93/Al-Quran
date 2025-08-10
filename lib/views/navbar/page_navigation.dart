@@ -26,14 +26,14 @@ class PageNavigation extends ConsumerWidget {
             onPressed: globalController.goToNextPage,
             icon: Icon(
               Symbols.arrow_back_rounded,
-              color: Colors.green,
+              color: Theme.of(context).primaryColor,
             ),
             style: IconButton.styleFrom(
               backgroundColor: Colors.white,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(6),
                 side: BorderSide(
-                  color: Colors.green,
+                  color: Theme.of(context).primaryColor,
                 ),
               ),
             ),
@@ -44,7 +44,7 @@ class PageNavigation extends ConsumerWidget {
               color: Colors.white,
               borderRadius: BorderRadius.circular(4),
               border: Border.all(
-                color: Colors.green,
+                color: Theme.of(context).primaryColor,
               ),
             ),
             child: Center(
@@ -56,14 +56,14 @@ class PageNavigation extends ConsumerWidget {
             onPressed: globalController.goToPreviousPage,
             icon: Icon(
               Symbols.arrow_forward_rounded,
-              color: Colors.green,
+              color: Theme.of(context).primaryColor,
             ),
             style: IconButton.styleFrom(
               backgroundColor: Colors.white,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(6),
                 side: BorderSide(
-                  color: Colors.green,
+                  color: Theme.of(context).primaryColor,
                 ),
               ),
             ),

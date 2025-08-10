@@ -5,7 +5,7 @@ import 'package:quran/models/quran/basmallah_line.dart';
 import 'package:quran/models/quran/page_line.dart';
 import 'package:quran/models/quran/surah_name_line.dart';
 import 'package:quran/models/quran/word.dart';
-import 'package:quran/repositories/quran/quran_data.dart';
+import 'package:quran/repositories/quran_data.dart';
 
 abstract class QuranUtils {
   static (int, int) indexToSurahAyah(int index) {

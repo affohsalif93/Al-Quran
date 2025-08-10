@@ -14,8 +14,8 @@ import 'package:quran/i18n/strings.g.dart';
 import 'package:quran/providers/shared_preferences_provider.dart';
 import 'package:quran/services/quran_db_service.dart';
 import 'package:quran/services/quran_data_loader.dart';
-import 'package:quran/repositories/notes/notes_repository.dart';
-import 'package:quran/repositories/highlights/highlights_repository.dart';
+import 'package:quran/repositories/notes_repository.dart';
+import 'package:quran/repositories/highlights_repository.dart';
 // ignore:depend_on_referenced_packages
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 

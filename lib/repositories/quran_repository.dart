@@ -12,8 +12,8 @@ import 'package:riverpod/riverpod.dart';
 
 import 'package:quran/models/quran/ayah.dart';
 import 'package:quran/models/quran/page_line.dart';
-import 'package:quran/repositories/quran/quran_data.dart';
-import 'package:quran/repositories/highlights/highlights_repository.dart';
+import 'package:quran/repositories/quran_data.dart';
+import 'package:quran/repositories/highlights_repository.dart';
 import 'package:sqflite/sqflite.dart';
 
 final quranRepositoryProvider = Provider<QuranRepository>((ref) {

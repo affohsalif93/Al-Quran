@@ -12,16 +12,16 @@ class GlobalState extends Equatable {
   final bool isShowMenu;
   final Mushaf currentMushaf;
   final HomeTab currentTab;
-  final Ayah? selectedAyah;
+  final Ayah selectedAyah;
   final double zoomLevel;
 
   const GlobalState({
     this.currentPage = 1,
     this.isShowMenu = true,
     this.viewMode = ViewMode.double,
-    this.currentTab = HomeTab.mushaf,
+    this.currentTab = HomeTab.tafsir,
     required this.currentMushaf,
-    this.selectedAyah,
+    required this.selectedAyah,
     this.zoomLevel = 1.0,
   });
 

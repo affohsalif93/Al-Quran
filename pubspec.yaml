@@ -122,6 +122,7 @@ dependencies:
   multi_split_view: ^3.6.0
   shimmer: ^3.0.0
   flutter_quill: ^11.4.2
+  flutter_html: ^3.0.0
 
 dev_dependencies:
   flutter_test:
@@ -171,15 +172,15 @@ flutter:
     - family: SurahNameV2
       fonts:
         - asset: assets/fonts/surah-name-v2/surah-name-v2.ttf
+    - family: UthmanicHafs
+      fonts:
+        - asset: assets/fonts/UthmanicHafs/UthmanicHafs.ttf
     - family: UthmanTN
       fonts:
         - asset: assets/fonts/UthmanTN/UthmanTN-Regular.ttf
           weight: 400
         - asset: assets/fonts/UthmanTN/UthmanTN-Bold.ttf
           weight: 700
-    - family: UthmanicHafs
-      fonts:
-        - asset: assets/fonts/UthmanicHafs/UthmanicHafs.ttf
     - family: Rubik
       fonts:
         - asset: assets/fonts/Rubik/Rubik-Light.ttf

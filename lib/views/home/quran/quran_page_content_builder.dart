@@ -7,7 +7,7 @@ import 'package:quran/models/quran/page_data.dart';
 import 'package:quran/models/quran/surah_name_line.dart';
 import 'package:quran/models/quran/word.dart';
 import 'package:quran/providers/quran/quran_page_provider.dart';
-import 'package:quran/repositories/quran/quran_data.dart';
+import 'package:quran/repositories/quran_data.dart';
 import 'package:quran/views/home/quran/quran_word_widget.dart';
 
 class QuranPageContentBuilder {

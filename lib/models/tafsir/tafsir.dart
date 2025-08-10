@@ -1,14 +1,16 @@
 class Tafsir {
   final String ayahKey;        // e.g., "1:1" 
-  final String groupAyahKey;   // e.g., "1:1"
-  final String fromAyah;       // e.g., "1:1"
-  final String toAyah;         // e.g., "1:7"
+  final String groupAyahKey;   // e.g., "1:1" (same as fromAyah formatted)
+  final int surah;             // e.g., 1
+  final int fromAyah;          // e.g., 1
+  final int toAyah;            // e.g., 7
   final String ayahKeys;       // e.g., "1:1,1:2,1:3,1:4,1:5,1:6,1:7"
   final String text;           // HTML content
 
   const Tafsir({
     required this.ayahKey,
     required this.groupAyahKey,
+    required this.surah,
     required this.fromAyah,
     required this.toAyah,
     required this.ayahKeys,
@@ -16,11 +18,21 @@ class Tafsir {
   });
 
   factory Tafsir.fromMap(Map<String, dynamic> map) {
+    // Parse surah and ayah from from_ayah string (e.g., "1:1")
+    final fromAyahParts = (map['from_ayah'] as String).split(':');
+    final surah = int.parse(fromAyahParts[0]);
+    final fromAyah = int.parse(fromAyahParts[1]);
+    
+    // Parse toAyah from to_ayah string (e.g., "1:7")
+    final toAyahParts = (map['to_ayah'] as String).split(':');
+    final toAyah = int.parse(toAyahParts[1]);
+    
     return Tafsir(
       ayahKey: map['ayah_key'] as String,
       groupAyahKey: map['group_ayah_key'] as String,
-      fromAyah: map['from_ayah'] as String,
-      toAyah: map['to_ayah'] as String,
+      surah: surah,
+      fromAyah: fromAyah,
+      toAyah: toAyah,
       ayahKeys: map['ayah_keys'] as String,
       text: map['text'] as String,
     );
@@ -30,8 +42,8 @@ class Tafsir {
     return {
       'ayah_key': ayahKey,
       'group_ayah_key': groupAyahKey,
-      'from_ayah': fromAyah,
-      'to_ayah': toAyah,
+      'from_ayah': '$surah:$fromAyah',
+      'to_ayah': '$surah:$toAyah',
       'ayah_keys': ayahKeys,
       'text': text,
     };
@@ -45,14 +57,12 @@ class Tafsir {
 
   // Parse from ayah to get surah and ayah numbers
   (int surah, int ayah) get parsedFromAyah {
-    final parts = fromAyah.split(':');
-    return (int.parse(parts[0]), int.parse(parts[1]));
+    return (surah, fromAyah);
   }
 
   // Parse to ayah to get surah and ayah numbers
   (int surah, int ayah) get parsedToAyah {
-    final parts = toAyah.split(':');
-    return (int.parse(parts[0]), int.parse(parts[1]));
+    return (surah, toAyah);
   }
 
   // Get list of ayah keys covered by this tafsir entry
@@ -73,7 +83,7 @@ class Tafsir {
 
   @override
   String toString() {
-    return 'Tafsir(ayahKey: $ayahKey, groupAyahKey: $groupAyahKey, fromAyah: $fromAyah, toAyah: $toAyah, ayahKeys: $ayahKeys)';
+    return 'Tafsir(ayahKey: $ayahKey, groupAyahKey: $groupAyahKey, surah: $surah, fromAyah: $fromAyah, toAyah: $toAyah, ayahKeys: $ayahKeys)';
   }
 
   @override
@@ -82,6 +92,7 @@ class Tafsir {
     return other is Tafsir && 
            other.ayahKey == ayahKey &&
            other.groupAyahKey == groupAyahKey &&
+           other.surah == surah &&
            other.fromAyah == fromAyah &&
            other.toAyah == toAyah &&
            other.ayahKeys == ayahKeys &&
@@ -92,6 +103,7 @@ class Tafsir {
   int get hashCode {
     return ayahKey.hashCode ^
            groupAyahKey.hashCode ^
+           surah.hashCode ^
            fromAyah.hashCode ^
            toAyah.hashCode ^
            ayahKeys.hashCode ^
@@ -106,12 +118,16 @@ class TafsirBook {
   final String displayName;
   final String author;
   final String? description;
+  // lang
+  final String lang; // Optional: if you want to support multiple languages
+
 
   const TafsirBook({
     required this.name,
     required this.dbFileName,
     required this.displayName,
     required this.author,
+    required this.lang,
     this.description,
   });
 
@@ -130,6 +146,8 @@ class TafsirBook {
            other.author == author &&
            other.description == description;
   }
+
+  get isArabic => lang.toLowerCase() == 'ar';
 
   @override
   int get hashCode {

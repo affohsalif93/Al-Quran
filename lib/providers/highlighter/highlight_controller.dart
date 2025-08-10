@@ -4,7 +4,7 @@ import 'package:quran/core/utils/logger.dart';
 import 'package:quran/models/highlight/saved_highlight.dart';
 import 'package:quran/providers/color_picker/color_picker_provider.dart';
 import 'package:quran/providers/highlighter/highlighter_state.dart';
-import 'package:quran/repositories/highlights/highlights_repository.dart';
+import 'package:quran/repositories/highlights_repository.dart';
 
 class HighlightController extends StateNotifier<HighlighterState> {
   final Ref ref;

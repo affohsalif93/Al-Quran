@@ -77,10 +77,11 @@ class TopMenuBar extends ConsumerWidget {
                   borderRadius: BorderRadius.circular(4),
                 ),
                 padding: 20,
+                height: 30,
                 thumbDecoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(4),
-                  border: Border.all(color: Colors.green, width: 2),
-                  color: Colors.lightGreen,
+                  border: Border.all(color: Theme.of(context).primaryColor.withOpacity(0.5), width: 2),
+                  color: Theme.of(context).primaryColor.withOpacity(0.3),
                 ),
                 duration: Duration(milliseconds: 100),
                 curve: Curves.easeInToLinear,

@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:quran/core/utils/helper_functions.dart';
 import 'package:quran/core/utils/logger.dart';
-import 'package:quran/repositories/quran/quran_data.dart';
+import 'package:quran/repositories/quran_data.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:quran/i18n/strings.g.dart';
@@ -21,6 +21,7 @@ enum PrefsEnum {
   riwayah,
   tafsirList,
   zoomLevel,
+  tafsirFontSize,
 }
 
 final sharedPreferencesProvider = Provider<SharedPreferencesService>((ref) {
@@ -88,6 +89,15 @@ class SharedPreferencesService {
 
   void setZoomLevel(double value) {
     _prefs.setDouble(PrefsEnum.zoomLevel.name, value);
+  }
+
+  // TAFSIR FONT SIZE
+  double getTafsirFontSize() {
+    return _prefs.getDouble(PrefsEnum.tafsirFontSize.name) ?? 20.0;
+  }
+
+  void setTafsirFontSize(double value) {
+    _prefs.setDouble(PrefsEnum.tafsirFontSize.name, value);
   }
 
   // BOOKMARK

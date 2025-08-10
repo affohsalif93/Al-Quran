@@ -6,7 +6,7 @@ import 'package:quran/models/quran/page_data.dart';
 import 'package:quran/providers/highlighter/highlighter_provider.dart';
 import 'package:quran/providers/global/global_controller.dart';
 import 'package:quran/providers/quran/quran_page_state.dart';
-import 'package:quran/repositories/quran/quran_repository.dart';
+import 'package:quran/repositories/quran_repository.dart';
 
 
 final quranDualPageProvider = NotifierProvider<QuranPageController, QuranPageState>(
