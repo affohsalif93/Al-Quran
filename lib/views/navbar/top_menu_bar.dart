@@ -23,10 +23,7 @@ class TabItem extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 1),
       child: Row(
         spacing: 5,
-        children: [
-          Icon(icon, size: 20),
-          Text(text, style: TextStyle(fontSize: 15)),
-        ],
+        children: [Icon(icon, size: 20), Text(text, style: TextStyle(fontSize: 15))],
       ),
     );
   }
@@ -80,8 +77,11 @@ class TopMenuBar extends ConsumerWidget {
                 height: 30,
                 thumbDecoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(4),
-                  border: Border.all(color: Theme.of(context).primaryColor.withOpacity(0.5), width: 2),
-                  color: Theme.of(context).primaryColor.withOpacity(0.3),
+                  border: Border.all(
+                    color: Theme.of(context).primaryColor.withOpacity(0.8),
+                    width: 1.5,
+                  ),
+                  color: Theme.of(context).primaryColor.withOpacity(0.5),
                 ),
                 duration: Duration(milliseconds: 100),
                 curve: Curves.easeInToLinear,

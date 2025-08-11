@@ -37,11 +37,11 @@ class PageViewMode extends ConsumerWidget {
       padding: 20,
       height: 30,
       thumbDecoration: BoxDecoration(
-        color: Colors.lightGreen,
+        color: Theme.of(context).primaryColor.withOpacity(0.5),
         borderRadius: BorderRadius.circular(4),
         border: Border.all(
-          color: Theme.of(context).primaryColor,
-          width: 1.5,
+          color: Theme.of(context).primaryColor.withOpacity(0.8),
+          width: 1.25,
         ),
       ),
       onValueChanged: (value) {

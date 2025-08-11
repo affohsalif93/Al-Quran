@@ -1,16 +1,16 @@
-# quran
+# Al Quran
+A desktop first Quran app
 
-A windows first quran app
+## Goal
+This project aims to provide a comprehensive and accessible Quran application that can be used on desktop devices. It is designed to be user-friendly and easy to navigate, allowing users to read, search, take notes and interact with the Quran seamlessly.
 
-## Getting Started
+## Important Notice
+This project started and remains (at least for now) a personal project i.e. a tool am building for myself first. This means I will give priority to features I need for myself and might reject some features that don't fit with the immediate goal of the app. 
 
-This project is a starting point for a Flutter application.
+## Inspiration and Credits
+- It's strongly inspired by [Quran Windows App](https://quransoft.net/en).
+- Credits to [aymendn](https://github.com/aymendn/quran-app) for the initial boilerplate and structure of the application.
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## License
+This project is licensed under the GNU GPLv3 License. See the [LICENSE](LICENSE) file for details

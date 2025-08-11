@@ -26,7 +26,8 @@ class ZoomControl extends ConsumerWidget {
             min: 0.5,
             max: 1.0,
             divisions: 100,
-            activeColor: Theme.of(context).primaryColor,
+            activeColor: Theme.of(context).primaryColor.withOpacity(0.8),
+            thumbColor: Theme.of(context).primaryColor,
             inactiveColor: Colors.grey,
             onChanged: (value) {
               globalController.setZoomLevel(value);
