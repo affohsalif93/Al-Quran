@@ -24,7 +24,7 @@ class _TafsirViewState extends ConsumerState<TafsirView> {
     // Load font size from shared preferences
     final prefs = SharedPreferencesService();
     _fontSize = prefs.getTafsirFontSize();
-    
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _loadTafsirForCurrentSelection();
     });
@@ -239,9 +239,7 @@ class _TafsirViewState extends ConsumerState<TafsirView> {
     final tafsirState = ref.watch(tafsirProvider);
     return Card(
       margin: const EdgeInsets.only(bottom: 2),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(4),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -285,47 +283,45 @@ class _TafsirViewState extends ConsumerState<TafsirView> {
             if (tafsir.isRangeEntry) const SizedBox(height: 6),
 
             // Tafsir content (HTML)
-            
-            Html(
-              data: _preprocessHtml(tafsir.text),
-              style: {
-                "body": Style(
-                  fontSize: FontSize(_fontSize),
-                  lineHeight: const LineHeight(1.6),
-                  textAlign: TextAlign.justify,
-                  fontFamily: FontFamily.uthmanTN,
-                  // fontWeight: FontWeight.bold,
-                ),
-                "[lang=ar]": Style(
-                  textAlign: TextAlign.right,
-                  direction: TextDirection.rtl,
-                  fontFamily: FontFamily.uthmanTN,
-                  // fontWeight: FontWeight.normal,
-                ),
-                "h3": Style(
-                  fontSize: FontSize(_fontSize + 2),
-                  fontWeight: FontWeight.bold,
-                  color: Colors.blue,
-                  margin: Margins.only(bottom: 8, top: 16),
-                ),
-                "p": Style(margin: Margins.only(bottom: 12), fontFamily: FontFamily.uthmanTN),
-                ".qpc-hafs": Style(
-                  fontSize: FontSize(_fontSize - 1.5),
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).primaryColor,
-                  fontFamily: FontFamily.uthmanicHafs,
-                ),
-                ".ar": Style(
-                  textAlign: TextAlign.right,
-                  direction: TextDirection.rtl,
-                  fontFamily: FontFamily.uthmanTN,
-                  // fontWeight: FontWeight.normal,
-                ),
-              },
-              onAnchorTap: (url, attributes, element) {
-                // Handle links if needed
-                debugPrint('Tapped link: $url');
-              },
+            SelectionArea(
+              child: Html(
+                data: _preprocessHtml(tafsir.text),
+                style: {
+                  "body": Style(
+                    fontSize: FontSize(_fontSize),
+                    lineHeight: const LineHeight(1.6),
+                    textAlign: TextAlign.justify,
+                    fontFamily: FontFamily.uthmanTN,
+                  ),
+                  "[lang=ar]": Style(
+                    textAlign: TextAlign.right,
+                    direction: TextDirection.rtl,
+                    fontFamily: FontFamily.uthmanTN,
+                  ),
+                  "h3": Style(
+                    fontSize: FontSize(_fontSize + 2),
+                    fontWeight: FontWeight.bold,
+                    color: Colors.blue,
+                    margin: Margins.only(bottom: 8, top: 16),
+                  ),
+                  "p": Style(margin: Margins.only(bottom: 12)),
+                  ".qpc-hafs": Style(
+                    fontSize: FontSize(_fontSize - 1.5),
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).primaryColor,
+                    fontFamily: FontFamily.uthmanicHafs,
+                  ),
+                  ".ar": Style(
+                    textAlign: TextAlign.right,
+                    direction: TextDirection.rtl,
+                    fontFamily: FontFamily.uthmanTN,
+                  ),
+                },
+                onAnchorTap: (url, attributes, element) {
+                  // Handle links if needed
+                  debugPrint('Tapped link: $url');
+                },
+              ),
             ),
           ],
         ),

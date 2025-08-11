@@ -77,7 +77,7 @@ final focusHighlight = Highlight(
 );
 
 tafsirFocusHighlight(String bookName) {
-  return Highlight(label: "tafsir_focus", color: Colors.blue.withValues(alpha: 0.3), zIndex: 0);
+  return Highlight(label: "tafsir_focus", color: Colors.blue.withValues(alpha: 0.1), zIndex: 0);
 }
 
 final ayahHighlight = Highlight(
