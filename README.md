@@ -1,6 +1,8 @@
 # Al Quran
 A desktop first Quran app
 
+![App Platorm](https://github.com/affohsalif93/Al-Quran/blob/5cd53861782ba4eb92e74df11eeaa29ef4a74a24/screenshots/all_screenshots.gif)
+
 ## Goal
 This project aims to provide a comprehensive and accessible Quran application that can be used on desktop devices. It is designed to be user-friendly and easy to navigate, allowing users to read, search, take notes and interact with the Quran seamlessly.
 
@@ -13,4 +15,5 @@ This project started and remains (at least for now) a personal project i.e. a to
 
 
 ## License
+
 This project is licensed under the GNU GPLv3 License. See the [LICENSE](LICENSE) file for details
